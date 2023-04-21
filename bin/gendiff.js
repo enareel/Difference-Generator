@@ -9,5 +9,11 @@ const data = {
 };
 
 const program = new Command();
-program.name(data.NAME).version(data.VERSION).description(data.DESCRIPTION);
+program
+  .name(data.NAME)
+  .version(data.VERSION)
+  .description(data.DESCRIPTION)
+  .option('-f, --format <type>', 'output format')
+  .argument('<filepath1>')
+  .argument('<filepath2>');
 program.parse();
