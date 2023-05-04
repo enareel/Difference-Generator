@@ -21,6 +21,6 @@
   },
   "homepage": "https://github.com/enareel/frontend-project-46#readme",
   "dependencies": {
-    "commander": "^10.0.0"
+    "commander": "^10.0.1"
   }
 }
