@@ -4,39 +4,25 @@ on:
   push:
     branches:
       - '**'
-    tags:
-      - '**'
   pull_request:
 env:
   CI: true
 
 jobs:
-  lint:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Linting
-      - run: make lint
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Testing
-      - run: make test
-  test-coverage:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Testing Coverage
-      - run: make test-coverage
   build:
     runs-on: ubuntu-latest
+
     strategy:
       matrix:
         node-version: [18.x]
+
     steps:
       - uses: actions/checkout@v3
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-        needs: [lint, test, test-coverage]
-        - run: make install
+      - run: make install
+      - run: make lint
+      - run: make test
+      - run: make test-coverage
