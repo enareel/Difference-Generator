@@ -1,37 +1,28 @@
 #!/usr/bin/env node
 
 import { Command } from 'commander';
+import { fileURLToPath } from 'node:url';
+import path, { dirname } from 'node:path';
 import fs from 'node:fs';
-import path from 'node:path';
+import genDiff from '../src/genDiff.js';
 
 // Вспомогательные переменные
 const data = {
   NAME: 'gendiff',
   VERSION: '0.0.1',
   DESCRIPTION: 'Compares two configuration files and shows a difference.',
-  SRC_DIR: 'src',
+  SRC_DIR: '__fixtures__',
 };
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 /**
- * Функция сортировки пар массива.
- * @param {Array} a Пара (массив из двух элементов).
- * @param {Array} b Пара (массив из двух элементов).
- * @returns {number}
- */
-const sortPairs = (a, b) => {
-  if (a[0] === b[0]) {
-    return 0;
-  }
-  return a[0] > b[0] ? 1 : -1;
-};
-
-/**
- * Функция определения корректного (абс. или отн.) пути файлов.
+ * Функция определения корректных (абс. или отн.) путей файлов.
  * @param {string[]} paths Массив путей.
  * @returns {string[]}
  */
 const makeCorrectPath = (paths) => {
-  return paths.map((item) => path.resolve(data.SRC_DIR, item));
+  return paths.map((item) => path.resolve(__dirname, '..', data.SRC_DIR, item));
 };
 
 /**
@@ -45,43 +36,7 @@ const getFiles = (filepaths) => {
   });
 };
 
-/**
- * Функция демонстрации различий между двумя объектами. Плоское сравнение
- * @param {Object} firstObj Первый объект
- * @param {Object} secondObj Второй объект
- * @returns {string}
- */
-const showDiff = ([firstObj, secondObj], space = ' ') => {
-  const combEntries = [
-    ...Object.entries(firstObj),
-    ...Object.entries(secondObj),
-  ];
-
-  // Формируем (рекурсивно) объект записей.
-  const combObj = combEntries.sort(sortPairs).reduce((acc, cur) => {
-    const [prop, value] = cur;
-    let sign = '  ';
-
-    // Устанавливаем знак.
-    if (!secondObj[prop] || (secondObj[prop] && secondObj[prop] !== value)) {
-      sign = '- ';
-    } else if (
-      !firstObj[prop] ||
-      (firstObj[prop] && firstObj[prop] !== secondObj[prop])
-    ) {
-      sign = '+ ';
-    }
-
-    // Проверяем наличие в аккумуляторе
-    return { ...acc, [`${space.repeat(2)}${sign}${prop}`]: value };
-  }, []);
-
-  return `{\n${Object.entries(combObj)
-    .map((pair) => pair.join(' '))
-    .join(',\n')}\n}`;
-};
-
-// Формируем экземпляр объекта Команды
+//Формируем экземпляр объекта Команды
 const program = new Command();
 program
   .name(data.NAME)
@@ -90,7 +45,7 @@ program
   .option('-f, --format <type>', 'output format')
   .arguments('<filepath1> <filepath2>')
   .action((filepath1, filepath2) => {
-    console.log(showDiff(getFiles(makeCorrectPath([filepath1, filepath2]))));
+    console.log(genDiff(getFiles(makeCorrectPath([filepath1, filepath2]))));
   });
 
 program.parse();
