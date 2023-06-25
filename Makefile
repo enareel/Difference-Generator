@@ -12,4 +12,4 @@ lint: # линтинг
 test: # тесты
 	npm test
 test-coverage: # тесты с покрытием
-	npm rub test-coverage
+	npm run test-coverage
