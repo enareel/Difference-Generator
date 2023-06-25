@@ -5,7 +5,7 @@
 import fs from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
-import genDiff from '../src/genDiff.js';
+import genDiff from '../src/genDiff';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
