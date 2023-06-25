@@ -31,7 +31,8 @@ const makeCorrectPath = (paths) =>
  */
 const getFiles = (filepaths) =>
   filepaths.map((file) => JSON.parse(fs.readFileSync(file, 'utf-8')));
-//Формируем экземпляр объекта Команды
+
+// Формируем экземпляр объекта Команды
 const program = new Command();
 program
   .name(data.NAME)

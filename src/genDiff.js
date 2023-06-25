@@ -33,10 +33,6 @@ const genDiff = ([firstObj, secondObj], space = ' ') => {
     const [prop, value] = cur;
     let sign = '  ';
 
-    console.log(
-      !secondObj[prop] || (secondObj[prop] && secondObj[prop] !== value)
-    );
-
     // Устанавливаем знак.
     if (
       !(prop in secondObj) ||
