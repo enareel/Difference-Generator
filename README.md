@@ -1,4 +1,4 @@
-# Вычислитель отличий &middot; [![Actions Status](https://github.com/enareel/frontend-project-46/workflows/hexlet-check/badge.svg)](https://github.com/enareel/frontend-project-46/actions)
+# Вычислитель отличий &middot; [![Actions Status](https://github.com/enareel/frontend-project-46/workflows/hexlet-check/badge.svg)](https://github.com/enareel/frontend-project-46/actions) [![Maintainability](https://api.codeclimate.com/v1/badges/96a255766830909a7dc1/maintainability)](https://codeclimate.com/github/enareel/frontend-project-46/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/96a255766830909a7dc1/test_coverage)](https://codeclimate.com/github/enareel/frontend-project-46/test_coverage)
 
 [Описание](#описание 'Описание') | [Установка](#установка 'Установка') | [Превью](#превью 'Превью')
 
@@ -18,7 +18,7 @@
 git clone https://github.com/enareel/frontend-project-46.git
 ```
 
-2. Осуществите установку проекта:
+2. Осуществите установку проекта:!
 
 ```
 make install
