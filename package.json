@@ -22,7 +22,8 @@
   },
   "homepage": "https://github.com/enareel/frontend-project-46#readme",
   "dependencies": {
-    "commander": "^10.0.1"
+    "commander": "^10.0.1",
+    "js-yaml": "^4.1.0"
   },
   "devDependencies": {
     "eslint": "^8.43.0",
