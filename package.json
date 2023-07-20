@@ -8,8 +8,8 @@
   "main": "index.js",
   "type": "module",
   "scripts": {
-    "test": "env NODE_OPTIONS=--experimental-vm-modules npx jest --watch --colors",
-    "test-coverage": "env NODE_OPTIONS=--experimental-vm-modules npx jest --watch --coverage --colors"
+    "test": "env NODE_OPTIONS=--experimental-vm-modules npx jest --watchAll",
+    "test-coverage": "env NODE_OPTIONS=--experimental-vm-modules npx jest --watchAll --coverage"
   },
   "repository": {
     "type": "git",
