@@ -4,6 +4,7 @@ import { Command } from 'commander';
 import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
 import fs from 'node:fs';
+import getFiles from '../src/parses.js';
 import genDiff from '../src/genDiff.js';
 
 // Вспомогательные данные.
@@ -24,17 +25,6 @@ const __dirname = dirname(__filename);
 const makeCorrectPath = (paths) =>
   paths.map((item) => path.resolve(__dirname, '..', data.SRC_DIR, item));
 
-/**
- * Функция чтения файлов. Синхронно.
- * @param {string[]} filepaths Массив корректных путей до файлов.
- * @returns {Object[]}
- */
-const getFiles = (filepaths) =>
-  filepaths.map((file) => {
-    console.log(path.extname(file));
-    return JSON.parse(fs.readFileSync(file, 'utf-8'));
-  });
-
 // Формируем экземпляр объекта Команды.
 const program = new Command();
 program
@@ -44,7 +34,7 @@ program
   .option('-f, --format <type>', 'output format')
   .arguments('<filepath1> <filepath2>')
   .action((filepath1, filepath2) => {
-    console.log(genDiff(getFiles(makeCorrectPath([filepath1, filepath2]))));
+    console.log(getFiles(makeCorrectPath([filepath1, filepath2])));
   });
 
 program.parse();

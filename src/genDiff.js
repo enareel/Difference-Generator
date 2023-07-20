@@ -28,7 +28,6 @@ const genDiff = ([firstObj, secondObj], space = ' ') => {
     ...Object.entries(secondObj),
   ];
 
-  console.log(combEntries);
   // Формируем объект записей.
   const combObj = combEntries.sort(sortPairs).reduce((acc, cur) => {
     const [prop, value] = cur;
@@ -53,7 +52,7 @@ const genDiff = ([firstObj, secondObj], space = ' ') => {
 
   return `{\n${Object.entries(combObj)
     .map((pair) => pair.join(': '))
-    .join(',\n')}\n}`;
+    .join('\n')}\n}`;
 };
 
 export default genDiff;
