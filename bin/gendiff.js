@@ -3,7 +3,6 @@
 import { Command } from 'commander';
 import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
-import fs from 'node:fs';
 import getFiles from '../src/parses.js';
 import genDiff from '../src/genDiff.js';
 
@@ -34,7 +33,7 @@ program
   .option('-f, --format <type>', 'output format')
   .arguments('<filepath1> <filepath2>')
   .action((filepath1, filepath2) => {
-    console.log(getFiles(makeCorrectPath([filepath1, filepath2])));
+    console.log(genDiff(getFiles(makeCorrectPath([filepath1, filepath2]))));
   });
 
 program.parse();
