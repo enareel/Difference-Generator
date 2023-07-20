@@ -4,9 +4,9 @@ import { Command } from 'commander';
 import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
 import fs from 'node:fs';
-import genDiff from '../src/genDiff';
+import genDiff from '../src/genDiff.js';
 
-// Вспомогательные переменные
+// Вспомогательные данные.
 const data = {
   NAME: 'gendiff',
   VERSION: '0.0.1',
@@ -25,14 +25,17 @@ const makeCorrectPath = (paths) =>
   paths.map((item) => path.resolve(__dirname, '..', data.SRC_DIR, item));
 
 /**
- * Функция синхронного "взятия" файлов.
- * @param {string[]} filepaths Массив путей до файлов.
+ * Функция чтения файлов. Синхронно.
+ * @param {string[]} filepaths Массив корректных путей до файлов.
  * @returns {Object[]}
  */
 const getFiles = (filepaths) =>
-  filepaths.map((file) => JSON.parse(fs.readFileSync(file, 'utf-8')));
+  filepaths.map((file) => {
+    console.log(path.extname(file));
+    return JSON.parse(fs.readFileSync(file, 'utf-8'));
+  });
 
-// Формируем экземпляр объекта Команды
+// Формируем экземпляр объекта Команды.
 const program = new Command();
 program
   .name(data.NAME)
