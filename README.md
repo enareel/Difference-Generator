@@ -18,24 +18,30 @@
 git clone https://github.com/enareel/frontend-project-46.git
 ```
 
-2. Осуществите установку проекта:!
+2.  Осуществите установку проекта:
 
 ```
 make install
 ```
 
-3. Осуществите симлинк проекта:
+3.  Осуществите симлинк проекта:
 
 ```
 make link
 ```
 
-1. Запустите команду, указанную [ниже](#превью).
+4. Запустите команду, указанную [ниже](#превью).
 
 ## Превью
 
-### Различия между плоскими файлами
+### Различия между плоскими файлами (JSON)
 
 Команда для запуска: `gendiff <filepath1> <filepath2>`
 
 [![asciicast](https://asciinema.org/a/9LwTIb4T0WSzqHXgOdiKz04wW.svg)](https://asciinema.org/a/9LwTIb4T0WSzqHXgOdiKz04wW)
+
+### Различия между плоскими файлами (YAML)
+
+Команда для запуска: `gendiff <filepath1> <filepath2>`
+
+[![asciicast](https://asciinema.org/a/ETzMLr6CX6qgz2XZv97aCsjKP.svg)](https://asciinema.org/a/ETzMLr6CX6qgz2XZv97aCsjKP)
