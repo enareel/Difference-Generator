@@ -3,7 +3,7 @@
 import { Command } from 'commander';
 import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
-import getFiles from '../src/parses.js';
+import getFiles from '../src/parsers.js';
 import genDiff from '../src/genDiff.js';
 
 // Вспомогательные данные.

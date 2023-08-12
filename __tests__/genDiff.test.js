@@ -20,7 +20,7 @@ const makeCorrectPath = (filepath) =>
   path.join(__dirname, '..', '__fixtures__', filepath);
 
 /**
- * Функция чтения файла. Синхронно.
+ * Функция чтения файла.
  * @param {string} file Корректный путь до файла.
  * @returns {Object}
  */

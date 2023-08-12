@@ -16,6 +16,9 @@ const sortPairs = (a, b) => {
   return a[0] > b[0] ? 1 : -1;
 };
 
+const isObject = (value) =>
+  typeof value === 'object' && value instanceof Object;
+
 /**
  * Функция демонстрации различий между двумя объектами. Плоское сравнение.
  * @param {Object} firstObj Первый объект.
@@ -23,36 +26,76 @@ const sortPairs = (a, b) => {
  * @returns {string}
  */
 const genDiff = ([firstObj, secondObj], space = ' ') => {
-  const combEntries = [
-    ...Object.entries(firstObj),
-    ...Object.entries(secondObj),
-  ];
+  // Стэк с имеющимися свойствами.
+  const stack = [];
 
-  // Формируем объект записей.
-  const combObj = combEntries.sort(sortPairs).reduce((acc, cur) => {
-    const [prop, value] = cur;
-    let sign = '  ';
+  /**
+   * Вспомогательная функция демонстрации различий между объектами. Рекурсия.
+   * @param {number} depth Глубина.
+   * @param {string} trace Путь.
+   * @param {Object} leftObj Левый объект.
+   * @param {Object} rightObj Правый объект.
+   * @returns {string}
+   */
+  const iter = (leftObj = {}, rightObj = {}, depth = 0, trace = '') => {
+    const entries = [...Object.entries(leftObj), ...Object.entries(rightObj)];
 
-    // Устанавливаем знак.
-    if (
-      !(prop in secondObj) ||
-      (prop in secondObj && secondObj[prop] !== value)
-    ) {
-      sign = '- ';
-    } else if (
-      !(prop in firstObj) ||
-      (prop in firstObj && firstObj[prop] !== secondObj[prop])
-    ) {
-      sign = '+ ';
-    }
+    const combObj = entries.sort(sortPairs).reduce((acc, [prop, value]) => {
+      console.log(
+        acc,
+        entries,
+        prop,
+        leftObj[prop],
+        rightObj[prop],
+        leftObj,
+        rightObj
+      );
+      // Определяем знак.
+      let sign = '';
 
-    // Проверяем наличие в аккумуляторе
-    return { ...acc, [`${space.repeat(2)}${sign}${prop}`]: value };
-  }, {});
+      // Определяем, какие свойства отличаются, а какие - нет.
+      switch (true) {
+        case !(prop in rightObj):
+          sign = '- ';
+          break;
+        case prop in rightObj &&
+          rightObj[prop] !== value &&
+          !(isObject(leftObj[prop]) === isObject(rightObj[prop])):
+          sign = '- ';
+          break;
+        case !(prop in leftObj):
+          sign = '+ ';
+          break;
+        case prop in leftObj &&
+          leftObj[prop] !== rightObj[prop] &&
+          !(isObject(leftObj[prop]) === isObject(rightObj[prop])):
+          sign = '+ ';
+          break;
+        default:
+          sign = ' ';
+          break;
+      }
 
-  return `{\n${Object.entries(combObj)
-    .map((pair) => pair.join(': '))
-    .join('\n')}\n}`;
+      if (isObject(value)) {
+        return {
+          ...acc,
+          [`\n${space.repeat(depth)}${sign}${prop}`]: iter(
+            leftObj[prop] || !isObject(leftObj[prop]) ? leftObj[prop] : {},
+            rightObj[prop] || !isObject(rightObj[prop]) ? rightObj[prop] : {},
+            depth + 1,
+            `${trace}.${prop}`
+          ),
+        };
+      }
+      return { ...acc, [`\n${space.repeat(depth)}${sign}${prop}`]: value };
+    }, {});
+
+    return `{${Object.entries(combObj)
+      .map(([key, value]) => `${key}: ${value}`)
+      .join('')}${space.repeat(depth)}\n}`;
+  };
+
+  return iter(firstObj, secondObj, 0, '');
 };
 
 export default genDiff;

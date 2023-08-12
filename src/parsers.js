@@ -1,6 +1,6 @@
 /**
  * Модуль, отвечающий за парсинг файлов.
- * @module parses
+ * @module parsers
  */
 import jsYaml from 'js-yaml';
 import path from 'node:path';
