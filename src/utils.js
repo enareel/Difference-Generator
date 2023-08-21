@@ -24,4 +24,11 @@ const sortPairs = (a, b) => {
 const isObject = (value) =>
   typeof value === 'object' && value instanceof Object;
 
-export { sortPairs, isObject };
+/**
+ * Проверка объекта на пустоту.
+ * @param {Object} obj Объект.
+ * @returns
+ */
+const isEmptyObject = (obj) => !Object.keys(obj).length;
+
+export { sortPairs, isObject, isEmptyObject };
