@@ -8,11 +8,11 @@ import fs from 'node:fs';
 
 /**
  * Функция чтения файлов. Синхронно.
- * @param {string[]} filepaths Массив корректных путей до файлов.
- * @returns {Object[]}
+ * @param {...string} filepaths Корректные пути.
+ * @returns {Object|Object[]}
  */
-const getFiles = (filepaths) =>
-  filepaths.map((file) => {
+const getFiles = (...filepaths) => {
+  const files = filepaths.map((file) => {
     switch (path.extname(file)) {
       case '.yml':
       case '.yaml':
@@ -23,5 +23,10 @@ const getFiles = (filepaths) =>
         throw new Error('Формат не поддерживается.');
     }
   });
+  if (files.length > 1) {
+    return files;
+  }
+  return files.at();
+};
 
 export default getFiles;

@@ -18,11 +18,18 @@ const sortPairs = (a, b) => {
 
 /**
  * Проверка на соответствие типу Object.
- * @param {*} value Значение
+ * @param {*} value Значение.
  * @returns {boolean}
  */
 const isObject = (value) =>
   typeof value === 'object' && value instanceof Object;
+
+/**
+ * Проверка того, являются ли все значения объектом.
+ * @param {...Object} objs Значения.
+ * @returns {boolean}
+ */
+const isAllObjects = (...objs) => objs.every((obj) => isObject(obj));
 
 /**
  * Проверка объекта на пустоту.
@@ -31,4 +38,4 @@ const isObject = (value) =>
  */
 const isEmptyObject = (obj) => !Object.keys(obj).length;
 
-export { sortPairs, isObject, isEmptyObject };
+export { isEmptyObject, isObject, isAllObjects, sortPairs };

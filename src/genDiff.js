@@ -3,7 +3,7 @@
  * @module genDiff
  */
 
-import { isObject, sortPairs, isEmptyObject } from './utils.js';
+import { isEmptyObject, isObject, isAllObjects, sortPairs } from './utils.js';
 
 /**
  * Функция демонстрации различий между двумя объектами. Плоское сравнение.
@@ -11,7 +11,7 @@ import { isObject, sortPairs, isEmptyObject } from './utils.js';
  * @param {Object} secondObj Второй объект.
  * @returns {string}
  */
-const genDiff = ([firstObj, secondObj], replacer = ' ', spacesCount = 4) => {
+const genDiff = (firstObj, secondObj) => {
   // Стэк с имеющимися свойствами.
   const stack = [];
 
@@ -23,83 +23,79 @@ const genDiff = ([firstObj, secondObj], replacer = ' ', spacesCount = 4) => {
    * @param {Object} rightObj Правый объект.
    * @returns {string}
    */
-  const iter = (leftObj, rightObj, depth = 0) => {
+  const iter = (leftObj, rightObj) => {
+    // Массив пар ключ=значение.
     const entries = [...Object.entries(leftObj), ...Object.entries(rightObj)];
+    // Есть ли пара-объект.
     let hasPair =
       isEmptyObject(leftObj) || isEmptyObject(rightObj) ? false : true;
     const combObj = entries.sort(sortPairs).reduce((acc, [prop, value]) => {
-      console.log(
-        stack,
-        acc,
-        entries,
-        prop,
-        leftObj[prop],
-        rightObj[prop],
-        leftObj,
-        rightObj
-      );
-
       // Если одинаковое свойство уже есть в стэке.
       if (stack.includes(prop)) {
         return { ...acc };
       }
 
-      // Определяем знак.
-      let sign = '';
+      // Определяем состояние и тип свойства.
+      let state = '';
+      let type = 'leaf';
 
       // Определяем, какие свойства отличаются, а какие - нет.
       switch (true) {
         case !hasPair: {
-          sign = '';
+          state = '';
           break;
         }
         case !(prop in rightObj):
-          sign = '- ';
+          state = 'deleted';
+          break;
+        case !(prop in leftObj):
+          state = 'added';
           break;
         case prop in rightObj &&
           rightObj[prop] !== value &&
-          !(isObject(leftObj[prop]) && isObject(rightObj[prop])):
-          sign = '- ';
-          break;
-        case !(prop in leftObj):
-          sign = '+ ';
+          !isAllObjects(leftObj[prop], rightObj[prop]):
+          state = 'changed';
+          stack.push(prop);
           break;
         case prop in leftObj &&
           leftObj[prop] !== rightObj[prop] &&
-          !(isObject(leftObj[prop]) && isObject(rightObj[prop])):
-          sign = '+ ';
+          !isAllObjects(leftObj[prop], rightObj[prop]):
+          state = 'changed';
+          stack.push(prop);
           break;
         default:
-          sign = '';
+          state = '';
           stack.push(prop);
           break;
       }
 
-      // Если свойство - объект.
-      if (isObject(value)) {
-        console.log('is object,', value);
+      // Если оба свойства - объекты.
+      if (isAllObjects(leftObj[prop], rightObj[prop])) {
         return {
           ...acc,
-          [`\n${replacer.repeat(
-            depth - sign.length + spacesCount
-          )}${sign}${prop}`]: iter(
-            leftObj[prop] && isObject(leftObj[prop]) ? leftObj[prop] : {},
-            rightObj[prop] && isObject(rightObj[prop]) ? rightObj[prop] : {},
-            depth + 4
-          ),
+          [prop]: {
+            state,
+            type: 'internal',
+            value: iter(leftObj[prop], rightObj[prop]),
+          },
         };
       }
-      return {
-        ...acc,
-        [`\n${replacer.repeat(
-          depth - sign.length + spacesCount
-        )}${sign}${prop}`]: value,
-      };
-    }, {});
+      // Если свойство было изменено.
+      if (state === 'changed') {
+        return {
+          ...acc,
+          [prop]: {
+            state,
+            type,
+            newValue: rightObj[prop],
+            oldValue: leftObj[prop],
+          },
+        };
+      }
+      return { ...acc, [prop]: { state, type, value } };
+    }, '');
 
-    return `{${Object.entries(combObj)
-      .map(([key, value]) => `${key}: ${value}`)
-      .join('')}\n${replacer.repeat(depth)}}`;
+    return combObj;
   };
 
   return iter(firstObj, secondObj, 0, '');
