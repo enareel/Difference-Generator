@@ -22,7 +22,4 @@ rules:
     - ignorePackages
     - js: always
   no-underscore-dangle: [2, { 'allow': ['__filename', '__dirname'] }]
-overrides:
-  - files: ['**/__fixtures__/**/*']
-    rules:
-      no-console: 0
+  consistent-return: [0, { 'treatUndefinedAsUnspecified': true }]
