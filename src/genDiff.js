@@ -46,14 +46,8 @@ const genDiff = (firstObj, secondObj) => {
         case !(prop in leftObj):
           state = 'added';
           break;
-        case prop in rightObj &&
-          rightObj[prop] !== value &&
-          !isAllObjects(leftObj[prop], rightObj[prop]):
-          state = 'changed';
-          stack.push(prop);
-          break;
-        case prop in leftObj &&
-          leftObj[prop] !== rightObj[prop] &&
+        case ((prop in rightObj && rightObj[prop] !== value) ||
+          (prop in leftObj && leftObj[prop] !== rightObj[prop])) &&
           !isAllObjects(leftObj[prop], rightObj[prop]):
           state = 'changed';
           stack.push(prop);
@@ -77,29 +71,23 @@ const genDiff = (firstObj, secondObj) => {
       }
 
       // Если свойство было изменено, добавляем новое и старое значения.
-      if (state === 'changed') {
-        console.log(
-          JSON.stringify(rightObj[prop]),
-          JSON.stringify(leftObj[prop])
-        );
-        return {
-          ...acc,
-          [prop]: {
-            state,
-            type,
-            newValue: rightObj[prop],
-            oldValue: leftObj[prop],
-          },
-        };
-      }
-
-      return { ...acc, [prop]: { state, type, value } };
+      return state === 'changed'
+        ? {
+            ...acc,
+            [prop]: {
+              state,
+              type,
+              newValue: rightObj[prop],
+              oldValue: leftObj[prop],
+            },
+          }
+        : { ...acc, [prop]: { state, type, value } };
     }, '');
 
     return combObj;
   };
 
-  return iter(firstObj, secondObj, 0, '');
+  return iter(firstObj, secondObj);
 };
 
 export default genDiff;

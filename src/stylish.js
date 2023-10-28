@@ -37,15 +37,6 @@ const stylish = (tree, replacer = ' ', spacesCount = 4) => {
           break;
       }
 
-      console.log(
-        prop,
-        isObject(rest),
-        rest,
-        rest?.state,
-        rest?.type,
-        Object.prototype.hasOwnProperty.call(rest, 'type')
-      );
-
       // Если свойство имеет "детей", либо значение - ссылочный тип, то делаем рекурсию.
       if (
         rest?.type === 'internal' ||
