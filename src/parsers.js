@@ -23,10 +23,8 @@ const getFiles = (...filepaths) => {
         throw new Error('Формат не поддерживается.');
     }
   });
-  if (files.length > 1) {
-    return files;
-  }
-  return files.at();
+
+  return files.length > 1 ? files : files.at();
 };
 
 export default getFiles;

@@ -3,10 +3,10 @@
  * @module genDiff
  */
 
-import { isEmptyObject, isObject, isAllObjects, sortPairs } from './utils.js';
+import { isAllObjects, sortPairs } from './utils.js';
 
 /**
- * Функция демонстрации различий между двумя объектами. Плоское сравнение.
+ * Функция демонстрации различий между двумя объектами.
  * @param {Object} firstObj Первый объект.
  * @param {Object} secondObj Второй объект.
  * @returns {string}
@@ -16,7 +16,7 @@ const genDiff = (firstObj, secondObj) => {
   const stack = [];
 
   /**
-   * Вспомогательная функция демонстрации различий между объектами. Рекурсия.
+   * Вспомогательная рекурсивная функция.
    * @param {number} depth Глубина.
    * @param {string} trace Путь.
    * @param {Object} leftObj Левый объект.
@@ -26,25 +26,20 @@ const genDiff = (firstObj, secondObj) => {
   const iter = (leftObj, rightObj) => {
     // Массив пар ключ=значение.
     const entries = [...Object.entries(leftObj), ...Object.entries(rightObj)];
-    // Есть ли пара-объект.
-    let hasPair =
-      isEmptyObject(leftObj) || isEmptyObject(rightObj) ? false : true;
+
+    // Собираемый объект.
     const combObj = entries.sort(sortPairs).reduce((acc, [prop, value]) => {
-      // Если одинаковое свойство уже есть в стэке.
+      // Если одинаковое свойство уже есть в стэке, то ничего не делаем.
       if (stack.includes(prop)) {
         return { ...acc };
       }
 
       // Определяем состояние и тип свойства.
       let state = '';
-      let type = 'leaf';
+      const type = 'leaf';
 
       // Определяем, какие свойства отличаются, а какие - нет.
       switch (true) {
-        case !hasPair: {
-          state = '';
-          break;
-        }
         case !(prop in rightObj):
           state = 'deleted';
           break;
@@ -69,7 +64,7 @@ const genDiff = (firstObj, secondObj) => {
           break;
       }
 
-      // Если оба свойства - объекты.
+      // Если оба свойства - объекты, делаем рекурсию.
       if (isAllObjects(leftObj[prop], rightObj[prop])) {
         return {
           ...acc,
@@ -80,8 +75,13 @@ const genDiff = (firstObj, secondObj) => {
           },
         };
       }
-      // Если свойство было изменено.
+
+      // Если свойство было изменено, добавляем новое и старое значения.
       if (state === 'changed') {
+        console.log(
+          JSON.stringify(rightObj[prop]),
+          JSON.stringify(leftObj[prop])
+        );
         return {
           ...acc,
           [prop]: {
@@ -92,6 +92,7 @@ const genDiff = (firstObj, secondObj) => {
           },
         };
       }
+
       return { ...acc, [prop]: { state, type, value } };
     }, '');
 

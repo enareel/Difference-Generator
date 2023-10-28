@@ -2,7 +2,6 @@
  * Модуль тестирования функции genDiff
  * @module genDiff.test
  */
-import fs from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
 import genDiff from '../src/genDiff.js';
@@ -21,39 +20,45 @@ const __dirname = dirname(__filename);
 const makeCorrectPath = (filepath) =>
   path.join(__dirname, '..', '__fixtures__', filepath);
 
-// Формат stylish
-describe('Формат stylish', () => {
-  // Тесты, используя фикстуры.
-  test('Проверка обычных файлов JSON', () => {
-    const file1 = stylish(getFiles(makeCorrectPath('file1.json')));
-    const file2 = stylish(getFiles(makeCorrectPath('file2.json')));
-
-    expect(genDiff(file1, file2)).toEqual(`{
+// JSON данные для сравнения, используя форматтер stylish.
+const stylishJSON = [
+  {
+    name: 'Проверка плоских файлов JSON',
+    data: [
+      {
+        file1: 'file1.json',
+        file2: 'file2.json',
+        expected: `{
   - follow: false
     host: hexlet.io
   - proxy: 123.234.53.22
   - timeout: 50
   + timeout: 20
   + verbose: true
-}`);
-  });
-
-  test('Проверка обычного и пустого файлов', async () => {
-    const file1 = stylish(getFiles(makeCorrectPath('file1.json')));
-    const file2 = stylish(getFiles(makeCorrectPath('file3.json')));
-
-    expect(genDiff(file1, file2)).toEqual(`{
+}`,
+      },
+      {
+        file1: 'file1.json',
+        file2: 'file3.json',
+        expected: `{
   - follow: false
   - host: hexlet.io
   - proxy: 123.234.53.22
   - timeout: 50
-}`);
+}`,
+      },
+    ],
+  },
+];
 
-    expect(genDiff([file2, file1])).toEqual(`{
-  + follow: false
-  + host: hexlet.io
-  + proxy: 123.234.53.22
-  + timeout: 50
-}`);
+// Формат stylish
+describe.each(stylishJSON)('Формат stylish. $name', ({ data }) => {
+  // Тесты, используя фикстуры.
+  test.each(data)('Проверка $file1 и $file2', ({ file1, file2, expected }) => {
+    const filepath1 = getFiles(makeCorrectPath(file1));
+    const filepath2 = getFiles(makeCorrectPath(file2));
+    const result = stylish(genDiff(filepath1, filepath2));
+
+    expect(result).toEqual(expected);
   });
 });
