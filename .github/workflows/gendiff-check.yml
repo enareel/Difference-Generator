@@ -1,5 +1,5 @@
 name: GenDiff Check
-
+# Events
 on:
   push:
     branches:
@@ -7,15 +7,13 @@ on:
   pull_request:
 env:
   CI: true
-
 jobs:
-  build:
+  # Install
+  install:
     runs-on: ubuntu-latest
-
     strategy:
       matrix:
         node-version: [18.x]
-
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,9 +23,37 @@ jobs:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
         run: make install
+  # Linting
+  lint:
+    needs: [install]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
       - name: Linting
         run: make lint
+  # Testing  using Jest
+  jest:
+    needs: [install, lint]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
       - name: Testing
-        run: |
-          make test
-          make test-coverage
+        run: make test
+  # CodeClimate Test Coverage job
+  coverage:
+    needs: [install, lint, jest]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    steps:
+      - name: CodeClimate Test Coverage
+        uses: paambaati/codeclimate-action@v2.2.4
+        env:
+          CC_TEST_REPORTER_ID: $CODECLIMATE_COVERAGE_ID
+        with:
+          coverageCommand: make test-coverage

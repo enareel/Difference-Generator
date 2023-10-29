@@ -1,5 +1,5 @@
 /**
- * Модуль тестирования функции genDiff
+ * Модуль тестирования функции genDiff.
  * @module genDiff.test
  */
 import { fileURLToPath } from 'node:url';
@@ -46,6 +46,31 @@ const stylishJSON = [
   - proxy: 123.234.53.22
   - timeout: 50
 }`,
+      },
+    ],
+  },
+  {
+    name: 'Проверка плоских файлов YAML',
+    data: [
+      {
+        file1: 'file1.yaml',
+        file2: 'file2.yml',
+        expected: `
+  - follow: false
+    host: hexlet.io
+  - proxy: 123.234.53.22
+  - timeout: 50
+  + timeout: 20
+  + verbose: true`,
+      },
+      {
+        file1: 'file1.yaml',
+        file2: 'file3.yaml',
+        expected: `
+  - follow: false
+  - host: hexlet.io
+  - proxy: 123.234.53.22
+  - timeout: 50`,
       },
     ],
   },

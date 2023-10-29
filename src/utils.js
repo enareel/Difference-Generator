@@ -22,7 +22,14 @@ const sortPairs = (a, b) => {
  * @returns {boolean}
  */
 const isObject = (value) =>
-  typeof value === 'object' && value instanceof Object;
+  typeof value === 'object' && value instanceof Object && !Array.isArray(value);
+
+/**
+ * Проверка объекта на пустоту.
+ * @param {Object} obj Объект.
+ * @returns {boolean}
+ */
+const isEmptyObject = (obj) => isObject(obj) && !Object.keys(obj).length;
 
 /**
  * Проверка того, являются ли все значения объектом.
@@ -31,11 +38,4 @@ const isObject = (value) =>
  */
 const isAllObjects = (...objs) => objs.every((obj) => isObject(obj));
 
-/**
- * Проверка объекта на пустоту.
- * @param {Object} obj Объект.
- * @returns
- */
-const isEmptyObject = (obj) => !Object.keys(obj).length;
-
-export { isEmptyObject, isObject, isAllObjects, sortPairs };
+export { sortPairs, isObject, isEmptyObject, isAllObjects };
