@@ -15,16 +15,15 @@ jobs:
       matrix:
         node-version: [18.x]
     steps:
-      - uses: actions/frontend-project-46@v1
+      - uses: action-setup@v1
       - name: Linting
         id: lint
         run: make lint
   # Testing  using Jest
   jest:
-    needs: [lint]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/frontend-project-46@v1
+      - uses: action-setup@v1
       - name: Testing
         id: test
         run: make test
@@ -33,7 +32,7 @@ jobs:
     needs: [lint, jest]
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/frontend-project-46@v1
+      - uses: action-setup@v1
       - name: CodeClimate Test Coverage
         id: codeclimate
         uses: paambaati/codeclimate-action@v2.2.4
