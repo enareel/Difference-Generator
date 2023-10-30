@@ -35,8 +35,8 @@ jobs:
       - uses: enareel/action-setup@v3
       - name: CodeClimate Test Coverage
         id: codeclimate
-        uses: paambaati/codeclimate-action@v2.2.4
+        uses: paambaati/codeclimate-action@v5.0.0
         env:
-          CC_TEST_REPORTER_ID: $CODECLIMATE_COVERAGE_ID
+          CC_TEST_REPORTER_ID: ${{ secrets.CODECLIMATE_COVERAGE_ID }}
         with:
           coverageCommand: make test-coverage
