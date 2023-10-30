@@ -23,9 +23,6 @@ jobs:
   jest:
     needs: [lint]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x]
     steps:
       - uses: actions/frontend-project-46@v1
       - name: Testing
@@ -35,9 +32,6 @@ jobs:
   coverage:
     needs: [lint, jest]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x]
     steps:
       - uses: actions/frontend-project-46@v1
       - name: CodeClimate Test Coverage
