@@ -15,7 +15,7 @@ jobs:
       matrix:
         node-version: [18.x]
     steps:
-      - uses: enareel/action-setup@v1
+      - uses: enareel/action-setup@v2
       - name: Linting
         id: lint
         run: make lint
@@ -23,7 +23,7 @@ jobs:
   jest:
     runs-on: ubuntu-latest
     steps:
-      - uses: enareel/action-setup@v1
+      - uses: enareel/action-setup@v2
       - name: Testing
         id: test
         run: make test
@@ -32,7 +32,7 @@ jobs:
     needs: [lint, jest]
     runs-on: ubuntu-latest
     steps:
-      - uses: enareel/action-setup@v1
+      - uses: enareel/action-setup@v2
       - name: CodeClimate Test Coverage
         id: codeclimate
         uses: paambaati/codeclimate-action@v2.2.4
