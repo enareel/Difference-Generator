@@ -16,12 +16,15 @@ jobs:
         node-version: [18.x]
     steps:
       - name: Checkout repository
+        id: checkout
         uses: actions/checkout@v4
       - name: Use Node.js ${{ matrix.node-version }}
+        id: setup-node
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
       - name: Install dependencies
+        id: install
         run: make install
   # Linting
   lint:
@@ -32,26 +35,23 @@ jobs:
         node-version: [18.x]
     steps:
       - name: Linting
+        id: lint
         run: make lint
   # Testing  using Jest
   jest:
     needs: [install, lint]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x]
     steps:
       - name: Testing
+        id: test
         run: make test
   # CodeClimate Test Coverage job
   coverage:
     needs: [install, lint, jest]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x]
     steps:
       - name: CodeClimate Test Coverage
+        id: codeclimate
         uses: paambaati/codeclimate-action@v2.2.4
         env:
           CC_TEST_REPORTER_ID: $CODECLIMATE_COVERAGE_ID
