@@ -43,7 +43,11 @@ program
   .action((filepath1, filepath2, options) => {
     if (options.format === 'stylish') {
       console.log(
-        stylish(genDiff(...getFiles(...makeCorrectPath(filepath1, filepath2))))
+        stylish(
+          genDiff(...getFiles(...makeCorrectPath(filepath1, filepath2))),
+          '*',
+          3
+        )
       );
     }
   });

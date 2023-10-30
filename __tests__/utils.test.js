@@ -2,16 +2,16 @@
  * Модуль тестирования функций модуля utils.
  * @module utils.test
  */
-import { fileURLToPath } from 'node:url';
-import path, { dirname } from 'node:path';
-import { isEmptyObject, isObject, isAllObjects, sortPairs } from '../src/utils';
 
-// Вспомогательные данные.
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import {
+  isEmptyObject,
+  isObject,
+  isAllObjects,
+  sortPairs,
+} from '../src/utils.js';
 
 // Тестирование sortPairs.
-describe('Тестируем функцию sortPairs', () => {
+describe('Тестируем функцию sortPairs.', () => {
   test('a[0] > b[0]', () => {
     expect(sortPairs([10, 'Test'], [2, 'Meow'])).toBe(1);
   });
@@ -26,7 +26,7 @@ describe('Тестируем функцию sortPairs', () => {
 });
 
 // Тестирование isObject.
-describe('Тестируем функцию isObject', () => {
+describe('Тестируем функцию isObject.', () => {
   test('Пустой объект', () => {
     expect(isObject({})).toBe(true);
   });
@@ -45,7 +45,7 @@ describe('Тестируем функцию isObject', () => {
 });
 
 // Тестирование isEmptyObject.
-describe('Тестируем функцию isEmptyObject', () => {
+describe('Тестируем функцию isEmptyObject.', () => {
   test('Пустой объект', () => {
     expect(isEmptyObject({})).toBe(true);
   });
@@ -64,7 +64,7 @@ describe('Тестируем функцию isEmptyObject', () => {
 });
 
 // Тестирование isAllObjects.
-describe('Тестируем функцию isAllObjects', () => {
+describe('Тестируем функцию isAllObjects.', () => {
   test('Пустые объекты', () => {
     expect(isAllObjects({}, {}, {})).toBe(true);
   });

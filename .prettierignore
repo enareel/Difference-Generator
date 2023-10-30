@@ -1,0 +1,4 @@
+build/
+package-lock.json
+__tests__/**/*
+__fixtures__/**/*

@@ -43,7 +43,6 @@ const stylish = (tree, replacer = ' ', spacesCount = 4) => {
         isObject(rest?.value) ||
         (!Object.prototype.hasOwnProperty.call(rest, 'type') && isObject(rest))
       ) {
-        console.log(prop === 'nest');
         return `${acc}\n${replacer.repeat(
           spacesCount * (depth + 1) - sign.length - 1
         )}${sign} ${prop}: ${iter(rest?.value ?? rest, depth + 1)}`;

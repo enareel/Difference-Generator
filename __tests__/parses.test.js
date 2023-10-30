@@ -2,6 +2,7 @@
  * Модуль тестирования функции parses.
  * @module genDiff.test
  */
+
 import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
 import getFiles from '../src/parsers.js';
@@ -17,7 +18,7 @@ const __dirname = dirname(__filename);
  */
 const makeCorrectPath = (...filepaths) => {
   const correctPath = filepaths.map((item) =>
-    path.resolve(__dirname, '..', data.SRC_DIR, item)
+    path.resolve(__dirname, '..', '__fixtures__', item)
   );
   if (correctPath.length > 1) {
     return correctPath;
@@ -50,10 +51,6 @@ const values = [
       {
         files: ['file3.json', 'file3.yaml'],
         expected: {},
-      },
-      {
-        files: ['file3.txt', 'file3.css'],
-        expected: new Error('Формат не поддерживается.'),
       },
       {
         files: [['file1.json', 'file2.yml']],
@@ -143,7 +140,19 @@ describe.each(values)('$name', ({ data }) => {
   test.each(data)('Проверка $file', ({ files, expected }) => {
     // Читаем файлы.
     files.forEach((item) => {
-      expect(getFiles(makeCorrectPath(item))).toEqual(expected);
+      expect(
+        getFiles(
+          ...(Array.isArray(item)
+            ? makeCorrectPath(...item)
+            : [makeCorrectPath(item)])
+        )
+      ).toEqual(expected);
     });
+  });
+
+  test('Проверка на выброс ошибки', () => {
+    expect(() =>
+      getFiles(...makeCorrectPath('file3.txt', 'file3.css'))
+    ).toThrow(new Error('Формат не поддерживается.'));
   });
 });
