@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
 import genDiff from '../src/genDiff.js';
 import getFiles from '../src/parsers.js';
-import stylish from '../src/stylish.js';
+import stylish from '../src/formatters/stylish.js';
 
 // Вспомогательные данные.
 const __filename = fileURLToPath(import.meta.url);

@@ -9,7 +9,7 @@
   "type": "module",
   "scripts": {
     "test": "env NODE_OPTIONS=--experimental-vm-modules npx jest",
-    "test-coverage": "env NODE_OPTIONS=--experimental-vm-modules npx jest --coverage"
+    "test:coverage": "env NODE_OPTIONS=--experimental-vm-modules npx jest --coverage"
   },
   "repository": {
     "type": "git",

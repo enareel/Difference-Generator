@@ -5,7 +5,7 @@ import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
 import getFiles from '../src/parsers.js';
 import genDiff from '../src/genDiff.js';
-import stylish from '../src/stylish.js';
+import stylish from '../src/formatters/stylish.js';
 
 // Вспомогательные данные.
 const data = {

@@ -137,7 +137,7 @@ const values = [
 
 // Тестирование парсинга файлов.
 describe.each(values)('$name', ({ data }) => {
-  test.each(data)('Проверка $file', ({ files, expected }) => {
+  test.each(data)('Проверка $files', ({ files, expected }) => {
     // Читаем файлы.
     files.forEach((item) => {
       expect(

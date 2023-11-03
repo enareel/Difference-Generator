@@ -3,7 +3,7 @@
  * @module stylish
  */
 
-import { isObject } from './utils.js';
+import { isObject } from '../utils.js';
 
 /**
  * Функция-форматтер, приводящая дерево к стилю stylish.

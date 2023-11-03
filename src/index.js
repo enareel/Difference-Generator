@@ -4,7 +4,7 @@
  */
 
 import genDiff from './genDiff.js';
-import stylish from './stylish.js';
+import stylish from './formatters/stylish.js';
 
 export default (file1, file2, style) => {
   switch (style) {

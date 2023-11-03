@@ -3,7 +3,7 @@
  * @module stylish.test
  */
 
-import stylish from '../src/stylish.js';
+import stylish from '../src/formatters/stylish.js';
 
 // Данные.
 const data = [
@@ -56,7 +56,7 @@ const data = [
     name: 'Проверка пустого дерева',
     tree: {},
     replacer: '',
-    depth: 10,
+    spacesCount: 10,
     expected: `{
 }`,
   },
@@ -91,7 +91,7 @@ const data = [
       },
     },
     replacer: '*',
-    depth: 10,
+    spacesCount: 10,
     expected: `{
 ********- follow: false
 *******   host: hexlet.io
@@ -105,8 +105,8 @@ const data = [
 
 // Формат stylish
 describe('Формат stylish.', () => {
-  test.each(data)('$name', ({ tree, replacer, depth, expected }) => {
-    const result = stylish(tree, replacer, depth);
+  test.each(data)('$name', ({ tree, replacer, spacesCount, expected }) => {
+    const result = stylish(tree, replacer, spacesCount);
 
     expect(result).toEqual(expected);
   });
