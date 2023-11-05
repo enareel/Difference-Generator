@@ -1,4 +1,4 @@
-name: GenDiff Check
+name: CI
 # Events
 on:
   push:
@@ -40,3 +40,12 @@ jobs:
           CC_TEST_REPORTER_ID: ${{ secrets.CC_TEST_REPORTER_ID }}
         with:
           coverageCommand: make test-coverage
+  # Publishing (dry-run)
+  publish:
+    needs: [lint, jest, coverage]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: enareel/action-setup@v3
+      - name: Publishing
+        id: test
+        run: make publish
