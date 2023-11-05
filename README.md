@@ -1,6 +1,6 @@
 <p align="center">
-  <img alt="+" width="180" src="https://github.com/enareel/frontend-project-46/blob/main/plus-logo.svg">
-  <img alt="-" width="180" src="https://github.com/enareel/frontend-project-46/blob/main/minus-logo.svg">
+  <img alt="+" width="150" src="https://github.com/enareel/frontend-project-46/blob/main/plus-logo.svg">
+  <img alt="-" width="150" src="https://github.com/enareel/frontend-project-46/blob/main/minus-logo.svg">
 </p>
 
 # Вычислитель отличий
@@ -30,11 +30,6 @@
   - [Структура проекта](#структура-проекта)
   - [Дополнительные команды](#дополнительные-команды)
   - [Лицензия](#лицензия)
-  - [Описание](#описание-1)
-  - [Установка](#установка-1)
-  - [Превью](#превью-1)
-    - [Различия между плоскими файлами (JSON)](#различия-между-плоскими-файлами-json-1)
-    - [Различия между плоскими файлами (YAML)](#различия-между-плоскими-файлами-yaml-1)
 
 ## Интро
 
@@ -45,8 +40,8 @@
 Языки программирования, библиотеки, фреймворки и т.д., используемые в проекте.
 
 <p align="center">
-  <a href="https://github.com/enareel/frontend-project-lvl1/actions/workflows/hexlet-check.yml"><img alt="JavaScript" src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" style="border-radius: 5px;"></a>
-  <a href="https://github.com/enareel/frontend-project-lvl1/actions/workflows/hexlet-check.yml"><img alt="Node.js" src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" style="border-radius: 5px;"></a>
+  <a href="https://github.com/topics/javascript"><img alt="JavaScript" src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" style="border-radius: 5px;"></a>
+  <a href="https://github.com/nodejs"><img alt="Node.js" src="https://img.shields.io/badge/Node.js-43853D?style=for-the-badge&logo=node.js&logoColor=white" style="border-radius: 5px;"></a>
   <a href="https://github.com/tj/commander.js"><img alt="Commander.js" src="https://img.shields.io/badge/Commander.js-181818?style=for-the-badge&logo=slashdot&logoColor=white" style="border-radius: 5px;"></a>
   <a href="https://github.com/jestjs/jest"><img alt="Jest" src="https://img.shields.io/badge/Jest-323330?style=for-the-badge&logo=Jest&logoColor=white" style="border-radius: 5px;"></a>
   <a href="https://github.com/eslint/eslint"><img alt="ESLint" src="https://img.shields.io/badge/eslint-3A33D1?style=for-the-badge&logo=eslint&logoColor=white" style="border-radius: 5px;"></a>
@@ -74,11 +69,6 @@
   - [Структура проекта](#структура-проекта)
   - [Дополнительные команды](#дополнительные-команды)
   - [Лицензия](#лицензия)
-  - [Описание](#описание-1)
-  - [Установка](#установка-1)
-  - [Превью](#превью-1)
-    - [Различия между плоскими файлами (JSON)](#различия-между-плоскими-файлами-json-1)
-    - [Различия между плоскими файлами (YAML)](#различия-между-плоскими-файлами-yaml-1)
 
 Команды, с помощью которых вызываются игры:
 
@@ -232,45 +222,3 @@ Congratulations, Roman!
 Copyright (c) 2023 Nikolay Moryakin
 
 ---
-
-## Описание
-
-- [Превью](#превью). Команда возвращает плоское различие между двумя файлами.
-
-## Установка
-
-Для запуска имеющихся игр необходимо предварительно установить данный проект:
-
-1. Склонируйте репозиторий, например, посредством следующей консольной команды:
-
-```
-git clone https://github.com/enareel/frontend-project-46.git
-```
-
-2.  Осуществите установку проекта:
-
-```
-make install
-```
-
-3.  Осуществите симлинк проекта:
-
-```
-make link
-```
-
-4. Запустите команду, указанную [ниже](#превью).
-
-## Превью
-
-### Различия между плоскими файлами (JSON)
-
-Команда для запуска: `gendiff <filepath1> <filepath2>`
-
-[![asciicast](https://asciinema.org/a/9LwTIb4T0WSzqHXgOdiKz04wW.svg)](https://asciinema.org/a/9LwTIb4T0WSzqHXgOdiKz04wW)
-
-### Различия между плоскими файлами (YAML)
-
-Команда для запуска: `gendiff <filepath1> <filepath2>`
-
-[![asciicast](https://asciinema.org/a/ETzMLr6CX6qgz2XZv97aCsjKP.svg)](https://asciinema.org/a/ETzMLr6CX6qgz2XZv97aCsjKP)
