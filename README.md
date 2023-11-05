@@ -9,7 +9,8 @@
   <a href="https://github.com/enareel/frontend-project-46/actions/workflows/ci.yml"><img alt="CI" src="https://img.shields.io/github/actions/workflow/status/enareel/frontend-project-46/ci.yml?style=for-the-badge&logo=github&label=CI" style="border-radius: 5px;"></a>
   <a href="https://codeclimate.com/github/enareel/frontend-project-46/maintainability"><img alt="Code Climate maintainability" src="https://img.shields.io/codeclimate/maintainability/enareel/frontend-project-46?style=for-the-badge&logo=codeclimate" style="border-radius: 5px;"></a>
    <a href="https://codeclimate.com/github/enareel/frontend-project-46/test_coverage"><img alt="Code Climate coverage" src="https://img.shields.io/codeclimate/coverage/enareel/frontend-project-46?style=for-the-badge&logo=codeclimate" style="border-radius: 5px;"></a>
-  <a href="https://opensource.org/licenses/MIT"><img alt="GitHub license" src="https://img.shields.io/github/license/enareel/frontend-project-lvl1?style=for-the-badge&logo=" style="border-radius: 5px;"></a>
+  <a href="https://github.com/enareel/frontend-project-46/blob/main/LICENSE"><img alt="GitHub license" src="https://img.shields.io/github/license/enareel/frontend-project-46?style=for-the-badge
+" style="border-radius: 5px;"></a>
 </p>
 
 ## Навигация
