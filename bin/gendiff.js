@@ -6,6 +6,7 @@ import path, { dirname } from 'node:path';
 import getFiles from '../src/parsers.js';
 import genDiff from '../src/genDiff.js';
 import stylish from '../src/formatters/stylish.js';
+import makeAST from '../src/makeAST.js';
 
 // Вспомогательные данные.
 const data = {
@@ -20,7 +21,7 @@ const __dirname = dirname(__filename);
 /**
  * Функция создания корректных путей до файлов.
  * @param {...string} paths Пути до файлов (абс. или относ.).
- * @returns {string|string[]}
+ * @returns {(Array<string>|string)}
  */
 const makeCorrectPath = (...filepaths) => {
   const correctPath = filepaths.map((item) =>
@@ -43,10 +44,8 @@ program
   .action((filepath1, filepath2, options) => {
     if (options.format === 'stylish') {
       console.log(
-        stylish(
-          genDiff(...getFiles(...makeCorrectPath(filepath1, filepath2))),
-          '*',
-          3
+        JSON.stringify(
+          makeAST(...getFiles(...makeCorrectPath(filepath1, filepath2)))
         )
       );
     }

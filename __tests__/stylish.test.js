@@ -8,99 +8,69 @@ import stylish from '../src/formatters/stylish.js';
 // Данные.
 const data = [
   {
-    name: 'Проверка пустого дерева',
-    tree: {},
-    expected: `{
-}`,
-  },
-  {
-    name: 'Проверка плоского дерева',
-    tree: {
-      follow: {
-        state: 'deleted',
-        type: 'leaf',
-        value: false,
+    name: 'Проверка форматирования плоских деревьев',
+    data: [
+      {
+        name: 'Дерево 1. Пустое',
+        tree: {},
+        expected: `{
+          
+        }`
       },
-      host: {
-        state: '',
-        type: 'leaf',
-        value: 'hexlet.io',
-      },
-      proxy: {
-        state: 'deleted',
-        type: 'leaf',
-        value: '123.234.53.22',
-      },
-      timeout: {
-        state: 'changed',
-        type: 'leaf',
-        newValue: 20,
-        oldValue: 50,
-      },
-      verbose: {
-        state: 'added',
-        type: 'leaf',
-        value: true,
-      },
-    },
-    expected: `{
-  - follow: false
-    host: hexlet.io
-  - proxy: 123.234.53.22
-  - timeout: 50
-  + timeout: 20
-  + verbose: true
-}`,
-  },
-  {
-    name: 'Проверка пустого дерева',
-    tree: {},
-    replacer: '',
+      {
+        name: 'Дерево 2',
+        value:{
+          follow: {
+            state: 'deleted',
+            type: 'leaf',
+            value: false,
+          },
+          host: {
+            state: '',
+            type: 'leaf',
+            value: 'hexlet.io',
+          },
+          proxy: {
+            state: 'deleted',
+            type: 'leaf',
+            value: '123.234.53.22',
+          },
+          timeout: {
+            state: 'changed',
+            type: 'leaf',
+            newValue: 20,
+            oldValue: 50,
+          },
+          verbose: {
+            state: 'added',
+            type: 'leaf',
+            value: true,
+          },
+        },
+        options: [{}, {
+          replacer: '',
     spacesCount: 10,
-    expected: `{
-}`,
-  },
-  {
-    name: 'Проверка плоского дерева',
-    tree: {
-      follow: {
-        state: 'deleted',
-        type: 'leaf',
-        value: false,
-      },
-      host: {
-        state: '',
-        type: 'leaf',
-        value: 'hexlet.io',
-      },
-      proxy: {
-        state: 'deleted',
-        type: 'leaf',
-        value: '123.234.53.22',
-      },
-      timeout: {
-        state: 'changed',
-        type: 'leaf',
-        newValue: 20,
-        oldValue: 50,
-      },
-      verbose: {
-        state: 'added',
-        type: 'leaf',
-        value: true,
-      },
-    },
-    replacer: '*',
-    spacesCount: 10,
-    expected: `{
-********- follow: false
-*******   host: hexlet.io
-********- proxy: 123.234.53.22
-********- timeout: 50
-********+ timeout: 20
-********+ verbose: true
-}`,
-  },
+        }],
+        expected:[
+          `{
+            - follow: false
+              host: hexlet.io
+            - proxy: 123.234.53.22
+            - timeout: 50
+            + timeout: 20
+            + verbose: true
+          }`,`{
+            ********- follow: false
+            *******   host: hexlet.io
+            ********- proxy: 123.234.53.22
+            ********- timeout: 50
+            ********+ timeout: 20
+            ********+ verbose: true
+            }`
+        ]
+      }, 
+    ]
+  }
 ];
 
 // Формат stylish

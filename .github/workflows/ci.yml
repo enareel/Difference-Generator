@@ -11,9 +11,6 @@ jobs:
   # Linting
   lint:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x]
     steps:
       - uses: enareel/action-setup@v3
       - name: Linting
