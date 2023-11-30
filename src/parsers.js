@@ -1,5 +1,5 @@
 /**
- * Модуль, отвечающий за парсинг файлов.
+ * Модуль функции, отвечающей за парсинг файлов.
  * @module parsers
  */
 import jsYaml from 'js-yaml';
@@ -7,18 +7,18 @@ import path from 'node:path';
 import fs from 'node:fs';
 
 /**
- * Функция чтения файлов. Синхронно.
+ * Функция, отвечающая за парсинг файлов. Синхронно.
  * @param {...string} filepaths Корректные пути.
- * @returns {Object|Object[]}
+ * @returns {(Object|Object[])}
  */
 const getFiles = (...filepaths) => {
-  const files = filepaths.map((file) => {
-    switch (path.extname(file)) {
+  const files = filepaths.map((filepath) => {
+    switch (path.extname(filepath)) {
       case '.yml':
       case '.yaml':
-        return jsYaml.load(fs.readFileSync(file, 'utf-8'));
+        return jsYaml.load(fs.readFileSync(filepath, 'utf-8'));
       case '.json':
-        return JSON.parse(fs.readFileSync(file, 'utf-8'));
+        return JSON.parse(fs.readFileSync(filepath, 'utf-8'));
       default:
         throw new Error('Формат не поддерживается.');
     }

@@ -71,7 +71,7 @@ describe('Тестируем функцию isAllObjects.', () => {
 
   test('Обычные объекты', () => {
     expect(
-      isAllObjects({ a: 12, b: 'Hello' }, { z: 'ov' }, { HASHTAG: 'METOO' })
+      isAllObjects({ a: 12, b: 'Hello' }, { z: 'v' }, { HASHTAG: 'METOO' })
     ).toBe(true);
   });
 

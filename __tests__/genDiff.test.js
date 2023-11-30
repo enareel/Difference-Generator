@@ -29,6 +29,8 @@ const stylishValues = [
       {
         file1: 'file1.json',
         file2: 'file2.json',
+        replacer: ' ',
+        spacesCount: 4,
         expected: `{
   - follow: false
     host: hexlet.io

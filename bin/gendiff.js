@@ -5,8 +5,6 @@ import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
 import getFiles from '../src/parsers.js';
 import genDiff from '../src/genDiff.js';
-import stylish from '../src/formatters/stylish.js';
-import makeAST from '../src/makeAST.js';
 
 // Вспомогательные данные.
 const data = {
@@ -24,13 +22,11 @@ const __dirname = dirname(__filename);
  * @returns {(Array<string>|string)}
  */
 const makeCorrectPath = (...filepaths) => {
-  const correctPath = filepaths.map((item) =>
-    path.resolve(__dirname, '..', data.SRC_DIR, item)
+  const correctPaths = filepaths.map((filepath) =>
+    path.resolve(__dirname, '..', data.SRC_DIR, filepath)
   );
-  if (correctPath.length > 1) {
-    return correctPath;
-  }
-  return correctPath.at();
+
+  return correctPaths.length > 1 ? correctPaths : correctPaths.at();
 };
 
 // Формируем экземпляр объекта Команды.
@@ -42,13 +38,12 @@ program
   .option('-f, --format <type>', 'output format', 'stylish')
   .arguments('<filepath1> <filepath2>')
   .action((filepath1, filepath2, options) => {
-    if (options.format === 'stylish') {
-      console.log(
-        JSON.stringify(
-          makeAST(...getFiles(...makeCorrectPath(filepath1, filepath2)))
-        )
-      );
-    }
+    console.log(
+      genDiff(
+        ...getFiles(...makeCorrectPath(filepath1, filepath2)),
+        options.format
+      )
+    );
   });
 
 program.parse();

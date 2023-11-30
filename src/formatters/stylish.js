@@ -6,6 +6,26 @@
 import { isObject } from '../utils.js';
 
 /**
+ * Определение типа StateSignMap.
+ * @typedef {Object}
+ * @prop {string} added Знак состояния "добавлено".
+ * @prop {string} deleted Знак состояния "удалено".
+ * @prop {string} changed Знак состояния "изменено".
+ * @prop {string} unchanged Знак состояния "не изменено".
+ */
+
+/**
+ * Словарь состояний и знаков.
+ * @type {StateSignMap}
+ */
+const stateToSign = {
+  added: '+',
+  deleted: '-',
+  changed: '  ',
+  unchanged: '  ',
+};
+
+/**
  * Функция-форматтер, приводящая AST к стилю stylish.
  * @param {AST} tree AST.
  * @param {string} replacer Реплейсер.
@@ -16,7 +36,7 @@ const stylish = (tree, replacer = ' ', spacesCount = 4) => {
   /**
    * Вспомогательная рекурсивная функция.
    * @param {AST} data AST.
-   * @param {number} depth Глубина.
+   * @param {number} [depth=0] Глубина.
    * @returns {string}
    */
   const iter = (data, depth = 0) => {
@@ -29,53 +49,54 @@ const stylish = (tree, replacer = ' ', spacesCount = 4) => {
        */
       (acc, node) => {
         // Устанавливаем знак.
-        let sign = '';
+        const sign = 'state' in node ? stateToSign[node.state] : '  ';
 
-        // Определяем знак в зависимости от состояния.
-        switch (node?.state) {
-          case 'added':
-            sign = '+';
-            break;
-          case 'deleted':
-            sign = '-';
-            break;
-          default:
-            sign = '  ';
-            break;
+        // Если элемент - массив.
+        if (Array.isArray(node)) {
+          return `${acc}\n${replacer.repeat(
+            spacesCount * (depth + 1) - sign.length - 1
+          )} ${node[0]}: ${
+            isObject(node[1])
+              ? iter(Object.entries(node[1]), depth + 1)
+              : node[1]
+          }`;
         }
 
         // Если ASTNode имеет "детей", либо значение - ссылочный тип, то делаем рекурсию.
         if (
           node?.type === 'internal' ||
-          isObject(node?.value) ||
-          (!Object.prototype.hasOwnProperty.call(node, 'type') &&
-            isObject(node))
+          (isObject(node?.value) && node?.state !== 'changed')
         ) {
           return `${acc}\n${replacer.repeat(
             spacesCount * (depth + 1) - sign.length - 1
-          )}${sign} ${prop}: ${iter(rest?.value ?? rest, depth + 1)}`;
+          )}${sign} ${node.key}: ${iter(
+            Array.isArray(node?.value)
+              ? node.value
+              : Object.entries(node.value),
+            depth + 1
+          )}`;
         }
 
         // Если свойство было изменено.
-        if (rest?.state === 'changed') {
+        if (node?.state === 'changed') {
           return `${acc}\n${replacer.repeat(
             spacesCount * (depth + 1) - sign.length
-          )}- ${prop}: ${
-            isObject(rest.oldValue)
-              ? iter(rest.oldValue, depth + 1)
-              : rest.oldValue
-          }\n${replacer.repeat(
-            spacesCount * (depth + 1) - sign.length
-          )}+ ${prop}: ${
-            isObject(rest.newValue)
-              ? iter(rest.newValue, depth + 1)
-              : rest.newValue
+          )}- ${node.key}: ${
+            isObject(node.oldValue)
+              ? iter(Object.entries(node.oldValue), depth + 1)
+              : node.oldValue
+          }\n${replacer.repeat(spacesCount * (depth + 1) - sign.length)}+ ${
+            node.key
+          }: ${
+            isObject(node.value)
+              ? iter(Object.entries(node.value), depth + 1)
+              : node.value
           }`;
         }
 
         return `${acc}\n${replacer.repeat(
           spacesCount * (depth + 1) - sign.length - 1
-        )}${sign} ${prop}: ${rest.value ?? rest}`;
+        )}${sign} ${node.key}: ${node.value}`;
       },
       ''
     );

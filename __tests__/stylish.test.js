@@ -1,5 +1,5 @@
 /**
- * Модуль тестирования функции stylish (форматтера).
+ * Модуль тестирования функции форматтера stylish.
  * @module stylish.test
  */
 
@@ -26,7 +26,7 @@ const data = [
             value: false,
           },
           host: {
-            state: '',
+            state: 'unchanged',
             type: 'leaf',
             value: 'hexlet.io',
           },

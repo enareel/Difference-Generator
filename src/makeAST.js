@@ -66,7 +66,6 @@ const makeAST = (firstObj, secondObj) => {
           stack.push(prop);
           break;
         default:
-          state = '';
           stack.push(prop);
           break;
       }
