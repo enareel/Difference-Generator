@@ -12,7 +12,7 @@ jobs:
   lint:
     runs-on: ubuntu-latest
     steps:
-      - uses: enareel/action-setup@v3
+      - uses: enareel/action-setup@v3.0.2
       - name: Linting
         id: lint
         run: make lint
@@ -20,7 +20,7 @@ jobs:
   jest:
     runs-on: ubuntu-latest
     steps:
-      - uses: enareel/action-setup@v3
+      - uses: enareel/action-setup@v3.0.2
       - name: Testing
         id: test
         run: make test
@@ -29,7 +29,7 @@ jobs:
     needs: [lint, jest]
     runs-on: ubuntu-latest
     steps:
-      - uses: enareel/action-setup@v3
+      - uses: enareel/action-setup@v3.0.2
       - name: CodeClimate Test Coverage
         id: codeclimate
         uses: paambaati/codeclimate-action@v5.0.0
