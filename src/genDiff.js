@@ -17,8 +17,6 @@ const genDiff = (firstObj, secondObj, formatter = 'stylish') => {
   // Формируем AST.
   const AST = makeAST(firstObj, secondObj);
 
-  console.log(AST);
-
   return getFormatter(formatter)(AST);
 };
 
