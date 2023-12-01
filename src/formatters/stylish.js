@@ -21,8 +21,8 @@ import { isObject } from '../utils.js';
 const stateToSign = {
   added: '+',
   deleted: '-',
-  changed: '  ',
-  unchanged: '  ',
+  changed: ' ',
+  unchanged: ' ',
 };
 
 /**
@@ -49,13 +49,13 @@ const stylish = (tree, replacer = ' ', spacesCount = 4) => {
        */
       (acc, node) => {
         // Устанавливаем знак.
-        const sign = 'state' in node ? stateToSign[node.state] : '  ';
+        const sign = 'state' in node ? stateToSign[node.state] : ' ';
 
         // Если элемент - массив.
         if (Array.isArray(node)) {
           return `${acc}\n${replacer.repeat(
             spacesCount * (depth + 1) - sign.length - 1
-          )} ${node[0]}: ${
+          )}${sign} ${node[0]}: ${
             isObject(node[1])
               ? iter(Object.entries(node[1]), depth + 1)
               : node[1]
@@ -80,12 +80,12 @@ const stylish = (tree, replacer = ' ', spacesCount = 4) => {
         // Если свойство было изменено.
         if (node?.state === 'changed') {
           return `${acc}\n${replacer.repeat(
-            spacesCount * (depth + 1) - sign.length
+            spacesCount * (depth + 1) - sign.length - 1
           )}- ${node.key}: ${
             isObject(node.oldValue)
               ? iter(Object.entries(node.oldValue), depth + 1)
               : node.oldValue
-          }\n${replacer.repeat(spacesCount * (depth + 1) - sign.length)}+ ${
+          }\n${replacer.repeat(spacesCount * (depth + 1) - sign.length - 1)}+ ${
             node.key
           }: ${
             isObject(node.value)

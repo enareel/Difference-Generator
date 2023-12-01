@@ -5,9 +5,8 @@
 
 import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
-import genDiff from '../src/genDiff.js';
 import getFiles from '../src/parsers.js';
-import stylish from '../src/formatters/stylish.js';
+import genDiff from '../src/genDiff.js';
 
 // Вспомогательные данные.
 const __filename = fileURLToPath(import.meta.url);
@@ -24,13 +23,12 @@ const makeCorrectPath = (filepath) =>
 // Данные для сравнения, используя форматтер stylish.
 const stylishValues = [
   {
+    type: 'stylish',
     name: 'Проверка плоских файлов JSON',
     data: [
       {
         file1: 'file1.json',
         file2: 'file2.json',
-        replacer: ' ',
-        spacesCount: 4,
         expected: `{
   - follow: false
     host: hexlet.io
@@ -46,10 +44,10 @@ const stylishValues = [
         replacer: 'X',
         spacesCount: 10,
         expected: `{
-XXXXXXXX- follow: false
-XXXXXXXX- host: hexlet.io
-XXXXXXXX- proxy: 123.234.53.22
-XXXXXXXX- timeout: 50
+  - follow: false
+  - host: hexlet.io
+  - proxy: 123.234.53.22
+  - timeout: 50
 }`,
       },
     ],
@@ -117,12 +115,12 @@ XXXXXXXX- timeout: 50
         replacer: '*',
         spacesCount: 3,
         expected: `{
-*- follow: false
+  - follow: false
    host: hexlet.io
-*- proxy: 123.234.53.22
-*- timeout: 50
-*+ timeout: 20
-*+ verbose: true
+  - proxy: 123.234.53.22
+  - timeout: 50
+  + timeout: 20
+  + verbose: true
 }`,
       },
       {
@@ -141,10 +139,10 @@ XXXXXXXX- timeout: 50
 
 // Формат stylish
 describe.each(stylishValues)('Формат stylish. $name.', ({ data }) => {
-  test.each(data)('Проверка $file1 и $file2.', ({ file1, file2, replacer, spacesCount, expected }) => {
-    const filepath1 = getFiles(makeCorrectPath(file1));
-    const filepath2 = getFiles(makeCorrectPath(file2));
-    const result = stylish(genDiff(filepath1, filepath2), replacer, spacesCount);
+  test.each(data)('Проверка $file1 и $file2.', ({ file1, file2, type, expected }) => {
+    const f1 = getFiles(makeCorrectPath(file1));
+    const f2 = getFiles(makeCorrectPath(file2));
+    const result = genDiff(f1, f2, type);
 
     expect(result).toEqual(expected);
   });
