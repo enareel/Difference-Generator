@@ -1,5 +1,5 @@
 /**
- * Модуль форматтера stylish.
+ * Модуль форматера stylish.
  * @module stylish
  */
 
@@ -26,7 +26,7 @@ const stateToSign = {
 };
 
 /**
- * Функция-форматтер, приводящая AST к стилю stylish.
+ * Функция-форматер, приводящая AST к стилю stylish.
  * @param {AST} tree AST.
  * @param {string} replacer Реплейсер.
  * @param {number} spacesCount Количество отступов.

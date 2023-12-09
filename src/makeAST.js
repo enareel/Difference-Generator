@@ -27,8 +27,8 @@ import { isAllObjects, sortPairs } from './utils.js';
  * @returns {AST}
  */
 const makeAST = (firstObj, secondObj) => {
-  // Стэк с имеющимися свойствами.
-  const stack = [];
+  // Stack с имеющимися свойствами.
+  const stack = new Set();
 
   /**
    * Вспомогательная рекурсивная функция.
@@ -43,7 +43,7 @@ const makeAST = (firstObj, secondObj) => {
     // Собираемое AST.
     const AST = entries.sort(sortPairs).reduce((acc, [prop, value]) => {
       // Если одинаковое свойство уже есть в стэке, то ничего не делаем.
-      if (stack.includes(prop)) {
+      if (stack.has(prop)) {
         return [...acc];
       }
 
@@ -63,10 +63,10 @@ const makeAST = (firstObj, secondObj) => {
           (prop in leftObj && leftObj[prop] !== rightObj[prop])) &&
           !isAllObjects(leftObj[prop], rightObj[prop]):
           state = 'changed';
-          stack.push(prop);
+          stack.add(prop);
           break;
         default:
-          stack.push(prop);
+          stack.add(prop);
           break;
       }
 

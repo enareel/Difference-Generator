@@ -9,7 +9,7 @@ import stylish from './stylish.js';
 /**
  * Функция, возвращающая форматер.
  * @param {string} [name=stylish] Название форматера.
- * @returns {function(): string}
+ * @returns {function(import('./makeAST.js').AST): string}
  */
 const getFormatter = (name) => {
   switch (name) {

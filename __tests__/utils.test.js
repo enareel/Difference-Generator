@@ -4,10 +4,12 @@
  */
 
 import {
-  isEmptyObject,
-  isObject,
-  isAllObjects,
   sortPairs,
+  isObject,
+  isEmptyObject,
+  isAllObjects,
+  formatValue,
+  makePath,
 } from '../src/utils.js';
 
 // Тестирование sortPairs.
@@ -27,55 +29,75 @@ describe('Тестируем функцию sortPairs.', () => {
 
 // Тестирование isObject.
 describe('Тестируем функцию isObject.', () => {
-  test('Пустой объект', () => {
+  test('Пустой объект.', () => {
     expect(isObject({})).toBe(true);
   });
 
-  test('Обычный объект', () => {
+  test('Обычный объект.', () => {
     expect(isObject({ a: 12, b: 'Hello' })).toBe(true);
   });
 
-  test('Другой тип: массив', () => {
+  test('Другой тип: массив.', () => {
     expect(isObject([])).toBe(false);
   });
 
-  test('Другой тип: строка', () => {
+  test('Другой тип: строка.', () => {
     expect(isObject('Hey!')).toBe(false);
   });
 });
 
 // Тестирование isEmptyObject.
 describe('Тестируем функцию isEmptyObject.', () => {
-  test('Пустой объект', () => {
+  test('Пустой объект.', () => {
     expect(isEmptyObject({})).toBe(true);
   });
 
-  test('Обычный объект', () => {
+  test('Обычный объект.', () => {
     expect(isEmptyObject({ a: 12, b: 'Hello' })).toBe(false);
   });
 
-  test('Другой тип: массив', () => {
+  test('Другой тип: массив.', () => {
     expect(isEmptyObject([])).toBe(false);
   });
 
-  test('Другой тип: число', () => {
+  test('Другой тип: число.', () => {
     expect(isEmptyObject(144)).toBe(false);
   });
 });
 
 // Тестирование isAllObjects.
 describe('Тестируем функцию isAllObjects.', () => {
-  test('Пустые объекты', () => {
+  test('Пустые объекты.', () => {
     expect(isAllObjects({}, {}, {})).toBe(true);
   });
 
-  test('Обычные объекты', () => {
+  test('Обычные объекты.', () => {
     expect(
       isAllObjects({ a: 12, b: 'Hello' }, { z: 'v' }, { HASHTAG: 'METOO' })
     ).toBe(true);
   });
 
-  test('Другие типы', () => {
+  test('Другие типы.', () => {
     expect(isAllObjects([], {}, { name: 'Tim' }, 12)).toBe(false);
+  });
+});
+
+
+// Тестирование formatValue.
+describe('Тестируем функцию formatValue.', () => {
+  test('Массив.', () => {
+    expect(formatValue([1, 2, 3])).toEqual('[complex value]');
+  });
+  
+  test('Объект.', () => {
+    expect(formatValue({})).toEqual('[complex value]');
+  });
+
+  test('Строка.', () => {
+    expect(formatValue('Hello, Dear Boy!')).toEqual(`'Hello, Dear Boy!'`);
+  });
+
+  test.each([null, undefined, true, 1, 0, -10])('Значение: %o.', (value) => {
+    expect(formatValue(value)).toEqual(value);
   });
 });
