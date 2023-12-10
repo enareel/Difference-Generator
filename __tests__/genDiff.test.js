@@ -54,7 +54,6 @@ Property 'verbose' was added with value: true`,
         file2: 'file3.json',
         expected: [
           {
-            format: 'stylish',
             value: `{
   - follow: false
   - host: hexlet.io
