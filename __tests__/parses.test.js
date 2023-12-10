@@ -136,10 +136,18 @@ const values = [
 ];
 
 // Тестирование парсинга файлов.
-describe.each(values.data)('Чтение файлов.', ({ files, expected }) => {
-  test.each(files)('Проверка $file.', ({ file }) => {
+describe.each(values[0].data)('Чтение файлов.', ({ files, expected }) => {
+  test.each(files)('Проверка %o.', () => {
     // Читаем файлы.
-    expect(getFiles(makeCorrectPath(file))).toEqual(expected)
+    files.forEach((file) => {
+      expect(
+        getFiles(
+          ...(Array.isArray(file)
+            ? makeCorrectPath(...file)
+            : [makeCorrectPath(file)])
+        )
+      ).toEqual(expected);
+    });
   });
 
   test('Проверка на выброс ошибки.', () => {
