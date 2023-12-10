@@ -101,3 +101,33 @@ describe('Тестируем функцию formatValue.', () => {
     expect(formatValue(value)).toEqual(value);
   });
 });
+
+// Тестирование formatValue.
+describe('Тестируем функцию formatValue.', () => {
+  test('Массив.', () => {
+    expect(formatValue([1, 2, 3])).toEqual('[complex value]');
+  });
+  
+  test('Объект.', () => {
+    expect(formatValue({})).toEqual('[complex value]');
+  });
+
+  test('Строка.', () => {
+    expect(formatValue('Hello, Dear Boy!')).toEqual(`'Hello, Dear Boy!'`);
+  });
+
+  test.each([null, undefined, true, 1, 0, -10])('Значение: %o.', (value) => {
+    expect(formatValue(value)).toEqual(value);
+  });
+});
+
+// Тестирование makePath.
+describe('Тестируем функцию makePath.', () => {
+  test('Пустой путь.', () => {
+    expect(makePath([], 'key')).toBe('key');
+  });
+  
+  test('Обычный путь.', () => {
+    expect(makePath(['common', 'joe', 'make'], 'prop')).toBe('common.joe.make.prop');
+  });
+});

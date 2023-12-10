@@ -76,6 +76,11 @@ const plain = (tree) => {
           ];
         }
 
+        // Если свойство не было изменено.
+        if (node?.state === 'unchanged') {
+          return [...acc];
+        }
+
         return [...acc, `Property '${makePath(path, node.key)}' was removed`];
       },
       ''

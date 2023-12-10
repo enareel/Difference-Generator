@@ -20,18 +20,18 @@ const __dirname = dirname(__filename);
 const makeCorrectPath = (filepath) =>
   path.join(__dirname, '..', '__fixtures__', filepath);
 
-// Данные для сравнения, используя форматтер stylish.
-const stylishData = {
-  type: 'stylish',
-  name: 'Форматер stylish.',
-  data: [
-    {
-      name: 'Проверка плоских файлов JSON.',
-      data: [
-        {
-          file1: 'file1.json',
-          file2: 'file2.json',
-          expected: `{
+// Данные для сравнения.
+const data = [
+  {
+    name: 'Проверка плоских файлов JSON',
+    data: [
+      {
+        file1: 'file1.json',
+        file2: 'file2.json',
+        expected: [
+          {
+            format: 'stylish',
+            value: `{
   - follow: false
     host: hexlet.io
   - proxy: 123.234.53.22
@@ -39,29 +39,50 @@ const stylishData = {
   + timeout: 20
   + verbose: true
 }`,
-        },
-        {
-          file1: 'file1.json',
-          file2: 'file3.json',
-          replacer: 'X',
-          spacesCount: 10,
-          expected: `{
+          },
+          {
+            format: 'plain',
+            value: `Property 'follow' was removed
+Property 'proxy' was removed
+Property 'timeout' was updated. From 50 to 20
+Property 'verbose' was added with value: true`,
+          },
+        ],
+      },
+      {
+        file1: 'file1.json',
+        file2: 'file3.json',
+        expected: [
+          {
+            format: 'stylish',
+            value: `{
   - follow: false
   - host: hexlet.io
   - proxy: 123.234.53.22
   - timeout: 50
 }`,
-        },
-      ],
-    },
-    {
-      name: 'Проверка рекурсивных файлов JSON.',
-      data: [
-        {
-          file1: 'file5.json',
-          file2: 'file6.json',
-          // prettier-ignore
-          expected: `{
+          },
+          {
+            format: 'plain',
+            value: `Property 'follow' was removed
+Property 'host' was removed
+Property 'proxy' was removed
+Property 'timeout' was removed`,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'Проверка рекурсивных файлов JSON',
+    data: [
+      {
+        file1: 'file5.json',
+        file2: 'file6.json',
+        expected: [
+          {
+            format: 'stylish',
+            value: `{
     common: {
       + follow: false
         setting1: Value 1
@@ -105,18 +126,35 @@ const stylishData = {
         fee: 100500
     }
 }`,
-        },
-      ],
-    },
-    {
-      name: 'Проверка плоских файлов YAML.',
-      data: [
-        {
-          file1: 'file1.yaml',
-          file2: 'file2.yml',
-          replacer: '*',
-          spacesCount: 3,
-          expected: `{
+          },
+          {
+            format: 'plain',
+            value: `Property 'common.follow' was added with value: false
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From true to null
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group1.nest' was updated. From [complex value] to 'str'
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]`,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'Проверка плоских файлов YAML',
+    data: [
+      {
+        file1: 'file1.yaml',
+        file2: 'file2.yml',
+        expected: [
+          {
+            format: 'stylish',
+            value: `{
   - follow: false
     host: hexlet.io
   - proxy: 123.234.53.22
@@ -124,27 +162,50 @@ const stylishData = {
   + timeout: 20
   + verbose: true
 }`,
-        },
-        {
-          file1: 'file1.yaml',
-          file2: 'file3.yaml',
-          expected: `{
+          },
+          {
+            format: 'plain',
+            value: `Property 'follow' was removed
+Property 'proxy' was removed
+Property 'timeout' was updated. From 50 to 20
+Property 'verbose' was added with value: true`,
+          },
+        ],
+      },
+      {
+        file1: 'file1.yaml',
+        file2: 'file3.yaml',
+        expected: [
+          {
+            format: 'stylish',
+            value: `{
   - follow: false
   - host: hexlet.io
   - proxy: 123.234.53.22
   - timeout: 50
 }`,
-        },
-      ],
-    },
-    {
-      name: 'Проверка рекурсивных файлов YAML.',
-      data: [
-        {
-          file1: 'file5.yaml',
-          file2: 'file6.yaml',
-          // prettier-ignore
-          expected: `{
+          },
+          {
+            format: 'plain',
+            value: `Property 'follow' was removed
+Property 'host' was removed
+Property 'proxy' was removed
+Property 'timeout' was removed`,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    name: 'Проверка рекурсивных файлов YAML',
+    data: [
+      {
+        file1: 'file5.yaml',
+        file2: 'file6.yaml',
+        expected: [
+          {
+            format: 'stylish',
+            value: `{
     common: {
       + follow: false
         setting1: Value 1
@@ -188,19 +249,38 @@ const stylishData = {
         fee: 100500
     }
 }`,
-        },
-      ],
-    },
-  ]
-}
+          },
+          {
+            format: 'plain',
+            value: `Property 'common.follow' was added with value: false
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From true to null
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group1.nest' was updated. From [complex value] to 'str'
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]`,
+          },
+        ],
+      },
+    ],
+  },
+];
 
 // Формат stylish.
-describe.each(stylishData.data)('Формат stylish. $name', ({ data }) => {
-  test.each(data)('Проверка $file1 и $file2.', ({ file1, file2, type, expected }) => {
+describe.each(data)('$name.', ({ data }) => {
+  test.each(data)('Проверка $file1 и $file2.', ({ file1, file2, expected }) => {
     const f1 = getFiles(makeCorrectPath(file1));
     const f2 = getFiles(makeCorrectPath(file2));
-    const result = genDiff(f1, f2, type);
 
-    expect(result).toEqual(expected);
+    // Проверяем правильность форматирования для каждого типа.
+    expected.forEach(({ format, value }) => {
+      const result = genDiff(f1, f2, format);
+
+      expect(result).toEqual(value);
+    });
   });
 });

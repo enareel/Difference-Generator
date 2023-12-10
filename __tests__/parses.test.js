@@ -136,21 +136,13 @@ const values = [
 ];
 
 // Тестирование парсинга файлов.
-describe.each(values)('$name', ({ data }) => {
-  test.each(data)('Проверка $files', ({ files, expected }) => {
+describe.each(values.data)('Чтение файлов.', ({ files, expected }) => {
+  test.each(files)('Проверка $file.', ({ file }) => {
     // Читаем файлы.
-    files.forEach((item) => {
-      expect(
-        getFiles(
-          ...(Array.isArray(item)
-            ? makeCorrectPath(...item)
-            : [makeCorrectPath(item)])
-        )
-      ).toEqual(expected);
-    });
+    expect(getFiles(makeCorrectPath(file))).toEqual(expected)
   });
 
-  test('Проверка на выброс ошибки', () => {
+  test('Проверка на выброс ошибки.', () => {
     expect(() =>
       getFiles(...makeCorrectPath('file3.txt', 'file3.css'))
     ).toThrow(new Error('Формат не поддерживается.'));
