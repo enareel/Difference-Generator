@@ -3,6 +3,7 @@
 import { Command } from 'commander';
 import { fileURLToPath } from 'node:url';
 import path, { dirname } from 'node:path';
+import fs from 'node:fs';
 import getFiles from '../src/parsers.js';
 import genDiff from '../src/genDiff.js';
 
@@ -13,6 +14,8 @@ const data = {
   DESCRIPTION: 'Compares two configuration files and shows a difference.',
   SRC_DIR: '__fixtures__',
 };
+console.log(fileURLToPath(import.meta.url));
+// Абсолютный путь до текущего файла на основе URL модуля.
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
@@ -38,6 +41,13 @@ program
   .option('-f, --format <type>', 'output format', 'stylish')
   .arguments('<filepath1> <filepath2>')
   .action((filepath1, filepath2, options) => {
+    fs.readFile(
+      makeCorrectPath('correctStylish1.txt'),
+      'utf-8',
+      (err, value) => {
+        console.log(value);
+      }
+    );
     console.log(
       genDiff(
         ...getFiles(...makeCorrectPath(filepath1, filepath2)),

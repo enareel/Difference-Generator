@@ -1,30 +1,31 @@
 /**
- * Модуль функции, отвечающей за парсинг файлов.
+ * Модуль функции, отвечающей за парсинг данных.
  * @module parsers
  */
 import jsYaml from 'js-yaml';
-import path from 'node:path';
-import fs from 'node:fs';
+
 
 /**
- * Функция, отвечающая за парсинг файлов. Синхронно.
- * @param {...string} filepaths Корректные пути.
- * @returns {(Object|Object[])}
+ * Функция, отвечающая за парсинг данных. Синхронно.
+ * @param {Array<string>} data Массив данных (могут быть пути).
+ * @param {string} format Формат данных.
+ * @returns {(*|*[])}
  */
-const getFiles = (...filepaths) => {
-  const files = filepaths.map((filepath) => {
-    switch (path.extname(filepath)) {
-      case '.yml':
-      case '.yaml':
-        return jsYaml.load(fs.readFileSync(filepath, 'utf-8'));
-      case '.json':
-        return JSON.parse(fs.readFileSync(filepath, 'utf-8'));
+const getData = (data, format) => {
+  const result = data.map((value) => {
+    switch (format) {
+      case 'YAML':
+        return jsYaml.load(value);
+      case 'JSON':
+        return JSON.parse(value);
+      case 'TXT':
+        return value;
       default:
         throw new Error('Формат не поддерживается.');
     }
   });
 
-  return files.length > 1 ? files : files.at();
+  return result.length > 1 ? result : result.at();
 };
 
-export default getFiles;
+export default getData;

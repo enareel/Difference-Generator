@@ -2,6 +2,8 @@
  * Модуль вспомогательных утилит.
  * @module utils
  */
+import fs from 'node:fs';
+import { ENCODING, COMPLEX_VALUE_NAME } from './constants.js';
 
 /**
  * Функция сортировки пар массива.
@@ -41,12 +43,12 @@ const isAllObjects = (...objs) => objs.every((obj) => isObject(obj));
 /**
  * Функция форматирования значения.
  * @param {*} value Значение.
- * @returns {('[complex value]'|string|*)}
+ * @returns {(COMPLEX_VALUE_NAME|string|*)}
  */
 const formatValue = (value) => {
   switch (true) {
     case isObject(value) || Array.isArray(value):
-      return '[complex value]';
+      return COMPLEX_VALUE_NAME;
     case typeof value === 'string':
       return `'${value}'`;
     default:
@@ -62,6 +64,13 @@ const formatValue = (value) => {
  */
 const makePath = (path, value) => [...path, value].join('.');
 
+/**
+ * Функция синхронного чтения файла на основе функции readFileSync модуля node:fs.
+ * @param {string} path Корректный путь до файла.
+ * @returns {string}
+ */
+const readFileSync = (path) => fs.readFileSync(path, { encoding: ENCODING });
+
 export {
   sortPairs,
   isObject,
@@ -69,4 +78,5 @@ export {
   isAllObjects,
   formatValue,
   makePath,
+  readFileSync,
 };
