@@ -2,35 +2,23 @@
 
 import { Command } from 'commander';
 import { fileURLToPath } from 'node:url';
-import path, { dirname } from 'node:path';
-import fs from 'node:fs';
-import getFiles from '../src/parsers.js';
+import { dirname } from 'node:path';
+import getData from '../src/parsers.js';
 import genDiff from '../src/genDiff.js';
-
-// Вспомогательные данные.
-const data = {
-  NAME: 'gendiff',
-  VERSION: '0.0.1',
-  DESCRIPTION: 'Compares two configuration files and shows a difference.',
-  SRC_DIR: '__fixtures__',
-};
-console.log(fileURLToPath(import.meta.url));
-// Абсолютный путь до текущего файла на основе URL модуля.
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import { data } from '../src/constants.js';
+import { makeCorrectPath, readFilesSync } from '../src/utils.js';
 
 /**
- * Функция создания корректных путей до файлов.
- * @param {...string} paths Пути до файлов (абс. или относ.).
- * @returns {(Array<string>|string)}
+ * Абсолютный путь до текущего файла на основе URL модуля.
+ * @constant
  */
-const makeCorrectPath = (...filepaths) => {
-  const correctPaths = filepaths.map((filepath) =>
-    path.resolve(__dirname, '..', data.SRC_DIR, filepath)
-  );
+const __filename = fileURLToPath(import.meta.url);
 
-  return correctPaths.length > 1 ? correctPaths : correctPaths.at();
-};
+/**
+ * Абсолютный путь до папки с текущим файлом.
+ * @constant
+ */
+const __dirname = dirname(__filename);
 
 // Формируем экземпляр объекта Команды.
 const program = new Command();
@@ -41,16 +29,23 @@ program
   .option('-f, --format <type>', 'output format', 'stylish')
   .arguments('<filepath1> <filepath2>')
   .action((filepath1, filepath2, options) => {
-    fs.readFile(
-      makeCorrectPath('correctStylish1.txt'),
-      'utf-8',
-      (err, value) => {
-        console.log(value);
-      }
+    // Считываем файлы.
+    const files = readFilesSync(
+      ...makeCorrectPath([__dirname, '..', data.SRC_DIR], filepath1, filepath2)
     );
+
+    // Парсим данные.
+    const parsedData = getData();
+
     console.log(
       genDiff(
-        ...getFiles(...makeCorrectPath(filepath1, filepath2)),
+        ...readFilesSync(
+          ...makeCorrectPath(
+            [__dirname, '..', data.SRC_DIR],
+            filepath1,
+            filepath2
+          )
+        ),
         options.format
       )
     );

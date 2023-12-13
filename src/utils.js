@@ -3,7 +3,8 @@
  * @module utils
  */
 import fs from 'node:fs';
-import { ENCODING, COMPLEX_VALUE_NAME } from './constants.js';
+import path from 'node:path';
+import { ENCODING, COMPLEX_VALUE_NAME, formatToExt } from './constants.js';
 
 /**
  * Функция сортировки пар массива.
@@ -57,19 +58,48 @@ const formatValue = (value) => {
 };
 
 /**
- * Функция создания пути.
- * @param {Array<string>} path Накопленный путь.
+ * Функция создания пути в рамках рекурсии.
+ * @param {Array<string>} accPath Накопленный путь.
  * @param {string} value Значение.
  * @returns {string}
  */
-const makePath = (path, value) => [...path, value].join('.');
+const makePath = (accPath, value) => [...accPath, value].join('.');
 
 /**
- * Функция синхронного чтения файла на основе функции readFileSync модуля node:fs.
- * @param {string} path Корректный путь до файла.
+ * Функция формирования корректных путей до файлов.
+ * @param  {...string} filepaths Пути до файлов.
+ * @param {Array<string>} prefix Массив "префиксных" путей.
+ * @returns {(Array<string>|string)}
+ */
+const makeCorrectPath = (prefix, ...filepaths) => {
+  const paths = filepaths.map((filepath) => path.resolve(...prefix, filepath));
+
+  return paths.length > 1 ? paths : paths.at();
+};
+
+/**
+ * Функция синхронного чтения файлов на основе функции readFileSync модуля node:fs.
+ * @param {...string} filepath Корректные пути до файлов.
+ * @returns {(Array<string>|string)}
+ */
+const readFilesSync = (...filepaths) => {
+  const data = filepaths.map((filepath) => {
+    console.log(filepath);
+    return fs.readFileSync(filepath, { encoding: ENCODING });
+  });
+
+  return data.length > 1 ? data : data.at();
+};
+
+/**
+ * Функция возвращения формата на основе расширения файла.
+ * @param {string} extname Расширение файла.
  * @returns {string}
  */
-const readFileSync = (path) => fs.readFileSync(path, { encoding: ENCODING });
+const getFormat = (extName) =>
+  Object.keys(formatToExt).find((prop) =>
+    new Set(formatToExt[prop]).has(extName)
+  );
 
 export {
   sortPairs,
@@ -78,5 +108,7 @@ export {
   isAllObjects,
   formatValue,
   makePath,
-  readFileSync,
+  readFilesSync,
+  makeCorrectPath,
+  getFormat,
 };

@@ -6,8 +6,8 @@
 /**
  * Определение типа FormatExtMap.
  * @typedef {Object} FormatExtMap
- * @prop {string} YAML Расширения YAML.
- * @prop {string} JSON Расширение JSON.
+ * @prop {Array<string>} YAML Расширения YAML.
+ * @prop {Array<string>} JSON Расширения JSON.
  */
 
 /**
@@ -16,7 +16,8 @@
  */
 const formatToExt = {
   YAML: ['.yaml', '.yml'],
-  JSON: '.json',
+  JSON: ['.json'],
+  TXT: ['.txt'],
 };
 
 /**
@@ -26,9 +27,26 @@ const formatToExt = {
 const ENCODING = 'utf-8';
 
 /**
+ * Сообщение об ошибке форматирования.
+ * @constant
+ */
+const FORMAT_ERROR = 'Формат не поддерживается.';
+
+/**
  * Название сложного значения (в т.ч. ссылочного типа данных), используемое в форматере stylish.
  * @constant
  */
 const COMPLEX_VALUE_NAME = '[complex value]';
 
-export { formatToExt, ENCODING, COMPLEX_VALUE_NAME };
+/**
+ * Перечисление данных программы.
+ * @enum {string}
+ */
+const data = {
+  NAME: 'gendiff',
+  VERSION: '0.9.1',
+  DESCRIPTION: 'Compares two configuration files and shows a difference.',
+  SRC_DIR: '__fixtures__',
+};
+
+export { formatToExt, ENCODING, FORMAT_ERROR, COMPLEX_VALUE_NAME, data };

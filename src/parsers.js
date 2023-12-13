@@ -3,15 +3,15 @@
  * @module parsers
  */
 import jsYaml from 'js-yaml';
-
+import { FORMAT_ERROR } from './constants.js';
 
 /**
  * Функция, отвечающая за парсинг данных. Синхронно.
- * @param {Array<string>} data Массив данных (могут быть пути).
  * @param {string} format Формат данных.
+ * @param {...string} data Данные .
  * @returns {(*|*[])}
  */
-const getData = (data, format) => {
+const getData = (format, ...data) => {
   const result = data.map((value) => {
     switch (format) {
       case 'YAML':
@@ -21,7 +21,7 @@ const getData = (data, format) => {
       case 'TXT':
         return value;
       default:
-        throw new Error('Формат не поддерживается.');
+        throw new Error(FORMAT_ERROR);
     }
   });
 

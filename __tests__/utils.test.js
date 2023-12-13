@@ -3,6 +3,10 @@
  * @module utils.test
  */
 
+import fs from 'node:fs';
+import { ENCODING, data } from '../src/constants.js';
+import { fileURLToPath } from 'node:url';
+import { dirname } from 'node:path';
 import {
   sortPairs,
   isObject,
@@ -10,7 +14,22 @@ import {
   isAllObjects,
   formatValue,
   makePath,
+  makeCorrectPath,
+  readFilesSync,
+  getFormat,
 } from '../src/utils.js';
+
+/**
+ * Абсолютный путь до текущего файла на основе URL модуля.
+ * @constant
+ */
+const __filename = fileURLToPath(import.meta.url);
+
+/**
+ * Абсолютный путь до папки с текущим файлом.
+ * @constant
+ */
+const __dirname = dirname(__filename);
 
 // Тестирование sortPairs.
 describe('Тестируем функцию sortPairs.', () => {
@@ -82,13 +101,12 @@ describe('Тестируем функцию isAllObjects.', () => {
   });
 });
 
-
 // Тестирование formatValue.
 describe('Тестируем функцию formatValue.', () => {
   test('Массив.', () => {
     expect(formatValue([1, 2, 3])).toEqual('[complex value]');
   });
-  
+
   test('Объект.', () => {
     expect(formatValue({})).toEqual('[complex value]');
   });
@@ -107,7 +125,7 @@ describe('Тестируем функцию formatValue.', () => {
   test('Массив.', () => {
     expect(formatValue([1, 2, 3])).toEqual('[complex value]');
   });
-  
+
   test('Объект.', () => {
     expect(formatValue({})).toEqual('[complex value]');
   });
@@ -124,10 +142,104 @@ describe('Тестируем функцию formatValue.', () => {
 // Тестирование makePath.
 describe('Тестируем функцию makePath.', () => {
   test('Пустой путь.', () => {
-    expect(makePath([], 'key')).toBe('key');
+    expect(makePath([], 'key')).toEqual('key');
   });
-  
+
   test('Обычный путь.', () => {
-    expect(makePath(['common', 'joe', 'make'], 'prop')).toBe('common.joe.make.prop');
+    expect(makePath(['common', 'joe', 'make'], 'prop')).toEqual(
+      'common.joe.make.prop'
+    );
+  });
+});
+
+// Тестирование makeCorrectPath.
+describe('Тестируем функцию makeCorrectPath.', () => {
+  test('Обычный файл без префикса.', () => {
+    expect(makeCorrectPath([], '/file5.json')).toEqual('/file5.json');
+  });
+
+  test('Обычный файл с префиксом.', () => {
+    expect(
+      makeCorrectPath(['/dir', 'project', '__fixtures__'], 'file2.json')
+    ).toEqual('/dir/project/__fixtures__/file2.json');
+  });
+
+  test('Обычный файл с префиксом. Асолютный путь.', () => {
+    expect(
+      makeCorrectPath(
+        ['/a', '..', 'b', '__fixtures__'],
+        '/usr/etc/folder/file3.txt'
+      )
+    ).toEqual('/usr/etc/folder/file3.txt');
+  });
+
+  test('Обычные файлы без префикса.', () => {
+    expect(makeCorrectPath([], 'file4.yaml', 'jack.cpp')).toEqual([
+      `${process.cwd()}/file4.yaml`,
+      `${process.cwd()}/jack.cpp`,
+    ]);
+  });
+
+  test('Обычные файлы с префиксом.', () => {
+    expect(
+      makeCorrectPath([__dirname, '..', data.SRC_DIR], 'file9.js', 'test.txt')
+    ).toEqual([
+      '/home/leerane/frontend-project-46/__fixtures__/file9.js',
+      '/home/leerane/frontend-project-46/__fixtures__/test.txt',
+    ]);
+  });
+
+  test('Обычные файлы с префиксом. Абсолютные пути.', () => {
+    expect(
+      makeCorrectPath(
+        [__dirname, '..', data.SRC_DIR],
+        '/usr/files/file1.yaml',
+        '/etc/file999.txt'
+      )
+    ).toEqual(['/usr/files/file1.yaml', '/etc/file999.txt']);
+  });
+});
+
+// Тестирование readFilesSync.
+describe('Тестируем функцию readFilesSync.', () => {
+  test('Один файл.', () => {
+    expect(
+      readFilesSync(makeCorrectPath(['__fixtures__'], 'file1.json'))
+    ).toEqual(
+      fs.readFileSync(makeCorrectPath(['__fixtures__'], 'file1.json'), {
+        encoding: ENCODING,
+      })
+    );
+  });
+
+  test('Несколько файлов.', () => {
+    expect(
+      readFilesSync(
+        ...['file2.yml', 'file3.yaml'].map((file) =>
+          makeCorrectPath(['__fixtures__'], file)
+        )
+      )
+    ).toEqual(
+      ['file2.yml', 'file3.yaml'].map((file) =>
+        fs.readFileSync(makeCorrectPath(['__fixtures__'], file), {
+          encoding: ENCODING,
+        })
+      )
+    );
+  });
+});
+
+// Тестирование getFormat.
+describe('Тестируем функцию getFormat.', () => {
+  test('Формат JSON.', () => {
+    expect(getFormat('.json')).toBe('JSON');
+  });
+
+  test.each(['.yaml', '.yml'])('Формат YAML.', (extName) => {
+    expect(getFormat(extName)).toBe('YAML');
+  });
+
+  test('Формат TXT', () => {
+    expect(getFormat('.txt')).toBe('TXT');
   });
 });
