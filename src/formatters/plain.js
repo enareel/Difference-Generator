@@ -3,6 +3,7 @@
  * @module plain
  */
 
+import { ASTNodeState, ASTNodeType } from '../constants.js';
 import { makePath, formatValue } from '../utils.js';
 
 /**
@@ -17,7 +18,7 @@ import { makePath, formatValue } from '../utils.js';
  * Словарь состояний.
  * @type {StateDescMap}
  */
-const stateToWord = {
+const stateToDesc = {
   added: 'added',
   deleted: 'removed',
   changed: 'updated',
@@ -45,15 +46,15 @@ const plain = (tree) => {
        */
       (acc, node) => {
         // Устанавливаем описание состояния.
-        const desc = 'state' in node ? stateToWord[node.state] : ' ';
+        const desc = stateToDesc[node.state] ?? ' ';
 
         // Если ASTNode имеет "детей", то делаем рекурсию.
-        if (node?.type === 'internal') {
+        if (node?.type === ASTNodeType.INTERNAL) {
           return [...acc, iter(node.value, [...path, node.key])];
         }
 
         // Если свойство было добавлено.
-        if (node?.state === 'added') {
+        if (node?.state === ASTNodeState.ADDED) {
           return [
             ...acc,
             `Property '${makePath(
@@ -64,7 +65,7 @@ const plain = (tree) => {
         }
 
         // Если свойство было изменено.
-        if (node?.state === 'changed') {
+        if (node?.state === ASTNodeState.CHANGED) {
           return [
             ...acc,
             `Property '${makePath(
@@ -77,7 +78,7 @@ const plain = (tree) => {
         }
 
         // Если свойство не было изменено.
-        if (node?.state === 'unchanged') {
+        if (node?.state === ASTNodeState.UNCHANGED) {
           return [...acc];
         }
 
