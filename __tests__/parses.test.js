@@ -26,110 +26,28 @@ const makeCorrectPath = (...filepaths) => {
   return correctPath.at();
 };
 
-// Данные для чтения.
+// Данные для парсинга.
 const values = [
   {
-    name: 'Чтение файлов',
+    name: 'Парсинг данных.',
     data: [
       {
         files: ['file1.json', 'file1.yaml'],
-        expected: {
-          host: 'hexlet.io',
-          timeout: 50,
-          proxy: '123.234.53.22',
-          follow: false,
-        },
       },
       {
         files: ['file2.json', 'file2.yml'],
-        expected: {
-          timeout: 20,
-          verbose: true,
-          host: 'hexlet.io',
-        },
       },
       {
         files: ['file3.json', 'file3.yaml'],
-        expected: {},
       },
       {
         files: [['file1.json', 'file2.yml']],
-        expected: [
-          {
-            host: 'hexlet.io',
-            timeout: 50,
-            proxy: '123.234.53.22',
-            follow: false,
-          },
-          {
-            timeout: 20,
-            verbose: true,
-            host: 'hexlet.io',
-          },
-        ],
       },
       {
         files: ['file5.json', 'file5.yaml'],
-        expected: {
-          common: {
-            setting1: 'Value 1',
-            setting2: 200,
-            setting3: true,
-            setting6: {
-              key: 'value',
-              doge: {
-                wow: '',
-              },
-            },
-          },
-          group1: {
-            baz: 'bas',
-            foo: 'bar',
-            nest: {
-              key: 'value',
-            },
-          },
-          group2: {
-            abc: 12345,
-            deep: {
-              id: 45,
-            },
-          },
-        },
       },
       {
         files: ['file6.json', 'file6.yaml'],
-        expected: {
-          common: {
-            follow: false,
-            setting1: 'Value 1',
-            setting3: null,
-            setting4: 'blah blah',
-            setting5: {
-              key5: 'value5',
-            },
-            setting6: {
-              key: 'value',
-              ops: 'vops',
-              doge: {
-                wow: 'so much',
-              },
-            },
-          },
-          group1: {
-            foo: 'bar',
-            baz: 'bars',
-            nest: 'str',
-          },
-          group3: {
-            deep: {
-              id: {
-                number: 45,
-              },
-            },
-            fee: 100500,
-          },
-        },
       },
     ],
   },

@@ -3,13 +3,14 @@
  * @module makeAST
  */
 
+import { ASTNodeType, ASTNodeState } from './constants.js';
 import { isAllObjects, sortPairs } from './utils.js';
 
 /**
  * Определение типа ASTNode (узла дерева).
  * @typedef {Object} ASTNode
  * @prop {string} key Ключ узла.
- * @prop {('unchanged'|'changed'|'added'|'deleted')} [state=unchanged] Состояние узла.
+ * @prop {ASTNodeState} [state=unchanged] Состояние узла.
  * @prop {('leaf'|'internal')} [type=leaf] Тип узла.
  * @prop {(AST|*)} value Значение узла.
  * @prop {(AST|*)} oldValue Прошлое значение узла (если значения отличаются).
@@ -47,22 +48,22 @@ const makeAST = (firstObj, secondObj) => {
         return [...acc];
       }
 
-      // Определяем состояние и тип свойства.
-      let state = 'unchanged';
-      const type = 'leaf';
+      // Определяем состояние и тип узла.
+      let state = ASTNodeState.UNCHANGED;
+      const type = ASTNodeType.LEAF;
 
       // Меняем состояние свойства в зависимости от условий.
       switch (true) {
         case !(prop in rightObj):
-          state = 'deleted';
+          state = ASTNodeState.DELETED;
           break;
         case !(prop in leftObj):
-          state = 'added';
+          state = ASTNodeState.ADDED;
           break;
         case ((prop in rightObj && rightObj[prop] !== value) ||
           (prop in leftObj && leftObj[prop] !== rightObj[prop])) &&
           !isAllObjects(leftObj[prop], rightObj[prop]):
-          state = 'changed';
+          state = ASTNodeState.CHANGED;
           stack.add(prop);
           break;
         default:
@@ -76,7 +77,7 @@ const makeAST = (firstObj, secondObj) => {
           ...acc,
           {
             state,
-            type: 'internal',
+            type: ASTNodeType.INTERNAL,
             key: prop,
             value: iter(leftObj[prop], rightObj[prop]),
           },
@@ -84,7 +85,7 @@ const makeAST = (firstObj, secondObj) => {
       }
 
       // Если свойство было изменено, добавляем новое и старое значения.
-      return state === 'changed'
+      return state === ASTNodeState.CHANGED
         ? [
             ...acc,
             {

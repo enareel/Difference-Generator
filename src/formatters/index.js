@@ -3,6 +3,7 @@
  * @module index
  */
 
+import { FORMATTER_ERROR } from '../constants.js';
 import plain from './plain.js';
 import stylish from './stylish.js';
 
@@ -18,7 +19,7 @@ const getFormatter = (name) => {
     case 'stylish':
       return stylish;
     default:
-      throw new Error('Данный форматер не поддерживается.');
+      throw new Error(FORMATTER_ERROR);
   }
 };
 

@@ -4,6 +4,15 @@
  */
 
 /**
+ * Определение типа Options.
+ * @typedef {Object} Options
+ * @prop {string} name Название программы.
+ * @prop {string} name Название программы.
+ * @prop {string} name Название программы.
+ * @prop {string} name Название программы.
+ */
+
+/**
  * Определение типа FormatExtMap.
  * @typedef {Object} FormatExtMap
  * @prop {Array<string>} YAML Расширения YAML.
@@ -21,6 +30,26 @@ const formatToExt = {
 };
 
 /**
+ * Перечисление типов ASTNode.
+ * @enum {string}
+ */
+const ASTNodeType = {
+  LEAF: 'leaf',
+  INTERNAL: 'internal',
+};
+
+/**
+ * Перечисление состояний ASTNode.
+ * @enum {string}
+ */
+const ASTNodeState = {
+  UNCHANGED: 'unchanged',
+  CHANGED: 'changed',
+  ADDED: 'added',
+  REMOVED: 'deleted',
+};
+
+/**
  * Название базовой кодировки.
  * @constant
  */
@@ -30,7 +59,13 @@ const ENCODING = 'utf-8';
  * Сообщение об ошибке форматирования.
  * @constant
  */
-const FORMAT_ERROR = 'Формат не поддерживается.';
+const FORMAT_ERROR = 'Данный формат не поддерживается.';
+
+/**
+ * Сообщение об ошибке выбора форматера.
+ * @constant
+ */
+const FORMATTER_ERROR = 'Данный форматер не поддерживается.';
 
 /**
  * Название сложного значения (в т.ч. ссылочного типа данных), используемое в форматере stylish.
@@ -39,14 +74,23 @@ const FORMAT_ERROR = 'Формат не поддерживается.';
 const COMPLEX_VALUE_NAME = '[complex value]';
 
 /**
- * Перечисление данных программы.
- * @enum {string}
+ * Опции программы.
+ * @type {Options}
  */
-const data = {
-  NAME: 'gendiff',
-  VERSION: '0.9.1',
-  DESCRIPTION: 'Compares two configuration files and shows a difference.',
-  SRC_DIR: '__fixtures__',
+const Options = {
+  name: 'gendiff',
+  version: '0.9.4',
+  description: 'Compares two configuration files and shows a difference.',
+  fixturesDir: '__fixtures__',
 };
 
-export { formatToExt, ENCODING, FORMAT_ERROR, COMPLEX_VALUE_NAME, data };
+export {
+  formatToExt,
+  ASTNodeType,
+  ASTNodeState,
+  ENCODING,
+  FORMAT_ERROR,
+  FORMATTER_ERROR,
+  COMPLEX_VALUE_NAME,
+  Options,
+};

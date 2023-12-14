@@ -78,7 +78,7 @@ const makeCorrectPath = (prefix, ...filepaths) => {
 };
 
 /**
- * Функция синхронного чтения файлов на основе функции readFileSync модуля node:fs.
+ * Функция синхронного чтения файлов на основе метода readFileSync модуля fs.
  * @param {...string} filepath Корректные пути до файлов.
  * @returns {(Array<string>|string)}
  */
@@ -101,6 +101,26 @@ const getFormat = (extName) =>
     new Set(formatToExt[prop]).has(extName)
   );
 
+/**
+ * Функция возврата отступа.
+ * @param {boolean} hasClosure Находится ли в закрывающей скобке.
+ * @param {string} sign Знак.
+ * @param {string} replacer Реплейсер.
+ * @param {number} spacesCount Количество отступов.
+ * @param {number} depth Глубина
+ * @returns {string}
+ */
+const getBreak = ({
+  hasClosure = true,
+  sign = '',
+  replacer = ' ',
+  spacesCount = 4,
+  depth = 0,
+}) =>
+  hasClosure
+    ? `\n${replacer.repeat(spacesCount * depth)}`
+    : `\n${replacer.repeat(spacesCount * (depth + 1) - sign.length - 1)}`;
+
 export {
   sortPairs,
   isObject,
@@ -111,4 +131,5 @@ export {
   readFilesSync,
   makeCorrectPath,
   getFormat,
+  getBreak,
 };
