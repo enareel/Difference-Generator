@@ -19,11 +19,28 @@
 - [Используемые технологии](#используемые-технологии)
 - [Описание](#описание)
   - [Особенности](#особенности)
-  - [Пример игры](#пример-игры)
 - [Установка](#установка)
-- [Превью](#превью)
-  - [Различия между плоскими файлами (JSON)](#различия-между-плоскими-файлами-json)
-  - [Различия между плоскими файлами (YAML)](#различия-между-плоскими-файлами-yaml)
+- [Использование](#использование)
+  - [Библиотека](#библиотека)
+  - [CLI команда](#cli-команда)
+    - [Формат stylish](#формат-stylish)
+      - [Пример](#пример)
+      - [Различия между плоскими файлами (JSON)](#различия-между-плоскими-файлами-json)
+      - [Различия между плоскими файлами (YAML)](#различия-между-плоскими-файлами-yaml)
+      - [Различия между вложенными файлами (JSON)](#различия-между-вложенными-файлами-json)
+      - [Различия между вложенными файлами (YAML)](#различия-между-вложенными-файлами-yaml)
+    - [Формат plain](#формат-plain)
+      - [Пример](#пример-1)
+      - [Различия между плоскими файлами (JSON)](#различия-между-плоскими-файлами-json-1)
+      - [Различия между плоскими файлами (YAML)](#различия-между-плоскими-файлами-yaml-1)
+      - [Различия между вложенными файлами (JSON)](#различия-между-вложенными-файлами-json-1)
+      - [Различия между вложенными файлами (YAML)](#различия-между-вложенными-файлами-yaml-1)
+    - [Формат json](#формат-json)
+      - [Пример](#пример-2)
+      - [Различия между плоскими файлами (JSON)](#различия-между-плоскими-файлами-json-2)
+      - [Различия между плоскими файлами (YAML)](#различия-между-плоскими-файлами-yaml-2)
+      - [Различия между вложенными файлами (JSON)](#различия-между-вложенными-файлами-json-2)
+      - [Различия между вложенными файлами (YAML)](#различия-между-вложенными-файлами-yaml-2)
 - [Структура проекта](#структура-проекта)
 - [Дополнительные команды](#дополнительные-команды)
 - [Лицензия](#лицензия)
@@ -48,53 +65,13 @@
 
 **«Вычислитель отличий»** — программа, определяющая разницу между двумя структурами данных. Это популярная задача, для решения которой существует множество онлайн сервисов, например [JSON Diff](http://www.jsondiff.com/ 'JSON Diff'). Подобный механизм используется при выводе тестов или при автоматическом отслеживании изменений в конфигурационных файлах.
 
-В рамках данного проекта реализовано создание **AST** (_англ._ Abstract Syntax Tree) - абстрактного синтаксического дерева, на основании которого имеющиеся форматеры (_stylish_, _plain_, _json_) выводят различия как плоских, так и вложенных файлов (используется _рекурсия_).
+В рамках данного проекта реализовано создание **AST** (_англ._ Abstract Syntax Tree) - абстрактного синтаксического дерева, на основании которого имеющиеся форматеры (<code>stylish</code>, <code>plain</code>, <code>json</code>) выводят различия как **плоских**, так и **вложенных** файлов (используется _рекурсия_).
 
 ### Особенности
 
-- Поддерживаемые форматы: JSON, YAML.
-- Три формата вывода: 
-- [Используемые технологии](#используемые-технологии)
-- [Описание](#описание)
-  - [Игры](#игры)
-  - [Пример игры](#пример-игры)
-- [Установка](#установка)
-- [Превью](#превью)
-  - [Различия между плоскими файлами (JSON)](#различия-между-плоскими-файлами-json)
-  - [Различия между плоскими файлами (YAML)](#различия-между-плоскими-файлами-yaml)
-- [Структура проекта](#структура-проекта)
-- [Дополнительные команды](#дополнительные-команды)
-- [Лицензия](#лицензия)
-
-Команды, с помощью которых вызываются игры:
-
-```bash
->> brain-even
->> braic-calc
->> brain-gcd
->> brain-progression
->> brain-prime
-```
-
-### Пример игры
-
-```bash
-$ brain-progression
-Welcome to the Brain Game!
-What number is missing in this progression?
-May I have your name? Roman
-Hello, Roman!
-Question: 14 .. 18 20 22 24 26 28
->> Your answer: 16 # Пользователь вводит ответ
-Correct!
-Question: 5 6 7 8 9 .. 11 12
->> Your answer: 10 # Пользователь вводит ответ
-Correct!
-Question: 12 15 18 21 .. 27 30 33
->> Your answer: 24 # Пользователь вводит ответ
-Correct!
-Congratulations, Roman!
-```
+- [x] Доступны следующие форматы для чтения: <code>JSON</code>, <code>YAML</code>.
+- [x] Реализованы следующие форматеры: <code>stylish</code> (по умолчанию), <code>plain</code>, <code>json</code>.
+- [x] Возможность использовать как _библиотеку_, так и как <code>CLI</code> команду.
 
 ## Установка
 
@@ -102,7 +79,7 @@ Congratulations, Roman!
 ⚠️ Перед установкой проекта проверьте наличие установленных Node.js, npm!
 ```
 
-Для запуска имеющихся игр необходимо предварительно установить данный проект:
+Для работы с проектом необходимо выполнить следующие действия по его установке:
 
 1. Склонируйте репозиторий, используя одну из следующих консольных команд:
 
@@ -119,27 +96,197 @@ Congratulations, Roman!
 >> make install
 ```
 
-3. Осуществите симлинк проекта:
+3. Осуществите symlink проекта:
 
 ```bash
 >> make link
 ```
 
-4. Запустите команду на примере тех, которые указаны [ниже](#превью).
+4. Запустите команду на примере тех, которые указаны [ниже](#использование).
 
-## Превью
+## Использование
 
-### Различия между плоскими файлами (JSON)
+### Библиотека
 
-Команда для запуска: `gendiff <filepath1> <filepath2>`
+Данный проект можно использовать как _библиотеку_ в любом проекте. Достаточно выполнить следующий код:
 
-[![asciicast](https://asciinema.org/a/9LwTIb4T0WSzqHXgOdiKz04wW.svg)](https://asciinema.org/a/9LwTIb4T0WSzqHXgOdiKz04wW)
+```javascript
+import genDiff from 'gendiff';
 
-### Различия между плоскими файлами (YAML)
+const diff = genDiff(file1, file2, formatter);
+```
 
-Команда для запуска: `gendiff <filepath1> <filepath2>`
+Здесь <code>file1</code> и <code>file2</code> — названия (или _абсолютные_ пути) файлов, разницу которых мы хотим вывести; <code>formatter</code> — название форматера (_stylish_, _plain_, _json_).
 
-[![asciicast](https://asciinema.org/a/ETzMLr6CX6qgz2XZv97aCsjKP.svg)](https://asciinema.org/a/ETzMLr6CX6qgz2XZv97aCsjKP)
+### CLI команда
+
+Данный проект можно использовать как утилиту _командной строки_. Подробности использования описания в **helper**:
+
+```bash
+>> gendiff -h
+```
+
+```bash
+Usage: gendiff [options] <filepath1> <filepath2>
+
+Compares two configuration files and shows a difference.
+
+Options:
+  -V, --version        output the version number
+  -f, --format <type>  output format (default: "stylish")
+  -h, --help           display help for command
+```
+
+#### Формат <code>stylish</code>
+
+Данный форматер выводит разницу между двумя файлами, учитывая следующие особенности:
+
+- Если свойство было **добавлено** и **удалено** либо **изменило** свое значение, то указываются знаки <code>+</code> и <code>-</code> соответственно.
+- В остальных случаях свойство либо **не изменилось**, либо в **обоих файлах** имеет в качестве значения _объект_ (является **вложенным**).
+
+##### Пример
+
+```bash
+>> gendiff file1.json file2.json
+```
+
+```bash
+{
+  - follow: false
+    host: hexlet.io
+  - proxy: 123.234.53.22
+  - timeout: 50
+  + timeout: 20
+  + verbose: true
+}
+```
+
+##### Различия между плоскими файлами (JSON)
+
+[![asciicast](https://asciinema.org/a/7Y1cZKigFf8AUNnZRKJfNSuWY.svg)](https://asciinema.org/a/7Y1cZKigFf8AUNnZRKJfNSuWY)
+
+##### Различия между плоскими файлами (YAML)
+
+[![asciicast](https://asciinema.org/a/BzYKl49kATIPX5FoPow3jAaDJ.svg)](https://asciinema.org/a/BzYKl49kATIPX5FoPow3jAaDJ)
+
+##### Различия между вложенными файлами (JSON)
+
+[![asciicast](https://asciinema.org/a/KmzhPRr71M2FW4BzjuCssPtEW.svg)](https://asciinema.org/a/KmzhPRr71M2FW4BzjuCssPtEW)
+
+##### Различия между вложенными файлами (YAML)
+
+[![asciicast](https://asciinema.org/a/JWjq0CXnC2oUhxUm6NK0bUUpn.svg)](https://asciinema.org/a/JWjq0CXnC2oUhxUm6NK0bUUpn)
+
+#### Формат <code>plain</code>
+
+Данный форматер выводит разницу между двумя файлами, учитывая следующие особенности:
+
+- Если свойство имеет _"сложное значение"_ (_объект_, _массив_), то выводится <code>[complex value]</code>.
+- Если свойство является _вложенным_, то оно **не учитывается**: сохраняется лишь путь до него, который используется при выводе остальных _"плоских"_ свойств, находящийся внутри оного.
+- Если свойство **не было** изменено, то оно **не выводится**.
+
+##### Пример
+
+```bash
+>> gendiff file5.json file6.json -f plain
+```
+
+```bash
+Property 'common.follow' was added with value: false
+Property 'common.setting2' was removed
+Property 'common.setting3' was updated. From true to null
+Property 'common.setting4' was added with value: 'blah blah'
+Property 'common.setting5' was added with value: [complex value]
+Property 'common.setting6.doge.wow' was updated. From '' to 'so much'
+Property 'common.setting6.ops' was added with value: 'vops'
+Property 'group1.baz' was updated. From 'bas' to 'bars'
+Property 'group1.nest' was updated. From [complex value] to 'str'
+Property 'group2' was removed
+Property 'group3' was added with value: [complex value]
+```
+
+##### Различия между плоскими файлами (JSON)
+
+[![asciicast](https://asciinema.org/a/B0EfKCZvHwSq8lbMOaSsTA8oU.svg)](https://asciinema.org/a/B0EfKCZvHwSq8lbMOaSsTA8oU)
+
+##### Различия между плоскими файлами (YAML)
+
+[![asciicast](https://asciinema.org/a/yO0GDRwcDu0QrKnuILBluOo8d.svg)](https://asciinema.org/a/yO0GDRwcDu0QrKnuILBluOo8d)
+
+##### Различия между вложенными файлами (JSON)
+
+[![asciicast](https://asciinema.org/a/3Gbeiu5HRZxqESLFt2VpSMuAP.svg)](https://asciinema.org/a/3Gbeiu5HRZxqESLFt2VpSMuAP)
+
+##### Различия между вложенными файлами (YAML)
+
+[![asciicast](https://asciinema.org/a/GJs9HIXc3JYhPyy28TE6hOaan.svg)](https://asciinema.org/a/GJs9HIXc3JYhPyy28TE6hOaan)
+
+#### Формат <code>json</code>
+
+Данный форматер выводит разницу между двумя файлами, учитывая следующие особенности:
+
+- Если свойство было не является _вложенным_ или _"сложным"_ то указывается его **имя** и **дескриптор** в формате: <code>{ state: 'СОСТОЯНИЕ', type: 'ТИП', value: 'ЗНАЧЕНИЕ' }</code>.
+- Если свойство является _вложенным_, то оно **не учитывается**: сохраняется лишь путь до него, который используется при выводе остальных _"плоских"_ свойств, находящийся внутри оного.
+- Если свойство **не было** изменено, то оно **не выводится**.
+
+Состояния:
+
+- <code>added</code>: свойство отсутствует в _первом_ файле и присутствует во _втором_.
+- <code>deleted</code>: свойство присутствует в _первом_ файле и отсутствует во _втором_.
+- <code>changed</code>: свойство имеет разные значения в _обоих_ файлах (**не является** _вложенным_).
+- <code>unchanged</code>: свойство имеет одинаковые значения в _обоих_ файлах или **является** _вложенным_.
+
+Типы:
+
+- <code>leaf</code>: свойство **не является** _вложенным_.
+- <code>internal</code>: свойство **является** _вложенным_.
+
+##### Пример
+
+```bash
+>> gendiff file1.yaml file3.yaml -f json
+```
+
+```bash
+{
+   "follow": {
+       "state": "deleted",
+       "type": "leaf",
+       "value": false
+    },
+   "host": {
+       "state": "deleted",
+       "type": "leaf",
+       "value": "hexlet.io"
+    },
+   "proxy": {
+       "state": "deleted",
+       "type": "leaf",
+       "value": "123.234.53.22"
+    },
+   "timeout": {
+       "state": "deleted",
+       "type": "leaf",
+       "value": 50
+    }
+}
+```
+
+##### Различия между плоскими файлами (JSON)
+
+[![asciicast](https://asciinema.org/a/XvDYan3AEbfkAA4AjjE26kaSv.svg)](https://asciinema.org/a/XvDYan3AEbfkAA4AjjE26kaSv)
+
+##### Различия между плоскими файлами (YAML)
+
+[![asciicast](https://asciinema.org/a/0SbDpZYQiRnwVb6jShxrbesSQ.svg)](https://asciinema.org/a/0SbDpZYQiRnwVb6jShxrbesSQ)
+
+##### Различия между вложенными файлами (JSON)
+
+[![asciicast](https://asciinema.org/a/FnaFJ0RnEsizYTRMs92QksG8m.svg)](https://asciinema.org/a/FnaFJ0RnEsizYTRMs92QksG8m)
+
+##### Различия между вложенными файлами (YAML)
+
+[![asciicast](https://asciinema.org/a/apnQ9YCRPnTri9ODGrGHPT0fF.svg)](https://asciinema.org/a/apnQ9YCRPnTri9ODGrGHPT0fF)
 
 ## Структура проекта
 
@@ -199,16 +346,20 @@ Congratulations, Roman!
 Полезные команды, которые доступны для использования в проекте.
 
 <dl>
+<dt><code>make install</code></dt>
+    <dd>Установка зависимостей <code>CI</code>проекта.</dd>
+    <dt><code>make link</code></dt>
+    <dd>Линк проекта.</dd>
     <dt><code>make publish</code></dt>
     <dd>Публикация проекта с флагом <code>--dry-run</code></dd>
     <dt><code>make prettier</code></dt>
-    <dd>Форматирование кода проекта с помощью Prettier.</dd>
+    <dd>Форматирование кода проекта с помощью<code>prettier</code>.</dd>
     <dt><code>make lint</code></dt>
-    <dd>Проверка кода проекта линтером ESLint.</dd>
+    <dd>Проверка кода проекта с помощью линтера <code>ESLint</code>.</dd>
     <dt><code>make test</code></dt>
-    <dd>Тестирование проекта посредством Jest.</dd>
+    <dd>Тестирование проекта посредством <code>Jest</code>.</dd>
     <dt><code>make test-coverage</code></dt>
-    <dd>Вывод покрытия тестами посредством Jest.</dd>
+    <dd>Вывод покрытия тестами проекта посредством <code>Jest</code>.</dd>
 </dl>
 
 ## Лицензия

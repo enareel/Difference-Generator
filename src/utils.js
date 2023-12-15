@@ -4,7 +4,12 @@
  */
 import fs from 'node:fs';
 import path from 'node:path';
-import { ENCODING, COMPLEX_VALUE_NAME, formatToExt } from './constants.js';
+import {
+  formatToExt,
+  QuotationMark,
+  ENCODING,
+  COMPLEX_VALUE_NAME,
+} from './constants.js';
 
 /**
  * Функция сортировки пар массива.
@@ -44,14 +49,15 @@ const isAllObjects = (...objs) => objs.every((obj) => isObject(obj));
 /**
  * Функция форматирования значения.
  * @param {*} value Значение.
+ * @param {QuotationMark} [quotes=["'", "'"]] Кавычки.
  * @returns {(COMPLEX_VALUE_NAME|string|*)}
  */
-const formatValue = (value) => {
+const formatValue = (value, quotes = ["'", "'"]) => {
   switch (true) {
     case isObject(value) || Array.isArray(value):
       return COMPLEX_VALUE_NAME;
     case typeof value === 'string':
-      return `'${value}'`;
+      return `${quotes[0]}${value}${quotes[1]}`;
     default:
       return value;
   }
@@ -67,8 +73,8 @@ const makePath = (accPath, value) => [...accPath, value].join('.');
 
 /**
  * Функция формирования корректных путей до файлов.
- * @param  {...string} filepaths Пути до файлов.
  * @param {Array<string>} prefix Массив "префиксных" путей.
+ * @param  {...string} filepaths Пути до файлов.
  * @returns {(Array<string>|string)}
  */
 const makeCorrectPath = (prefix, ...filepaths) => {
@@ -83,10 +89,9 @@ const makeCorrectPath = (prefix, ...filepaths) => {
  * @returns {(Array<string>|string)}
  */
 const readFilesSync = (...filepaths) => {
-  const data = filepaths.map((filepath) => {
-    console.log(filepath);
-    return fs.readFileSync(filepath, { encoding: ENCODING });
-  });
+  const data = filepaths.map((filepath) =>
+    fs.readFileSync(filepath, { encoding: ENCODING })
+  );
 
   return data.length > 1 ? data : data.at();
 };
@@ -111,7 +116,7 @@ const getFormat = (extName) =>
  * @returns {string}
  */
 const getBreak = ({
-  hasClosure = true,
+  hasClosure = false,
   sign = '',
   replacer = ' ',
   spacesCount = 4,
@@ -128,8 +133,8 @@ export {
   isAllObjects,
   formatValue,
   makePath,
-  readFilesSync,
   makeCorrectPath,
+  readFilesSync,
   getFormat,
   getBreak,
 };

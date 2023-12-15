@@ -4,9 +4,9 @@
  */
 
 import fs from 'node:fs';
-import { ENCODING, data } from '../src/constants.js';
 import { fileURLToPath } from 'node:url';
-import { dirname } from 'node:path';
+import path from 'node:path';
+import { ENCODING, Options } from '../src/constants.js';
 import {
   sortPairs,
   isObject,
@@ -17,6 +17,7 @@ import {
   makeCorrectPath,
   readFilesSync,
   getFormat,
+  getBreak,
 } from '../src/utils.js';
 
 /**
@@ -29,7 +30,7 @@ const __filename = fileURLToPath(import.meta.url);
  * Абсолютный путь до папки с текущим файлом.
  * @constant
  */
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(__filename);
 
 // Тестирование sortPairs.
 describe('Тестируем функцию sortPairs.', () => {
@@ -192,7 +193,7 @@ describe('Тестируем функцию makeCorrectPath.', () => {
   test('Обычные файлы с префиксом. Абсолютные пути.', () => {
     expect(
       makeCorrectPath(
-        [__dirname, '..', data.SRC_DIR],
+        [__dirname, '..', Options.fixturesDir],
         '/usr/files/file1.yaml',
         '/etc/file999.txt'
       )
@@ -215,9 +216,8 @@ describe('Тестируем функцию readFilesSync.', () => {
   test('Несколько файлов.', () => {
     expect(
       readFilesSync(
-        ...['file2.yml', 'file3.yaml'].map((file) =>
-          makeCorrectPath(['__fixtures__'], file)
-        )
+        ['__fixtures__'],
+        ...makeCorrectPath('file2.yml', 'file3.yml')
       )
     ).toEqual(
       ['file2.yml', 'file3.yaml'].map((file) =>
@@ -241,5 +241,24 @@ describe('Тестируем функцию getFormat.', () => {
 
   test('Формат TXT', () => {
     expect(getFormat('.txt')).toBe('TXT');
+  });
+});
+
+// Тестирование getBreak.
+describe('Тестируем функцию getBreak.', () => {
+  test('Значения по умолчанию.', () => {
+    expect(getBreak()).toBe('\n');
+  });
+
+  test('Различные значения', () => {
+    expect(
+      getBreak({
+        hasClosure: false,
+        sign: '@@@',
+        replacer: '#',
+        spacesCount: 3,
+        depth: 2,
+      })
+    ).toBe('\n#####');
   });
 });

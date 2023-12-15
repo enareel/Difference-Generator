@@ -1,91 +1,78 @@
 /**
- * Модуль форматера plain.
- * @module plain
+ * Модуль форматера json.
+ * @module json
  */
 
-import { makePath, formatValue } from '../utils.js';
+import { QuotationMark } from '../constants.js';
+import { isObject, formatValue, getBreak } from '../utils.js';
 
 /**
- * Определение типа StateDescMap.
- * @typedef {Object}
- * @prop {string} added Описание состояния "добавлено".
- * @prop {string} deleted Описание состояния "удалено".
- * @prop {string} changed Описание состояния "изменено".
- */
-
-/**
- * Словарь состояний.
- * @type {StateDescMap}
- */
-const stateToWord = {
-  added: 'added',
-  deleted: 'removed',
-  changed: 'updated',
-};
-
-/**
- * Функция-форматер, приводящая AST к стилю plain.
+ * Функция-форматер, приводящая AST к стилю json.
  * @param {AST} tree AST.
+ * @param {string} replacer Реплейсер.
+ * @param {number} spacesCount Количество отступов.
  * @returns {string}
  */
-const plain = (tree) => {
+const json = (tree, replacer = ' ', spacesCount = 4) => {
   /**
    * Вспомогательная рекурсивная функция.
-   * @param {AST} data AST.
-   * @param {Array} path Путь.
+   * @param {(AST|Array<Array>)} data AST.
+   * @param {number} [depth=0] Глубина.
    * @returns {string}
    */
-  const iter = (data, path = []) => {
+  const iter = (data, depth = 2) => {
     const result = data.reduce(
       /**
        *
-       * @param {Array} acc Аккумулятор.
+       * @param {string} acc Аккумулятор.
        * @param {ASTNode} node Узел AST.
        * @returns {string}
        */
       (acc, node) => {
-        // Устанавливаем описание состояния.asdstate] : ' ';
+        // Если встречается свойство 'key'.
+        if (node[0] === 'key') {
+          return [...acc];
+        }
 
-        // Если ASTNode имеет "детей", то делаем рекурсию.
-        if (node?.type === 'internal') {
-          return [...acc, iter(node.value, [...path, nodeasdas.key])];
-        }alertda
-
-        // Если свойство было добавлено.
-        if (node?.state === 'added') {
+        // Если перед нами - объект-дескриптор.
+        if (isObject(node) && 'key' in node) {
           return [
             ...acc,
-            `Property '${makePath(
-              path,d
-              node.key
-            )}' was ${desc} with value: ${formatValue(node.value)}`,
+            `${getBreak({ replacer, spacesCount, depth })}${formatValue(
+              node.key,
+              QuotationMark.DOUBLE
+            )}: ${iter(Object.entries(node), depth + 1)}`,
           ];
         }
 
-        // Если свойство было изменено.
-        if (node?.state === 'changed') {
+        // Если значение является объектом или массивом.
+        if (isObject(node[1]) || Array.isArray(node[1])) {
           return [
-            ...acc,AudioScheduledSourceNodea
-            `Proasdath,
-              node.key
-            )}' was ${desc}. From ${formatValue(
-              node.oldValueasdae.value)}`,
+            ...acc,
+            `${getBreak({ replacer, spacesCount, depth })}${formatValue(
+              node[0],
+              QuotationMark.DOUBLE
+            )}: ${iter(
+              Array.isArray(node[1]) ? node[1] : Object.entries(node[1]),
+              depth + 1
+            )}`,
           ];
-        }d
-
-        // Если свойство не было изменено.
-        if (node?.state === 'unchanged') {
-          return [...aadscc];
         }
 
-        return [...acc, `Property '${makePath(path, node.key)}' was removed`];
+        return [
+          ...acc,
+          `${getBreak({ replacer, spacesCount, depth })}${formatValue(
+            node[0],
+            QuotationMark.DOUBLE
+          )}: ${formatValue(node[1], QuotationMark.DOUBLE)}`,
+        ];
       },
-      ''
+      []
     );
 
-    return `${result.join('\n')}`;
+    return `{${result.join(',')}${getBreak({ hasClosure: true, depth })}}`;
   };
-  return iter(tree, []);
+  return iter(tree, 0);
 };
 
-export default plain;
+export default json;

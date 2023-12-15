@@ -4,27 +4,22 @@
  */
 
 import { fileURLToPath } from 'node:url';
-import path, { dirname } from 'node:path';
-import getFiles from '../src/parsers.js';
-
-// Вспомогательные данные.
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+import path from 'node:path';
+import { Options } from '../src/constants.js';
+import { makeCorrectPath, readFilesSync, getFormat } from '../src/utils.js';
+import getData from '../src/parsers.js';
 
 /**
- * Функция создания корректных путей до файлов.
- * @param {...string} paths Пути до файлов (абс. или относ.).
- * @returns {string|string[]}
+ * Абсолютный путь до текущего файла на основе URL модуля.
+ * @constant
  */
-const makeCorrectPath = (...filepaths) => {
-  const correctPath = filepaths.map((item) =>
-    path.resolve(__dirname, '..', '__fixtures__', item)
-  );
-  if (correctPath.length > 1) {
-    return correctPath;
-  }
-  return correctPath.at();
-};
+const __filename = fileURLToPath(import.meta.url);
+
+/**
+ * Абсолютный путь до папки с текущим файлом.
+ * @constant
+ */
+const __dirname = path.dirname(__filename);
 
 // Данные для парсинга.
 const values = [
@@ -49,28 +44,46 @@ const values = [
       {
         files: ['file6.json', 'file6.yaml'],
       },
+      {
+        files: ['correctPlain1.txt'],
+      },
     ],
   },
 ];
 
 // Тестирование парсинга файлов.
 describe.each(values[0].data)('Чтение файлов.', ({ files, expected }) => {
-  test.each(files)('Проверка %o.', () => {
+  test.each(files)('Проверка %o.', (file) => {
+    // Формируем пути.
+    const correctPath = Array.isArray(file)
+      ? makeCorrectPath([__dirname, '..', Options.fixturesDir], ...file)
+      : [makeCorrectPath([__dirname, '..', Options.fixturesDir], file)];
+
     // Читаем файлы.
-    files.forEach((file) => {
-      expect(
-        getFiles(
-          ...(Array.isArray(file)
-            ? makeCorrectPath(...file)
-            : [makeCorrectPath(file)])
-        )
-      ).toEqual(expected);
-    });
+    const data = readFilesSync(...correctPath);
+
+    // Определяем расширение.
+    const extName = path.extname(file);
+
+    expect(getData(getFormat(extName), ...data)).toEqual(
+      JSON.parse(readFilesSync(...makeCorrectPath(...file)))
+    );
   });
 
   test('Проверка на выброс ошибки.', () => {
-    expect(() =>
-      getFiles(...makeCorrectPath('file3.txt', 'file3.css'))
-    ).toThrow(new Error('Формат не поддерживается.'));
+    // Формируем пути.
+    const correctPath = makeCorrectPath([], 'file10.html');
+
+    console.log(correctPath);
+
+    // Читаем файлы.
+    const data = readFilesSync(...correctPath);
+
+    // Определяем расширение.
+    const extName = extname(file);
+
+    expect(() => getData(getFormat(extName), ...data)).toThrow(
+      new Error('Формат не поддерживается.')
+    );
   });
 });

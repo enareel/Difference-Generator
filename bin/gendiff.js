@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-import { Command } from 'commander';
 import { fileURLToPath } from 'node:url';
-import { dirname, extname } from 'node:path';
+import path from 'node:path';
+import { Command } from 'commander';
+import { Options } from '../src/constants.js';
+import { makeCorrectPath, readFilesSync, getFormat } from '../src/utils.js';
 import getData from '../src/parsers.js';
 import genDiff from '../src/genDiff.js';
-import { Options } from '../src/constants.js';
-import { getFormat, makeCorrectPath, readFilesSync } from '../src/utils.js';
 
 /**
  * Абсолютный путь до текущего файла на основе URL модуля.
@@ -18,7 +18,7 @@ const __filename = fileURLToPath(import.meta.url);
  * Абсолютный путь до папки с текущим файлом.
  * @constant
  */
-const __dirname = dirname(__filename);
+const __dirname = path.dirname(__filename);
 
 // Формируем экземпляр объекта Команды.
 const program = new Command();
@@ -39,13 +39,13 @@ program
     );
 
     // Определяем расширение.
-    const extName = extname(filepath1);
+    const extName = path.extname(filepath1);
 
-    console.log(extName);
     // Parsing.
     const parsedData = getData(getFormat(extName), ...files);
 
-    console.log(genDiff(...parsedData));
+    // Выводим различия.
+    console.log(genDiff(options.format, ...parsedData));
   });
 
 program.parse();

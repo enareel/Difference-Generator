@@ -4,7 +4,7 @@
  */
 
 import { ASTNodeType, ASTNodeState } from './constants.js';
-import { isAllObjects, sortPairs } from './utils.js';
+import { sortPairs, isAllObjects } from './utils.js';
 
 /**
  * Определение типа ASTNode (узла дерева).
@@ -43,7 +43,7 @@ const makeAST = (firstObj, secondObj) => {
 
     // Собираемое AST.
     const AST = entries.sort(sortPairs).reduce((acc, [prop, value]) => {
-      // Если одинаковое свойство уже есть в стэке, то ничего не делаем.
+      // Если одинаковое свойство уже есть в Stack, то ничего не делаем.
       if (stack.has(prop)) {
         return [...acc];
       }
@@ -55,7 +55,7 @@ const makeAST = (firstObj, secondObj) => {
       // Меняем состояние свойства в зависимости от условий.
       switch (true) {
         case !(prop in rightObj):
-          state = ASTNodeState.DELETED;
+          state = ASTNodeState.REMOVED;
           break;
         case !(prop in leftObj):
           state = ASTNodeState.ADDED;

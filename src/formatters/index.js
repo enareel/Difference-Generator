@@ -4,8 +4,9 @@
  */
 
 import { FORMATTER_ERROR } from '../constants.js';
-import plain from './plain.js';
 import stylish from './stylish.js';
+import plain from './plain.js';
+import json from './json.js';
 
 /**
  * Функция, возвращающая форматер.
@@ -18,6 +19,8 @@ const getFormatter = (name) => {
       return plain;
     case 'stylish':
       return stylish;
+    case 'json':
+      return json;
     default:
       throw new Error(FORMATTER_ERROR);
   }

@@ -3,8 +3,8 @@
  * @module plain
  */
 
-import { ASTNodeState, ASTNodeType } from '../constants.js';
-import { makePath, formatValue } from '../utils.js';
+import { ASTNodeType, ASTNodeState } from '../constants.js';
+import { formatValue, makePath } from '../utils.js';
 
 /**
  * Определение типа StateDescMap.
@@ -15,7 +15,7 @@ import { makePath, formatValue } from '../utils.js';
  */
 
 /**
- * Словарь состояний.
+ * Словарь состояний и описаний.
  * @type {StateDescMap}
  */
 const stateToDesc = {

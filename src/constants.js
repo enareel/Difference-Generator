@@ -7,9 +7,9 @@
  * Определение типа Options.
  * @typedef {Object} Options
  * @prop {string} name Название программы.
- * @prop {string} name Название программы.
- * @prop {string} name Название программы.
- * @prop {string} name Название программы.
+ * @prop {string} version Версия программы.
+ * @prop {string} description Описание программы.
+ * @prop {string} fixturesDir Название папки с fixtures.
  */
 
 /**
@@ -27,6 +27,15 @@ const formatToExt = {
   YAML: ['.yaml', '.yml'],
   JSON: ['.json'],
   TXT: ['.txt'],
+};
+
+/**
+ * Перечисление типов кавычек.
+ * @enum {Array<string>}
+ */
+const QuotationMark = {
+  SINGLE: ["'", "'"],
+  DOUBLE: ['"', '"'],
 };
 
 /**
@@ -86,6 +95,7 @@ const Options = {
 
 export {
   formatToExt,
+  QuotationMark,
   ASTNodeType,
   ASTNodeState,
   ENCODING,

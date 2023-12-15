@@ -3,7 +3,7 @@
  * @module stylish
  */
 
-import { ASTNodeState, ASTNodeType } from '../constants.js';
+import { ASTNodeType, ASTNodeState } from '../constants.js';
 import { isObject, getBreak } from '../utils.js';
 
 /**

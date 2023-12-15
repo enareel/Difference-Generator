@@ -2,6 +2,7 @@
  * Модуль функции, отвечающей за парсинг данных.
  * @module parsers
  */
+
 import jsYaml from 'js-yaml';
 import { FORMAT_ERROR } from './constants.js';
 
