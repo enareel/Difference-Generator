@@ -23,11 +23,11 @@ import { sortPairs, isAllObjects } from './utils.js';
 
 /**
  * Функция, формирующая AST.
- * @param {Object} firstObj Первый объект.
- * @param {Object} secondObj Второй объект.
+ * @param {Object} [firstObj={}] Первый объект.
+ * @param {Object} [secondObj={}] Второй объект.
  * @returns {AST}
  */
-const makeAST = (firstObj, secondObj) => {
+const makeAST = (firstObj = {}, secondObj = {}) => {
   // Stack с имеющимися свойствами.
   const stack = new Set();
 

@@ -108,11 +108,11 @@ const getFormat = (extName) =>
 
 /**
  * Функция возврата отступа.
- * @param {boolean} hasClosure Находится ли в закрывающей скобке.
- * @param {string} sign Знак.
- * @param {string} replacer Реплейсер.
- * @param {number} spacesCount Количество отступов.
- * @param {number} depth Глубина
+ * @param {boolean} [hasClosure=false] Находится ли в закрывающей скобке.
+ * @param {string} [sign=''] Знак.
+ * @param {string} [replacer=' '] Реплейсер.
+ * @param {number} [spacesCount=4] Количество отступов.
+ * @param {number} [depth=0] Глубина
  * @returns {string}
  */
 const getBreak = ({
@@ -121,7 +121,7 @@ const getBreak = ({
   replacer = ' ',
   spacesCount = 4,
   depth = 0,
-}) =>
+} = {}) =>
   hasClosure
     ? `\n${replacer.repeat(spacesCount * depth)}`
     : `\n${replacer.repeat(spacesCount * (depth + 1) - sign.length - 1)}`;

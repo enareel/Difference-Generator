@@ -9,8 +9,8 @@ import getFormatter from './formatters/index.js';
 /**
  * Функция демонстрации различий между двумя объектами.
  * @param {string} [formatter=stylish] Форматер.
- * @param {Object} firstObj Первый объект.
- * @param {Object} secondObj Второй объект.
+ * @param {Object} [firstObj={}] Первый объект.
+ * @param {Object} [secondObj={}] Второй объект.
  * @returns {import('./makeAST.js').AST}
  */
 const genDiff = (formatter = 'stylish', firstObj = {}, secondObj = {}) => {

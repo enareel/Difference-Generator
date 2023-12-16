@@ -183,7 +183,11 @@ describe('Тестируем функцию makeCorrectPath.', () => {
 
   test('Обычные файлы с префиксом.', () => {
     expect(
-      makeCorrectPath([__dirname, '..', data.SRC_DIR], 'file9.js', 'test.txt')
+      makeCorrectPath(
+        [__dirname, '..', Options.fixturesDir],
+        'file9.js',
+        'test.txt'
+      )
     ).toEqual([
       '/home/leerane/frontend-project-46/__fixtures__/file9.js',
       '/home/leerane/frontend-project-46/__fixtures__/test.txt',
@@ -205,25 +209,36 @@ describe('Тестируем функцию makeCorrectPath.', () => {
 describe('Тестируем функцию readFilesSync.', () => {
   test('Один файл.', () => {
     expect(
-      readFilesSync(makeCorrectPath(['__fixtures__'], 'file1.json'))
+      readFilesSync(
+        makeCorrectPath([__dirname, '..', Options.fixturesDir], 'file1.json')
+      )
     ).toEqual(
-      fs.readFileSync(makeCorrectPath(['__fixtures__'], 'file1.json'), {
-        encoding: ENCODING,
-      })
+      fs.readFileSync(
+        makeCorrectPath([__dirname, '..', Options.fixturesDir], 'file1.json'),
+        {
+          encoding: ENCODING,
+        }
+      )
     );
   });
 
   test('Несколько файлов.', () => {
     expect(
       readFilesSync(
-        ['__fixtures__'],
-        ...makeCorrectPath('file2.yml', 'file3.yml')
+        ...makeCorrectPath(
+          [__dirname, '..', Options.fixturesDir],
+          'file2.yml',
+          'file3.yaml'
+        )
       )
     ).toEqual(
       ['file2.yml', 'file3.yaml'].map((file) =>
-        fs.readFileSync(makeCorrectPath(['__fixtures__'], file), {
-          encoding: ENCODING,
-        })
+        fs.readFileSync(
+          makeCorrectPath([__dirname, '..', Options.fixturesDir], file),
+          {
+            encoding: ENCODING,
+          }
+        )
       )
     );
   });
@@ -239,7 +254,7 @@ describe('Тестируем функцию getFormat.', () => {
     expect(getFormat(extName)).toBe('YAML');
   });
 
-  test('Формат TXT', () => {
+  test('Формат TXT.', () => {
     expect(getFormat('.txt')).toBe('TXT');
   });
 });
@@ -247,7 +262,11 @@ describe('Тестируем функцию getFormat.', () => {
 // Тестирование getBreak.
 describe('Тестируем функцию getBreak.', () => {
   test('Значения по умолчанию.', () => {
-    expect(getBreak()).toBe('\n');
+    expect(getBreak()).toBe('\n   ');
+  });
+
+  test('hasClosure.', () => {
+    expect(getBreak()).toBe('\n   ');
   });
 
   test('Различные значения', () => {
