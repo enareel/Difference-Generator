@@ -52,7 +52,7 @@ const isAllObjects = (...objs) => objs.every((obj) => isObject(obj));
  * @param {QuotationMark} [quotes=["'", "'"]] Кавычки.
  * @returns {(COMPLEX_VALUE_NAME|string|*)}
  */
-const formatValue = (value, quotes = ["'", "'"]) => {
+const formatValue = (value, quotes = QuotationMark.SINGLE) => {
   switch (true) {
     case isObject(value) || Array.isArray(value):
       return COMPLEX_VALUE_NAME;

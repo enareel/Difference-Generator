@@ -292,22 +292,17 @@ Property 'group3' was added with value: [complex value]
 
 ```bash
 .
-├── .editorconfig
-├── .env
-├── .eslintignore
-├── .eslintrc.yml
-├── .github
-│   └── workflows
-│       ├── README.md
-│       ├── ci.yml
-│       └── hexlet-check.yml
-├── .gitignore
-├── .npmrc
-├── .prettierignore
-├── .prettierrc
+├── LICENSE
 ├── Makefile
 ├── README.md
 ├── __fixtures__
+│   ├── correctPlain1.txt
+│   ├── correctPlain2.txt
+│   ├── correctPlain3.txt
+│   ├── correctStylish1.txt
+│   ├── correctStylish2.txt
+│   ├── correctStylish3.txt
+│   ├── file1.html
 │   ├── file1.json
 │   ├── file1.yaml
 │   ├── file2.json
@@ -323,20 +318,24 @@ Property 'group3' was added with value: [complex value]
 ├── __tests__
 │   ├── genDiff.test.js
 │   ├── parses.test.js
-│   ├── stylish.test.js
 │   └── utils.test.js
 ├── bin
 │   └── gendiff.js
+├── jest.config.js
 ├── minus-logo.svg
 ├── package-lock.json
 ├── package.json
 ├── plus-logo.svg
 └── src
+    ├── constants.js
     ├── formatters
+    │   ├── index.js
+    │   ├── json.js
     │   ├── plain.js
     │   └── stylish.js
     ├── genDiff.js
     ├── index.js
+    ├── makeAST.js
     ├── parsers.js
     └── utils.js
 ```
