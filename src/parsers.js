@@ -9,24 +9,20 @@ import { FORMAT_ERROR } from './constants.js';
 /**
  * Функция, отвечающая за парсинг данных. Синхронно.
  * @param {string} format Формат данных.
- * @param {...string} data Данные .
+ * @param {string} data Данные.
  * @returns {(*|*[])}
  */
-const getData = (format, ...data) => {
-  const result = data.map((value) => {
-    switch (format) {
-      case 'YAML':
-        return jsYaml.load(value);
-      case 'JSON':
-        return JSON.parse(value);
-      case 'TXT':
-        return value;
-      default:
-        throw new Error(FORMAT_ERROR);
-    }
-  });
-
-  return result.length > 1 ? result : result.at();
+const getData = (format, data) => {
+  switch (format) {
+    case 'YAML':
+      return jsYaml.load(data);
+    case 'JSON':
+      return JSON.parse(data);
+    case 'TXT':
+      return data;
+    default:
+      throw new Error(FORMAT_ERROR);
+  }
 };
 
 export default getData;

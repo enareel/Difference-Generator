@@ -6,7 +6,7 @@
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import { Options } from '../src/constants.js';
-import { makeCorrectPath, getFormat } from '../src/utils.js';
+import { makeCorrectPath, readFileSync, getFormat } from '../src/utils.js';
 import getData from '../src/parsers.js';
 import genDiff from '../src/genDiff.js';
 
@@ -23,7 +23,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 /**
- * Префиксный путь до файлов.
+ * Префиксный путь до файла.
  * @constant
  */
 const prefixPath = [__dirname, '..', Options.fixturesDir];
@@ -163,14 +163,31 @@ const data = [
 // Тесты.
 describe.each(data)('$name.', ({ data }) => {
   test.each(data)('Проверка $file1 и $file2.', ({ file1, file2, expected }) => {
-    const f1 = getData(getFormat(path.extname(file)), makeCorrectPath([]));
-    const f2 = getFiles(makeCorrectPath(file2));
+    // Читаем файлы.
+    const f1 = getData(
+      getFormat(path.extname(file1)),
+      readFileSync(makeCorrectPath(prefixPath, file1))
+    );
+    const f2 = getData(
+      getFormat(path.extname(file2)),
+      readFileSync(makeCorrectPath(prefixPath, file2))
+    );
 
     // Проверяем правильность форматирования для каждого типа.
     expected.forEach(({ format, value }) => {
-      const result = genDiff(f1, f2, format);
-
-      expect(result).toEqual(value);
+      const result = genDiff(format, f1, f2);
+    
+      expect(result).toEqual(
+        getData(
+          getFormat(path.extname(value)),
+          readFileSync(makeCorrectPath(prefixPath, value))
+        )
+      );
     });
   });
+  
+  test('Проверка значений по умолчанию.', () => {
+    expect(genDiff()).toEqual(`{
+}`);
+  })
 });

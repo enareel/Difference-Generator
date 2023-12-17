@@ -6,7 +6,7 @@
 import fs from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import path from 'node:path';
-import { ENCODING, Options } from '../src/constants.js';
+import { QuotationMark, ENCODING, Options } from '../src/constants.js';
 import {
   sortPairs,
   isObject,
@@ -15,7 +15,7 @@ import {
   formatValue,
   makePath,
   makeCorrectPath,
-  readFilesSync,
+  readFileSync,
   getFormat,
   getBreak,
 } from '../src/utils.js';
@@ -31,6 +31,12 @@ const __filename = fileURLToPath(import.meta.url);
  * @constant
  */
 const __dirname = path.dirname(__filename);
+
+/**
+ * Префиксный путь до файла.
+ * @constant
+ */
+const prefixPath = [__dirname, '..', Options.fixturesDir];
 
 // Тестирование sortPairs.
 describe('Тестируем функцию sortPairs.', () => {
@@ -132,7 +138,9 @@ describe('Тестируем функцию formatValue.', () => {
   });
 
   test('Строка.', () => {
-    expect(formatValue('Hello, Dear Boy!')).toEqual(`'Hello, Dear Boy!'`);
+    expect(formatValue('Hello, Dear Boy!', QuotationMark.DOUBLE)).toEqual(
+      `"Hello, Dear Boy!"`
+    );
   });
 
   test.each([null, undefined, true, 1, 0, -10])('Значение: %o.', (value) => {
@@ -173,73 +181,15 @@ describe('Тестируем функцию makeCorrectPath.', () => {
       )
     ).toEqual('/usr/etc/folder/file3.txt');
   });
-
-  test('Обычные файлы без префикса.', () => {
-    expect(makeCorrectPath([], 'file4.yaml', 'jack.cpp')).toEqual([
-      `${process.cwd()}/file4.yaml`,
-      `${process.cwd()}/jack.cpp`,
-    ]);
-  });
-
-  test('Обычные файлы с префиксом.', () => {
-    expect(
-      makeCorrectPath(
-        [__dirname, '..', Options.fixturesDir],
-        'file9.js',
-        'test.txt'
-      )
-    ).toEqual([
-      '/home/leerane/frontend-project-46/__fixtures__/file9.js',
-      '/home/leerane/frontend-project-46/__fixtures__/test.txt',
-    ]);
-  });
-
-  test('Обычные файлы с префиксом. Абсолютные пути.', () => {
-    expect(
-      makeCorrectPath(
-        [__dirname, '..', Options.fixturesDir],
-        '/usr/files/file1.yaml',
-        '/etc/file999.txt'
-      )
-    ).toEqual(['/usr/files/file1.yaml', '/etc/file999.txt']);
-  });
 });
 
-// Тестирование readFilesSync.
-describe('Тестируем функцию readFilesSync.', () => {
+// Тестирование readFileSync.
+describe('Тестируем функцию readFileSync.', () => {
   test('Один файл.', () => {
-    expect(
-      readFilesSync(
-        makeCorrectPath([__dirname, '..', Options.fixturesDir], 'file1.json')
-      )
-    ).toEqual(
-      fs.readFileSync(
-        makeCorrectPath([__dirname, '..', Options.fixturesDir], 'file1.json'),
-        {
-          encoding: ENCODING,
-        }
-      )
-    );
-  });
-
-  test('Несколько файлов.', () => {
-    expect(
-      readFilesSync(
-        ...makeCorrectPath(
-          [__dirname, '..', Options.fixturesDir],
-          'file2.yml',
-          'file3.yaml'
-        )
-      )
-    ).toEqual(
-      ['file2.yml', 'file3.yaml'].map((file) =>
-        fs.readFileSync(
-          makeCorrectPath([__dirname, '..', Options.fixturesDir], file),
-          {
-            encoding: ENCODING,
-          }
-        )
-      )
+    expect(readFileSync(makeCorrectPath(prefixPath, 'file1.json'))).toEqual(
+      fs.readFileSync(makeCorrectPath(prefixPath, 'file1.json'), {
+        encoding: ENCODING,
+      })
     );
   });
 });
@@ -266,7 +216,7 @@ describe('Тестируем функцию getBreak.', () => {
   });
 
   test('hasClosure.', () => {
-    expect(getBreak()).toBe('\n   ');
+    expect(getBreak({ hasClosure: true })).toBe('\n');
   });
 
   test('Различные значения', () => {

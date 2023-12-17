@@ -72,29 +72,20 @@ const formatValue = (value, quotes = QuotationMark.SINGLE) => {
 const makePath = (accPath, value) => [...accPath, value].join('.');
 
 /**
- * Функция формирования корректных путей до файлов.
+ * Функция формирования корректного пути до файла.
  * @param {Array<string>} prefix Массив "префиксных" путей.
- * @param  {...string} filepaths Пути до файлов.
+ * @param  {string} filepath Путь до файла.
  * @returns {(Array<string>|string)}
  */
-const makeCorrectPath = (prefix, ...filepaths) => {
-  const paths = filepaths.map((filepath) => path.resolve(...prefix, filepath));
-
-  return paths.length > 1 ? paths : paths.at();
-};
+const makeCorrectPath = (prefix, filepath) => path.resolve(...prefix, filepath);
 
 /**
- * Функция синхронного чтения файлов на основе метода readFileSync модуля fs.
- * @param {...string} filepath Корректные пути до файлов.
+ * Функция синхронного чтения файла на основе метода readFileSync модуля fs.
+ * @param {string} filepath Корректный путь до файла.
  * @returns {(Array<string>|string)}
  */
-const readFilesSync = (...filepaths) => {
-  const data = filepaths.map((filepath) =>
-    fs.readFileSync(filepath, { encoding: ENCODING })
-  );
-
-  return data.length > 1 ? data : data.at();
-};
+const readFileSync = (filepath) =>
+  fs.readFileSync(filepath, { encoding: ENCODING });
 
 /**
  * Функция возвращения формата на основе расширения файла.
@@ -134,7 +125,7 @@ export {
   formatValue,
   makePath,
   makeCorrectPath,
-  readFilesSync,
+  readFileSync,
   getFormat,
   getBreak,
 };

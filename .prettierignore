@@ -1,4 +1,4 @@
 build/
 package-lock.json
-
-__fixtures__/**/*
+**/__fixtures__/**/*
+**/__tests__/**/*

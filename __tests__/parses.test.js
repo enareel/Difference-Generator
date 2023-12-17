@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url';
 import path from 'node:path';
 import jsYaml from 'js-yaml';
 import { FORMAT_ERROR, Options } from '../src/constants.js';
-import { makeCorrectPath, readFilesSync, getFormat } from '../src/utils.js';
+import { makeCorrectPath, readFileSync, getFormat } from '../src/utils.js';
 import getData from '../src/parsers.js';
 
 /**
@@ -22,64 +22,71 @@ const __filename = fileURLToPath(import.meta.url);
  */
 const __dirname = path.dirname(__filename);
 
+/**
+ * Префиксный путь до файла.
+ * @constant
+ */
+const prefixPath = [__dirname, '..', Options.fixturesDir];
+
 // Данные для парсинга.
 const values = [
   {
     name: 'Парсинг данных.',
     data: [
       {
-        file: 'file1.json',
+        data: 'file1.json',
         parser: JSON.parse,
       },
       {
-        file: 'file6.yaml',
+        data: 'file6.yaml',
         parser: jsYaml.load,
       },
       {
-        file: 'correctPlain1.txt',
+        data: 'correctPlain1.txt',
       },
     ],
   },
 ];
 
 // Тестирование парсинга файлов.
-describe.each(values)('$name', ({ name, data }) => {
-  test.each(data)('Проверка $file.', ({ file, parser }) => {
+describe.each(values)('$name', ({ data }) => {
+  test.each(data)('Проверка $data.', ({ data, parser }) => {
     // Формируем путь до файла.
-    const correctPath = makeCorrectPath(
-      [__dirname, '..', Options.fixturesDir],
-      file
-    );
+    const correctPath = makeCorrectPath(prefixPath, data);
 
     // Читаем файл.
-    const element = readFilesSync(correctPath);
+    const element = readFileSync(correctPath);
 
     // Определяем расширение.
-    const extName = path.extname(file);
+    const extName = path.extname(data);
+    
+    // Вычисляем actual.
+    const actual = getData(getFormat(extName), element);
+    
+    // Вычисляем expected.
+    const expected = parser ? parser(element) : element;
 
-    expect(getData(getFormat(extName), element)).toEqual(
-      parser ? parser(element) : element
-    );
+    expect(actual).toEqual(expected);
   });
+});
 
-  test('Проверка на выброс ошибки.', () => {
-    // Название файла.
-    const file = 'file1.html';
+test('Проверка на выброс ошибки.', () => {
+  // Название файла.
+  const file = 'file1.html';
 
-    // Формируем путь до файла.
-    const correctPath = makeCorrectPath(
-      [__dirname, '..', Options.fixturesDir],
-      file
-    );
+  // Формируем путь до файла.
+  const correctPath = makeCorrectPath(
+    prefixPath,
+    file
+  );
 
-    // Читаем файл.
-    const element = readFilesSync(correctPath);
+  // Читаем файл.
+  const element = readFileSync(correctPath);
 
-    // Определяем расширение.
-    const extName = path.extname(file);
+  // Определяем расширение.
+  const extName = path.extname(file);
 
-    expect(() => getData(getFormat(extName), element)).toThrow(
-      new Error(FORMAT_ERROR)
-    );
-  });
+  expect(() => getData(getFormat(extName), element)).toThrow(
+    new Error(FORMAT_ERROR)
+  );
 });
