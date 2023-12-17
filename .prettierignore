@@ -3,3 +3,4 @@ package-lock.json
 **/__fixtures__/**/*
 **/src/**/makeAST.js
 **/src/**/stylish.js
+**/src/**/utils.js
