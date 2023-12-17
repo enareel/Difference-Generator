@@ -99,7 +99,7 @@ describe('Тестируем функцию isAllObjects.', () => {
 
   test('Обычные объекты.', () => {
     expect(
-      isAllObjects({ a: 12, b: 'Hello' }, { z: 'v' }, { HASHTAG: 'METOO' })
+      isAllObjects({ a: 12, b: 'Hello' }, { z: 'v' }, { HASHTAG: 'METOO' }),
     ).toBe(true);
   });
 
@@ -119,28 +119,7 @@ describe('Тестируем функцию formatValue.', () => {
   });
 
   test('Строка.', () => {
-    expect(formatValue('Hello, Dear Boy!')).toEqual(`'Hello, Dear Boy!'`);
-  });
-
-  test.each([null, undefined, true, 1, 0, -10])('Значение: %o.', (value) => {
-    expect(formatValue(value)).toEqual(value);
-  });
-});
-
-// Тестирование formatValue.
-describe('Тестируем функцию formatValue.', () => {
-  test('Массив.', () => {
-    expect(formatValue([1, 2, 3])).toEqual('[complex value]');
-  });
-
-  test('Объект.', () => {
-    expect(formatValue({})).toEqual('[complex value]');
-  });
-
-  test('Строка.', () => {
-    expect(formatValue('Hello, Dear Boy!', QuotationMark.DOUBLE)).toEqual(
-      `"Hello, Dear Boy!"`
-    );
+    expect(formatValue('Hello, Dear Boy!')).toEqual("'Hello, Dear Boy!'");
   });
 
   test.each([null, undefined, true, 1, 0, -10])('Значение: %o.', (value) => {
@@ -156,7 +135,7 @@ describe('Тестируем функцию makePath.', () => {
 
   test('Обычный путь.', () => {
     expect(makePath(['common', 'joe', 'make'], 'prop')).toEqual(
-      'common.joe.make.prop'
+      'common.joe.make.prop',
     );
   });
 });
@@ -169,7 +148,7 @@ describe('Тестируем функцию makeCorrectPath.', () => {
 
   test('Обычный файл с префиксом.', () => {
     expect(
-      makeCorrectPath(['/dir', 'project', '__fixtures__'], 'file2.json')
+      makeCorrectPath(['/dir', 'project', '__fixtures__'], 'file2.json'),
     ).toEqual('/dir/project/__fixtures__/file2.json');
   });
 
@@ -177,8 +156,8 @@ describe('Тестируем функцию makeCorrectPath.', () => {
     expect(
       makeCorrectPath(
         ['/a', '..', 'b', '__fixtures__'],
-        '/usr/etc/folder/file3.txt'
-      )
+        '/usr/etc/folder/file3.txt',
+      ),
     ).toEqual('/usr/etc/folder/file3.txt');
   });
 });
@@ -189,7 +168,7 @@ describe('Тестируем функцию readFileSync.', () => {
     expect(readFileSync(makeCorrectPath(prefixPath, 'file1.json'))).toEqual(
       fs.readFileSync(makeCorrectPath(prefixPath, 'file1.json'), {
         encoding: ENCODING,
-      })
+      }),
     );
   });
 });
@@ -227,7 +206,7 @@ describe('Тестируем функцию getBreak.', () => {
         replacer: '#',
         spacesCount: 3,
         depth: 2,
-      })
+      }),
     ).toBe('\n#####');
   });
 });

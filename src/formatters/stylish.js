@@ -56,9 +56,12 @@ const stylish = (tree, replacer = ' ', spacesCount = 4) => {
         if (Array.isArray(node)) {
           return [
             ...acc,
-            `${getBreak({ sign, replacer, spacesCount, depth })}${sign} ${
-              node[0]
-            }: ${
+            `${getBreak({
+              sign,
+              replacer,
+              spacesCount,
+              depth,
+            })}${sign} ${node[0]}: ${
               isObject(node[1])
                 ? iter(Object.entries(node[1]), depth + 1)
                 : node[1]
@@ -73,13 +76,16 @@ const stylish = (tree, replacer = ' ', spacesCount = 4) => {
         ) {
           return [
             ...acc,
-            `${getBreak({ sign, replacer, spacesCount, depth })}${sign} ${
-              node.key
-            }: ${iter(
+            `${getBreak({
+              sign,
+              replacer,
+              spacesCount,
+              depth,
+            })}${sign} ${node.key}: ${iter(
               Array.isArray(node?.value)
                 ? node.value
                 : Object.entries(node.value),
-              depth + 1
+              depth + 1,
             )}`,
           ];
         }
@@ -88,16 +94,22 @@ const stylish = (tree, replacer = ' ', spacesCount = 4) => {
         if (node?.state === ASTNodeState.CHANGED) {
           return [
             ...acc,
-            `${getBreak({ sign, replacer, spacesCount, depth })}- ${
-              node.key
-            }: ${
+            `${getBreak({
+              sign,
+              replacer,
+              spacesCount,
+              depth,
+            })}- ${node.key}: ${
               isObject(node.oldValue)
                 ? iter(Object.entries(node.oldValue), depth + 1)
                 : node.oldValue
             }`,
-            `${getBreak({ sign, replacer, spacesCount, depth })}+ ${
-              node.key
-            }: ${
+            `${getBreak({
+              sign,
+              replacer,
+              spacesCount,
+              depth,
+            })}+ ${node.key}: ${
               isObject(node.value)
                 ? iter(Object.entries(node.value), depth + 1)
                 : node.value
@@ -107,15 +119,21 @@ const stylish = (tree, replacer = ' ', spacesCount = 4) => {
 
         return [
           ...acc,
-          `${getBreak({ sign, replacer, spacesCount, depth })}${sign} ${
-            node.key
-          }: ${node.value}`,
+          `${getBreak({
+            sign,
+            replacer,
+            spacesCount,
+            depth,
+          })}${sign} ${node.key}: ${node.value}`,
         ];
       },
-      []
+      [],
     );
 
-    return `{${result.join('')}${getBreak({ hasClosure: true, depth })}}`;
+    return `{${result.join('')}${getBreak({
+      hasClosure: true,
+      depth,
+    })}}`;
   };
   return iter(tree, 0);
 };

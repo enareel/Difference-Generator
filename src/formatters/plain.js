@@ -59,7 +59,7 @@ const plain = (tree) => {
             ...acc,
             `Property '${makePath(
               path,
-              node.key
+              node.key,
             )}' was ${desc} with value: ${formatValue(node.value)}`,
           ];
         }
@@ -70,9 +70,9 @@ const plain = (tree) => {
             ...acc,
             `Property '${makePath(
               path,
-              node.key
+              node.key,
             )}' was ${desc}. From ${formatValue(
-              node.oldValue
+              node.oldValue,
             )} to ${formatValue(node.value)}`,
           ];
         }
@@ -84,7 +84,7 @@ const plain = (tree) => {
 
         return [...acc, `Property '${makePath(path, node.key)}' was removed`];
       },
-      ''
+      '',
     );
 
     return `${result.join('\n')}`;

@@ -95,7 +95,7 @@ const readFileSync = (filepath) =>
  */
 const getFormat = (extName) =>
   Object.keys(formatToExt).find((prop) =>
-    new Set(formatToExt[prop]).has(extName)
+    new Set(formatToExt[prop]).has(extName),
   );
 
 /**

@@ -34,8 +34,6 @@ const prefixPath = [__dirname, '..', Options.fixturesDir];
  * @param {string} filepath1 Путь до первого файла.
  * @param {string} filepath2 Путь до второго файла.
  * @param {string} [formatter=stylish] Форматер.
-
-
  * @returns {import('./makeAST.js').AST}
  */
 const genDiff = (filepath1, filepath2, formatter = 'stylish') => {

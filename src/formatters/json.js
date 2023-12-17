@@ -40,7 +40,7 @@ const json = (tree, replacer = ' ', spacesCount = 4) => {
             ...acc,
             `${getBreak({ replacer, spacesCount, depth })}${formatValue(
               node.key,
-              QuotationMark.DOUBLE
+              QuotationMark.DOUBLE,
             )}: ${iter(Object.entries(node), depth + 1)}`,
           ];
         }
@@ -51,10 +51,10 @@ const json = (tree, replacer = ' ', spacesCount = 4) => {
             ...acc,
             `${getBreak({ replacer, spacesCount, depth })}${formatValue(
               node[0],
-              QuotationMark.DOUBLE
+              QuotationMark.DOUBLE,
             )}: ${iter(
               Array.isArray(node[1]) ? node[1] : Object.entries(node[1]),
-              depth + 1
+              depth + 1,
             )}`,
           ];
         }
@@ -63,11 +63,11 @@ const json = (tree, replacer = ' ', spacesCount = 4) => {
           ...acc,
           `${getBreak({ replacer, spacesCount, depth })}${formatValue(
             node[0],
-            QuotationMark.DOUBLE
+            QuotationMark.DOUBLE,
           )}: ${formatValue(node[1], QuotationMark.DOUBLE)}`,
         ];
       },
-      []
+      [],
     );
 
     return `{${result.join(',')}${getBreak({ hasClosure: true, depth })}}`;

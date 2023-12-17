@@ -47,35 +47,18 @@ const makeAST = (firstObj = {}, secondObj = {}) => {
         return [...acc];
       }
 
-      // Определяем состояние и тип узла.
-      let state = ASTNodeState.UNCHANGED;
+      // Определяем тип узла.
       const type = ASTNodeType.LEAF;
 
-      // Меняем состояние свойства в зависимости от условий.
-      switch (true) {
-        case !(prop in rightObj):
-          state = ASTNodeState.REMOVED;
-          break;
-        case !(prop in leftObj):
-          state = ASTNodeState.ADDED;
-          break;
-        case ((prop in rightObj && rightObj[prop] !== value) ||
-          (prop in leftObj && leftObj[prop] !== rightObj[prop])) &&
-          !isAllObjects(leftObj[prop], rightObj[prop]):
-          state = ASTNodeState.CHANGED;
-          stack.add(prop);
-          break;
-        default:
-          stack.add(prop);
-          break;
-      }
+      // Добавляем свойство в Stack.
+      stack.add(prop);
 
       // Если оба свойства - объекты, делаем рекурсию.
       if (isAllObjects(leftObj[prop], rightObj[prop])) {
         return [
           ...acc,
           {
-            state,
+            state: ASTNodeState.UNCHANGED,
             type: ASTNodeType.INTERNAL,
             key: prop,
             value: iter(leftObj[prop], rightObj[prop]),
@@ -84,18 +67,37 @@ const makeAST = (firstObj = {}, secondObj = {}) => {
       }
 
       // Если свойство было изменено, добавляем новое и старое значения.
-      return state === ASTNodeState.CHANGED
-        ? [
-            ...acc,
-            {
-              state,
-              type,
-              key: prop,
-              value: rightObj[prop],
-              oldValue: leftObj[prop],
-            },
-          ]
-        : [...acc, { state, type, key: prop, value }];
+      if (
+        prop in leftObj &&
+        prop in rightObj &&
+        leftObj[prop] !== rightObj[prop] &&
+        !isAllObjects(leftObj[prop], rightObj[prop])
+      ) {
+        return [
+          ...acc,
+          {
+            state: ASTNodeState.CHANGED,
+            type,
+            key: prop,
+            value: rightObj[prop],
+            oldValue: leftObj[prop],
+          },
+        ];
+      }
+
+      // В остальных случаях
+      return [
+        ...acc,
+        {
+          state:
+            (!(prop in leftObj) && ASTNodeState.ADDED) ||
+            (!(prop in rightObj) && ASTNodeState.REMOVED) ||
+            ASTNodeState.UNCHANGED,
+          type,
+          key: prop,
+          value,
+        },
+      ];
     }, []);
 
     return AST;

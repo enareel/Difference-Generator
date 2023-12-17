@@ -84,6 +84,6 @@ test('Проверка на выброс ошибки.', () => {
   const extName = path.extname(filename);
 
   expect(() => getData(getFormat(extName), fileContent)).toThrow(
-    new Error(FORMAT_ERROR)
+    new Error(FORMAT_ERROR),
   );
 });

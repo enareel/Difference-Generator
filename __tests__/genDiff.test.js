@@ -176,15 +176,15 @@ describe.each(values)('$name.', ({ data }) => {
         // Определяем расширение файла с правильным результатом.
         const extName = path.extname(filename);
 
-        // Вычисляем actual.
-        const actual = genDiff(filename1, filename2, format);
+        // Вычисляем actualValue.
+        const actualValue = genDiff(filename1, filename2, format);
 
-        // Вычисляем expected.
-        const expected = getData(getFormat(extName), fileContent);
+        // Вычисляем expectedValue.
+        const expectedValue = getData(getFormat(extName), fileContent);
 
-        expect(actual).toEqual(expected);
+        expect(actualValue).toEqual(expectedValue);
       });
-    }
+    },
   );
 
   test('Проверка значений по умолчанию.', () => {
