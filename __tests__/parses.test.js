@@ -34,15 +34,15 @@ const values = [
     name: 'Парсинг данных.',
     data: [
       {
-        data: 'file1.json',
-        parser: JSON.parse,
+        filename: 'file1.json',
+        parse: JSON.parse,
       },
       {
-        data: 'file6.yaml',
-        parser: jsYaml.load,
+        filename: 'file6.yaml',
+        parse: jsYaml.load,
       },
       {
-        data: 'correctPlain1.txt',
+        filename: 'correctPlain1.txt',
       },
     ],
   },
@@ -50,21 +50,21 @@ const values = [
 
 // Тестирование парсинга файлов.
 describe.each(values)('$name', ({ data }) => {
-  test.each(data)('Проверка $data.', ({ data, parser }) => {
+  test.each(data)('Проверка $filename.', ({ filename, parse }) => {
     // Формируем путь до файла.
-    const correctPath = makeCorrectPath(prefixPath, data);
+    const correctPath = makeCorrectPath(prefixPath, filename);
 
     // Читаем файл.
-    const element = readFileSync(correctPath);
+    const fileContent = readFileSync(correctPath);
 
     // Определяем расширение.
-    const extName = path.extname(data);
-    
+    const extName = path.extname(filename);
+
     // Вычисляем actual.
-    const actual = getData(getFormat(extName), element);
-    
+    const actual = getData(getFormat(extName), fileContent);
+
     // Вычисляем expected.
-    const expected = parser ? parser(element) : element;
+    const expected = parse ? parse(fileContent) : fileContent;
 
     expect(actual).toEqual(expected);
   });
@@ -72,21 +72,18 @@ describe.each(values)('$name', ({ data }) => {
 
 test('Проверка на выброс ошибки.', () => {
   // Название файла.
-  const file = 'file1.html';
+  const filename = 'file1.html';
 
   // Формируем путь до файла.
-  const correctPath = makeCorrectPath(
-    prefixPath,
-    file
-  );
+  const correctPath = makeCorrectPath(prefixPath, filename);
 
   // Читаем файл.
-  const element = readFileSync(correctPath);
+  const fileContent = readFileSync(correctPath);
 
   // Определяем расширение.
-  const extName = path.extname(file);
+  const extName = path.extname(filename);
 
-  expect(() => getData(getFormat(extName), element)).toThrow(
+  expect(() => getData(getFormat(extName), fileContent)).toThrow(
     new Error(FORMAT_ERROR)
   );
 });

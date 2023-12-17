@@ -162,32 +162,52 @@ const values = [
 
 // Тесты.
 describe.each(values)('$name.', ({ data }) => {
-  test.each(data)('Проверка $filename1 и $filename2.', ({ filename1, filename2, expected }) => {
-    // Читаем файлы.
-    const fileContent1 = getData(
-      getFormat(path.extname(filename1)),
-      readFileSync(makeCorrectPath(prefixPath, filename1))
-    );
-    const fileContent2 = getData(
-      getFormat(path.extname(filename2)),
-      readFileSync(makeCorrectPath(prefixPath, filename2))
-    );
+  test.each(data)(
+    'Проверка $filename1 и $filename2.',
+    ({ filename1, filename2, expected }) => {
+      // Проверяем правильность форматирования для каждого типа.
+      expected.forEach(({ format, filename }) => {
+        // Формируем путь до файла с правильным результатом.
+        const correctPath = makeCorrectPath(prefixPath, filename);
 
-    // Проверяем правильность форматирования для каждого типа.
-    expected.forEach(({ format, filename }) => {
-      const result = genDiff(format, fileContent1, fileContent2);
-    
-      expect(result).toEqual(
-        getData(
-          getFormat(path.extname(filename)),
-          readFileSync(makeCorrectPath(prefixPath, filename))
-        )
-      );
-    });
-  });
-  
+        // Читаем файл с правильным результатом.
+        const fileContent = readFileSync(correctPath);
+
+        // Определяем расширение файла с правильным результатом.
+        const extName = path.extname(filename);
+
+        // Вычисляем actual.
+        const actual = genDiff(filename1, filename2, format);
+
+        // Вычисляем expected.
+        const expected = getData(getFormat(extName), fileContent);
+
+        expect(actual).toEqual(expected);
+      });
+    }
+  );
+
   test('Проверка значений по умолчанию.', () => {
-    expect(genDiff()).toEqual(`{
-}`);
-  })
+    // Названия файлов.
+    const filename1 = 'file1.json';
+    const filename2 = 'file3.json';
+    const filename = 'correctStylish2.txt';
+
+    // Формируем путь до файла с правильным результатом.
+    const correctPath = makeCorrectPath(prefixPath, filename);
+
+    // Читаем файл с правильным результатом.
+    const fileContent = readFileSync(correctPath);
+
+    // Определяем расширение файла с правильным результатом.
+    const extName = path.extname(filename);
+
+    // Вычисляем actual.
+    const actual = genDiff(filename1, filename2);
+
+    // Вычисляем expected.
+    const expected = getData(getFormat(extName), fileContent);
+
+    expect(actual).toEqual(expected);
+  });
 });
