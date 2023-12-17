@@ -28,9 +28,6 @@ import { sortPairs, isAllObjects } from './utils.js';
  * @returns {AST}
  */
 const makeAST = (firstObj = {}, secondObj = {}) => {
-  // Stack с имеющимися свойствами.
-  const stack = new Set();
-
   /**
    * Вспомогательная рекурсивная функция.
    * @param {Object} leftObj Левый объект.
@@ -38,6 +35,8 @@ const makeAST = (firstObj = {}, secondObj = {}) => {
    * @returns {AST}
    */
   const iter = (leftObj, rightObj) => {
+    // Stack с имеющимися свойствами.
+    const stack = new Set();
     // Массив пар ключ=значение.
     const entries = [...Object.entries(leftObj), ...Object.entries(rightObj)];
 
