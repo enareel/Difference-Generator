@@ -17,6 +17,7 @@
  * @typedef {Object} FormatExtMap
  * @prop {Array<string>} YAML Расширения YAML.
  * @prop {Array<string>} JSON Расширения JSON.
+ * @prop {Array<string>} TXT Расширения TXT.
  */
 
 /**

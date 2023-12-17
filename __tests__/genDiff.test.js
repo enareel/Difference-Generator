@@ -29,43 +29,43 @@ const __dirname = path.dirname(__filename);
 const prefixPath = [__dirname, '..', Options.fixturesDir];
 
 // Данные для сравнения.
-const data = [
+const values = [
   {
     name: 'Проверка плоских файлов JSON',
     data: [
       {
-        file1: 'file1.json',
-        file2: 'file2.json',
+        filename1: 'file1.json',
+        filename2: 'file2.json',
         expected: [
           {
             format: 'stylish',
-            value: 'correctStylish1.txt',
+            filename: 'correctStylish1.txt',
           },
           {
             format: 'plain',
-            value: 'correctPlain1.txt',
+            filename: 'correctPlain1.txt',
           },
           {
             format: 'json',
-            value: 'correctJson1.txt',
+            filename: 'correctJson1.txt',
           },
         ],
       },
       {
-        file1: 'file1.json',
-        file2: 'file3.json',
+        filename1: 'file1.json',
+        filename2: 'file3.json',
         expected: [
           {
             format: 'stylish',
-            value: 'correctStylish2.txt',
+            filename: 'correctStylish2.txt',
           },
           {
             format: 'plain',
-            value: 'correctPlain2.txt',
+            filename: 'correctPlain2.txt',
           },
           {
             format: 'json',
-            value: 'correctJson2.txt',
+            filename: 'correctJson2.txt',
           },
         ],
       },
@@ -75,20 +75,20 @@ const data = [
     name: 'Проверка рекурсивных файлов JSON',
     data: [
       {
-        file1: 'file5.json',
-        file2: 'file6.json',
+        filename1: 'file5.json',
+        filename2: 'file6.json',
         expected: [
           {
             format: 'stylish',
-            value: 'correctStylish3.txt',
+            filename: 'correctStylish3.txt',
           },
           {
             format: 'plain',
-            value: 'correctPlain3.txt',
+            filename: 'correctPlain3.txt',
           },
           {
             format: 'json',
-            value: 'correctJson3.txt',
+            filename: 'correctJson3.txt',
           },
         ],
       },
@@ -98,38 +98,38 @@ const data = [
     name: 'Проверка плоских файлов YAML',
     data: [
       {
-        file1: 'file1.yaml',
-        file2: 'file2.yml',
+        filename1: 'file1.yaml',
+        filename2: 'file2.yml',
         expected: [
           {
             format: 'stylish',
-            value: 'correctStylish1.txt',
+            filename: 'correctStylish1.txt',
           },
           {
             format: 'plain',
-            value: 'correctPlain1.txt',
+            filename: 'correctPlain1.txt',
           },
           {
             format: 'json',
-            value: 'correctJson1.txt',
+            filename: 'correctJson1.txt',
           },
         ],
       },
       {
-        file1: 'file1.yaml',
-        file2: 'file3.yaml',
+        filename1: 'file1.yaml',
+        filename2: 'file3.yaml',
         expected: [
           {
             format: 'stylish',
-            value: 'correctStylish2.txt',
+            filename: 'correctStylish2.txt',
           },
           {
             format: 'plain',
-            value: 'correctPlain2.txt',
+            filename: 'correctPlain2.txt',
           },
           {
             format: 'json',
-            value: 'correctJson2.txt',
+            filename: 'correctJson2.txt',
           },
         ],
       },
@@ -139,20 +139,20 @@ const data = [
     name: 'Проверка рекурсивных файлов YAML',
     data: [
       {
-        file1: 'file5.yaml',
-        file2: 'file6.yaml',
+        filename1: 'file5.yaml',
+        filename2: 'file6.yaml',
         expected: [
           {
             format: 'stylish',
-            value: 'correctStylish3.txt',
+            filename: 'correctStylish3.txt',
           },
           {
             format: 'plain',
-            value: 'correctPlain3.txt',
+            filename: 'correctPlain3.txt',
           },
           {
             format: 'json',
-            value: 'correctJson3.txt',
+            filename: 'correctJson3.txt',
           },
         ],
       },
@@ -161,26 +161,26 @@ const data = [
 ];
 
 // Тесты.
-describe.each(data)('$name.', ({ data }) => {
-  test.each(data)('Проверка $file1 и $file2.', ({ file1, file2, expected }) => {
+describe.each(values)('$name.', ({ data }) => {
+  test.each(data)('Проверка $filename1 и $filename2.', ({ filename1, filename2, expected }) => {
     // Читаем файлы.
-    const f1 = getData(
-      getFormat(path.extname(file1)),
-      readFileSync(makeCorrectPath(prefixPath, file1))
+    const fileContent1 = getData(
+      getFormat(path.extname(filename1)),
+      readFileSync(makeCorrectPath(prefixPath, filename1))
     );
-    const f2 = getData(
-      getFormat(path.extname(file2)),
-      readFileSync(makeCorrectPath(prefixPath, file2))
+    const fileContent2 = getData(
+      getFormat(path.extname(filename2)),
+      readFileSync(makeCorrectPath(prefixPath, filename2))
     );
 
     // Проверяем правильность форматирования для каждого типа.
-    expected.forEach(({ format, value }) => {
-      const result = genDiff(format, f1, f2);
+    expected.forEach(({ format, filename }) => {
+      const result = genDiff(format, fileContent1, fileContent2);
     
       expect(result).toEqual(
         getData(
-          getFormat(path.extname(value)),
-          readFileSync(makeCorrectPath(prefixPath, value))
+          getFormat(path.extname(filename)),
+          readFileSync(makeCorrectPath(prefixPath, filename))
         )
       );
     });

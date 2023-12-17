@@ -36,15 +36,15 @@ program
   .arguments('<filepath1> <filepath2>')
   .action((filepath1, filepath2, options) => {
     // Считываем файлы.
-    const file1 = readFileSync(makeCorrectPath(prefixPath, filepath1));
-    const file2 = readFileSync(makeCorrectPath(prefixPath, filepath2));
+    const fileContent1 = readFileSync(makeCorrectPath(prefixPath, filepath1));
+    const fileContent2 = readFileSync(makeCorrectPath(prefixPath, filepath2));
 
     // Определяем расширение.
     const extName = path.extname(filepath1);
 
     // Parsing.
-    const parsedData1 = getData(getFormat(extName), file1);
-    const parsedData2 = getData(getFormat(extName), file2);
+    const parsedData1 = getData(getFormat(extName), fileContent1);
+    const parsedData2 = getData(getFormat(extName), fileContent2);
 
     // Выводим различия.
     console.log(genDiff(options.format, parsedData1, parsedData2));
