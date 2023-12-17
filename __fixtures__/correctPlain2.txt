@@ -1,0 +1,4 @@
+Property 'follow' was removed
+Property 'host' was removed
+Property 'proxy' was removed
+Property 'timeout' was removed

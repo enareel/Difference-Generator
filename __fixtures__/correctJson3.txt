@@ -1,0 +1,115 @@
+{
+   "common": {
+       "state": "unchanged",
+       "type": "internal",
+       "value": {
+           "follow": {
+               "state": "added",
+               "type": "leaf",
+               "value": false
+            },
+           "setting1": {
+               "state": "unchanged",
+               "type": "leaf",
+               "value": "Value 1"
+            },
+           "setting2": {
+               "state": "deleted",
+               "type": "leaf",
+               "value": 200
+            },
+           "setting3": {
+               "state": "changed",
+               "type": "leaf",
+               "value": null,
+               "oldValue": true
+            },
+           "setting4": {
+               "state": "added",
+               "type": "leaf",
+               "value": "blah blah"
+            },
+           "setting5": {
+               "state": "added",
+               "type": "leaf",
+               "value": {
+                   "key5": "value5"
+                }
+            },
+           "setting6": {
+               "state": "unchanged",
+               "type": "internal",
+               "value": {
+                   "doge": {
+                       "state": "unchanged",
+                       "type": "internal",
+                       "value": {
+                           "wow": {
+                               "state": "changed",
+                               "type": "leaf",
+                               "value": "so much",
+                               "oldValue": ""
+                            }
+                        }
+                    },
+                   "key": {
+                       "state": "unchanged",
+                       "type": "leaf",
+                       "value": "value"
+                    },
+                   "ops": {
+                       "state": "added",
+                       "type": "leaf",
+                       "value": "vops"
+                    }
+                }
+            }
+        }
+    },
+   "group1": {
+       "state": "unchanged",
+       "type": "internal",
+       "value": {
+           "baz": {
+               "state": "changed",
+               "type": "leaf",
+               "value": "bars",
+               "oldValue": "bas"
+            },
+           "foo": {
+               "state": "unchanged",
+               "type": "leaf",
+               "value": "bar"
+            },
+           "nest": {
+               "state": "changed",
+               "type": "leaf",
+               "value": "str",
+               "oldValue": {
+                }
+            }
+        }
+    },
+   "group2": {
+       "state": "deleted",
+       "type": "leaf",
+       "value": {
+           "abc": 12345,
+           "deep": {
+               "id": 45
+            }
+        }
+    },
+   "group3": {
+       "state": "added",
+       "type": "leaf",
+       "value": {
+           "deep": {
+               "id": {
+                   "number": 45
+                }
+            },
+           "fee": 100500
+        }
+    }
+}

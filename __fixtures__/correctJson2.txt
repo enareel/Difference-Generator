@@ -1,0 +1,22 @@
+{
+   "follow": {
+       "state": "deleted",
+       "type": "leaf",
+       "value": false
+    },
+   "host": {
+       "state": "deleted",
+       "type": "leaf",
+       "value": "hexlet.io"
+    },
+   "proxy": {
+       "state": "deleted",
+       "type": "leaf",
+       "value": "123.234.53.22"
+    },
+   "timeout": {
+       "state": "deleted",
+       "type": "leaf",
+       "value": 50
+    }
+}
