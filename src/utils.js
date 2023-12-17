@@ -5,12 +5,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
-import {
-  formatToExt,
-  QuotationMark,
-  ENCODING,
-  COMPLEX_VALUE_NAME,
-} from './constants.js';
+import { formatToExt, QuotationMark, ENCODING, COMPLEX_VALUE_NAME } from './constants.js';
 
 /**
  * Функция сортировки пар массива.
@@ -30,8 +25,7 @@ const sortPairs = (a, b) => {
  * @param {*} value Значение.
  * @returns {boolean}
  */
-const isObject = (value) =>
-  typeof value === 'object' && value instanceof Object && !Array.isArray(value);
+const isObject = (value) => typeof value === 'object' && value instanceof Object && !Array.isArray(value);
 
 /**
  * Функция проверки объекта на пустоту.
@@ -42,10 +36,10 @@ const isEmptyObject = (obj) => isObject(obj) && !Object.keys(obj).length;
 
 /**
  * Функция проверки того, являются ли все значения объектом.
- * @param {...*} objs Значения.
+ * @param {Array<*>} values Массив значений.
  * @returns {boolean}
  */
-const isAllObjects = (...objs) => objs.every((obj) => isObject(obj));
+const isAllObjects = (values) => values.every((obj) => isObject(obj));
 
 /**
  * Функция форматирования значения.
@@ -85,18 +79,14 @@ const makeCorrectPath = (prefix, filepath) => path.resolve(...prefix, filepath);
  * @param {string} filepath Корректный путь до файла.
  * @returns {(Array<string>|string)}
  */
-const readFileSync = (filepath) =>
-  fs.readFileSync(filepath, { encoding: ENCODING });
+const readFileSync = (filepath) => fs.readFileSync(filepath, { encoding: ENCODING });
 
 /**
  * Функция возвращения формата на основе расширения файла.
  * @param {string} extname Расширение файла.
  * @returns {string}
  */
-const getFormat = (extName) =>
-  Object.keys(formatToExt).find((prop) =>
-    new Set(formatToExt[prop]).has(extName),
-  );
+const getFormat = (extName) => Object.keys(formatToExt).find((prop) => new Set(formatToExt[prop]).has(extName));
 
 /**
  * Функция возврата отступа.
@@ -107,13 +97,7 @@ const getFormat = (extName) =>
  * @param {number} [depth=0] Глубина
  * @returns {string}
  */
-const getBreak = ({
-  hasClosure = false,
-  sign = '',
-  replacer = ' ',
-  spacesCount = 4,
-  depth = 0,
-} = {}) =>
+const getBreak = ({ hasClosure = false, sign = '', replacer = ' ', spacesCount = 4, depth = 0 } = {}) =>
   hasClosure
     ? `\n${replacer.repeat(spacesCount * depth)}`
     : `\n${replacer.repeat(spacesCount * (depth + 1) - sign.length - 1)}`;

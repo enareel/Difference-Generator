@@ -18,7 +18,9 @@ plugins:
   - prettier
 
 rules:
+  arrow-body-style: [2, 'as-needed']
   comma-dangle: [2, 'always-multiline']
+  operator-linebreak: [2, 'before']
   no-console: 0
   import/extensions: # FIXME: remove when rule will be adjusted for new nodejs version
     - error

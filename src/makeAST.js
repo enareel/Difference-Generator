@@ -3,8 +3,9 @@
  * @module makeAST
  */
 
+import _ from 'lodash';
 import { ASTNodeType, ASTNodeState } from './constants.js';
-import { sortPairs, isAllObjects } from './utils.js';
+import { isAllObjects } from './utils.js';
 
 /**
  * Определение типа ASTNode (узла дерева).
@@ -40,8 +41,11 @@ const makeAST = (firstObj = {}, secondObj = {}) => {
     // Массив пар ключ=значение.
     const entries = [...Object.entries(leftObj), ...Object.entries(rightObj)];
 
+    // Сортируем массив пар.
+    const sorted = _.sortBy(entries, (value) => value[0]);
+
     // Собираемое AST.
-    const AST = entries.sort(sortPairs).reduce((acc, [prop, value]) => {
+    const AST = sorted.reduce((acc, [prop, value]) => {
       // Если одинаковое свойство уже есть в Stack, то ничего не делаем.
       if (stack.has(prop)) {
         return [...acc];
@@ -54,7 +58,7 @@ const makeAST = (firstObj = {}, secondObj = {}) => {
       stack.add(prop);
 
       // Если оба свойства - объекты, делаем рекурсию.
-      if (isAllObjects(leftObj[prop], rightObj[prop])) {
+      if (isAllObjects([leftObj[prop], rightObj[prop]])) {
         return [
           ...acc,
           {
@@ -68,10 +72,10 @@ const makeAST = (firstObj = {}, secondObj = {}) => {
 
       // Если свойство было изменено, добавляем новое и старое значения.
       if (
-        prop in leftObj &&
-        prop in rightObj &&
-        leftObj[prop] !== rightObj[prop] &&
-        !isAllObjects(leftObj[prop], rightObj[prop])
+        prop in leftObj
+        && prop in rightObj
+        && leftObj[prop] !== rightObj[prop]
+        && !isAllObjects([leftObj[prop], rightObj[prop]])
       ) {
         return [
           ...acc,
@@ -90,9 +94,9 @@ const makeAST = (firstObj = {}, secondObj = {}) => {
         ...acc,
         {
           state:
-            (!(prop in leftObj) && ASTNodeState.ADDED) ||
-            (!(prop in rightObj) && ASTNodeState.REMOVED) ||
-            ASTNodeState.UNCHANGED,
+            (!(prop in leftObj) && ASTNodeState.ADDED)
+            || (!(prop in rightObj) && ASTNodeState.REMOVED)
+            || ASTNodeState.UNCHANGED,
           type,
           key: prop,
           value,

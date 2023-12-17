@@ -94,17 +94,15 @@ describe('Тестируем функцию isEmptyObject.', () => {
 // Тестирование isAllObjects.
 describe('Тестируем функцию isAllObjects.', () => {
   test('Пустые объекты.', () => {
-    expect(isAllObjects({}, {}, {})).toBe(true);
+    expect(isAllObjects([{}, {}, {}])).toBe(true);
   });
 
   test('Обычные объекты.', () => {
-    expect(
-      isAllObjects({ a: 12, b: 'Hello' }, { z: 'v' }, { HASHTAG: 'METOO' }),
-    ).toBe(true);
+    expect(isAllObjects([{ a: 12, b: 'Hello' }, { z: 'v' }, { HASHTAG: 'METOO' }])).toBe(true);
   });
 
   test('Другие типы.', () => {
-    expect(isAllObjects([], {}, { name: 'Tim' }, 12)).toBe(false);
+    expect(isAllObjects([[], {}, { name: 'Tim' }, 12])).toBe(false);
   });
 });
 
@@ -122,6 +120,10 @@ describe('Тестируем функцию formatValue.', () => {
     expect(formatValue('Hello, Dear Boy!')).toEqual("'Hello, Dear Boy!'");
   });
 
+  test('Строка.', () => {
+    expect(formatValue('Touch Me.', QuotationMark.DOUBLE)).toEqual('"Touch Me."');
+  });
+
   test.each([null, undefined, true, 1, 0, -10])('Значение: %o.', (value) => {
     expect(formatValue(value)).toEqual(value);
   });
@@ -134,9 +136,7 @@ describe('Тестируем функцию makePath.', () => {
   });
 
   test('Обычный путь.', () => {
-    expect(makePath(['common', 'joe', 'make'], 'prop')).toEqual(
-      'common.joe.make.prop',
-    );
+    expect(makePath(['common', 'joe', 'make'], 'prop')).toEqual('common.joe.make.prop');
   });
 });
 
@@ -147,18 +147,15 @@ describe('Тестируем функцию makeCorrectPath.', () => {
   });
 
   test('Обычный файл с префиксом.', () => {
-    expect(
-      makeCorrectPath(['/dir', 'project', '__fixtures__'], 'file2.json'),
-    ).toEqual('/dir/project/__fixtures__/file2.json');
+    expect(makeCorrectPath(['/dir', 'project', '__fixtures__'], 'file2.json')).toEqual(
+      '/dir/project/__fixtures__/file2.json',
+    );
   });
 
   test('Обычный файл с префиксом. Асолютный путь.', () => {
-    expect(
-      makeCorrectPath(
-        ['/a', '..', 'b', '__fixtures__'],
-        '/usr/etc/folder/file3.txt',
-      ),
-    ).toEqual('/usr/etc/folder/file3.txt');
+    expect(makeCorrectPath(['/a', '..', 'b', '__fixtures__'], '/usr/etc/folder/file3.txt')).toEqual(
+      '/usr/etc/folder/file3.txt',
+    );
   });
 });
 
