@@ -120,7 +120,7 @@ describe('Тестируем функцию formatValue.', () => {
     expect(formatValue('Hello, Dear Boy!')).toEqual("'Hello, Dear Boy!'");
   });
 
-  test('Строка.', () => {
+  test('Строка с двойными кавычками.', () => {
     expect(formatValue('Touch Me.', QuotationMark.DOUBLE)).toEqual('"Touch Me."');
   });
 

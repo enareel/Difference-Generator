@@ -25,7 +25,8 @@ const sortPairs = (a, b) => {
  * @param {*} value Значение.
  * @returns {boolean}
  */
-const isObject = (value) => typeof value === 'object' && value instanceof Object && !Array.isArray(value);
+const isObject = (value) =>
+  typeof value === 'object' && value instanceof Object && !Array.isArray(value);
 
 /**
  * Функция проверки объекта на пустоту.
@@ -86,7 +87,8 @@ const readFileSync = (filepath) => fs.readFileSync(filepath, { encoding: ENCODIN
  * @param {string} extname Расширение файла.
  * @returns {string}
  */
-const getFormat = (extName) => Object.keys(formatToExt).find((prop) => new Set(formatToExt[prop]).has(extName));
+const getFormat = (extName) =>
+  Object.keys(formatToExt).find((prop) => new Set(formatToExt[prop]).has(extName));
 
 /**
  * Функция возврата отступа.
@@ -97,10 +99,17 @@ const getFormat = (extName) => Object.keys(formatToExt).find((prop) => new Set(f
  * @param {number} [depth=0] Глубина
  * @returns {string}
  */
-const getBreak = ({ hasClosure = false, sign = '', replacer = ' ', spacesCount = 4, depth = 0 } = {}) =>
-  hasClosure
+const getBreak = ({
+  hasClosure = false,
+  sign = '',
+  replacer = ' ',
+  spacesCount = 4,
+  depth = 0,
+} = {}) => {
+  return hasClosure
     ? `\n${replacer.repeat(spacesCount * depth)}`
     : `\n${replacer.repeat(spacesCount * (depth + 1) - sign.length - 1)}`;
+};
 
 export {
   sortPairs,

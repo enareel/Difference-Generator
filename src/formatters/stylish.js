@@ -61,12 +61,18 @@ const stylish = (tree, replacer = ' ', spacesCount = 4) => {
               replacer,
               spacesCount,
               depth,
-            })}${sign} ${node[0]}: ${isObject(node[1]) ? iter(Object.entries(node[1]), depth + 1) : node[1]}`,
+            })}${sign} ${node[0]}: ${
+              isObject(node[1]) ? iter(Object.entries(node[1]), depth + 1) : node[1]
+            }`,
           ];
         }
 
         // Если ASTNode имеет "детей", либо значение - ссылочный тип, то делаем рекурсию.
-        if (node?.type === ASTNodeType.INTERNAL || (isObject(node?.value) && node?.state !== ASTNodeState.CHANGED)) {
+        if (
+          node?.type === ASTNodeType.INTERNAL
+          || (isObject(node?.value)
+          && node?.state !== ASTNodeState.CHANGED)
+        ) {
           return [
             ...acc,
             `${getBreak({
@@ -91,14 +97,18 @@ const stylish = (tree, replacer = ' ', spacesCount = 4) => {
               spacesCount,
               depth,
             })}- ${node.key}: ${
-              isObject(node.oldValue) ? iter(Object.entries(node.oldValue), depth + 1) : node.oldValue
+              isObject(node.oldValue)
+                ? iter(Object.entries(node.oldValue), depth + 1)
+                : node.oldValue
             }`,
             `${getBreak({
               sign,
               replacer,
               spacesCount,
               depth,
-            })}+ ${node.key}: ${isObject(node.value) ? iter(Object.entries(node.value), depth + 1) : node.value}`,
+            })}+ ${node.key}: ${
+              isObject(node.value) ? iter(Object.entries(node.value), depth + 1) : node.value
+            }`,
           ];
         }
 
