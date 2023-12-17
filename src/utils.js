@@ -109,9 +109,9 @@ const getBreak = ({
   replacer = ' ',
   spacesCount = 4,
   depth = 0,
-} = {}) => hasClosure
+} = {}) => (hasClosure
   ? `\n${replacer.repeat(spacesCount * depth)}`
-  : `\n${replacer.repeat(spacesCount * (depth + 1) - sign.length - 1)}`;
+  : `\n${replacer.repeat(spacesCount * (depth + 1) - sign.length - 1)}`);
 
 export {
   sortPairs,
