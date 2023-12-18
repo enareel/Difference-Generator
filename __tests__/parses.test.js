@@ -28,11 +28,11 @@ const __dirname = path.dirname(__filename);
  */
 const prefixPath = [__dirname, '..', Options.fixturesDir];
 
-// Данные для парсинга.
-const values = [
+// Сценарии тестирования.
+const describeCases = [
   {
     name: 'Парсинг данных.',
-    data: [
+    testCases: [
       {
         filename: 'file1.json',
         parse: JSON.parse,
@@ -49,8 +49,8 @@ const values = [
 ];
 
 // Тестирование парсинга файлов.
-describe.each(values)('$name', ({ data }) => {
-  test.each(data)('Проверка $filename.', ({ filename, parse }) => {
+describe.each(describeCases)('$name', ({ testCases }) => {
+  test.each(testCases)('Проверка $filename.', ({ filename, parse }) => {
     // Формируем путь до файла.
     const correctPath = makeCorrectPath(prefixPath, filename);
 
@@ -83,7 +83,5 @@ test('Проверка на выброс ошибки.', () => {
   // Определяем расширение.
   const extName = path.extname(filename);
 
-  expect(() => getData(getFormat(extName), fileContent)).toThrow(
-    new Error(FORMAT_ERROR),
-  );
+  expect(() => getData(getFormat(extName), fileContent)).toThrow(new Error(FORMAT_ERROR));
 });

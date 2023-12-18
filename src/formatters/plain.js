@@ -77,7 +77,7 @@ const plain = (tree) => {
           ];
         }
 
-        // Если свойство не было изменено.
+        // Если свойство не было изменено, то пропускаем его.
         if (node?.state === ASTNodeState.UNCHANGED) {
           return [...acc];
         }
