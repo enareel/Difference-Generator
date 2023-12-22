@@ -22,19 +22,19 @@ import {
 
 /**
  * Абсолютный путь до текущего файла на основе URL модуля.
- * @constant
+ * @constant {string}
  */
 const __filename = fileURLToPath(import.meta.url);
 
 /**
  * Абсолютный путь до папки с текущим файлом.
- * @constant
+ * @constant {string}
  */
 const __dirname = path.dirname(__filename);
 
 /**
  * Префиксный путь до файла.
- * @constant
+ * @constant {Array<string>}
  */
 const prefixPath = [__dirname, '..', Options.fixturesDir];
 

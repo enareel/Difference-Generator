@@ -61,25 +61,25 @@ const ASTNodeState = {
 
 /**
  * Название базовой кодировки.
- * @constant
+ * @constant {string}
  */
 const ENCODING = 'utf-8';
 
 /**
  * Сообщение об ошибке форматирования.
- * @constant
+ * @constant {string}
  */
 const FORMAT_ERROR = 'Данный формат не поддерживается.';
 
 /**
  * Сообщение об ошибке выбора форматера.
- * @constant
+ * @constant {string}
  */
 const FORMATTER_ERROR = 'Данный форматер не поддерживается.';
 
 /**
  * Название сложного значения (в т.ч. ссылочного типа данных), используемое в форматере stylish.
- * @constant
+ * @constant {string}
  */
 const COMPLEX_VALUE_NAME = '[complex value]';
 
