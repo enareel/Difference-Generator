@@ -28,15 +28,15 @@ const __dirname = path.dirname(__filename);
  */
 const prefixPath = [__dirname, '..', Options.fixturesDir];
 
-// Данные для сравнения.
-const values = [
+// Сценарии тестирования.
+const describeCases = [
   {
     name: 'Проверка плоских файлов JSON',
-    data: [
+    testCases: [
       {
         filename1: 'file1.json',
         filename2: 'file2.json',
-        expected: [
+        expectedCases: [
           {
             format: 'stylish',
             filename: 'correctStylish1.txt',
@@ -54,7 +54,7 @@ const values = [
       {
         filename1: 'file1.json',
         filename2: 'file3.json',
-        expected: [
+        expectedCases: [
           {
             format: 'stylish',
             filename: 'correctStylish2.txt',
@@ -73,11 +73,11 @@ const values = [
   },
   {
     name: 'Проверка рекурсивных файлов JSON',
-    data: [
+    testCases: [
       {
         filename1: 'file5.json',
         filename2: 'file6.json',
-        expected: [
+        expectedCases: [
           {
             format: 'stylish',
             filename: 'correctStylish3.txt',
@@ -96,11 +96,11 @@ const values = [
   },
   {
     name: 'Проверка плоских файлов YAML',
-    data: [
+    testCases: [
       {
         filename1: 'file1.yaml',
         filename2: 'file2.yml',
-        expected: [
+        expectedCases: [
           {
             format: 'stylish',
             filename: 'correctStylish1.txt',
@@ -118,7 +118,7 @@ const values = [
       {
         filename1: 'file1.yaml',
         filename2: 'file3.yaml',
-        expected: [
+        expectedCases: [
           {
             format: 'stylish',
             filename: 'correctStylish2.txt',
@@ -137,11 +137,11 @@ const values = [
   },
   {
     name: 'Проверка рекурсивных файлов YAML',
-    data: [
+    testCases: [
       {
         filename1: 'file5.yaml',
         filename2: 'file6.yaml',
-        expected: [
+        expectedCases: [
           {
             format: 'stylish',
             filename: 'correctStylish3.txt',
@@ -161,12 +161,12 @@ const values = [
 ];
 
 // Тесты.
-describe.each(values)('$name.', ({ data }) => {
-  test.each(data)(
+describe.each(describeCases)('$name.', ({ testCases }) => {
+  test.each(testCases)(
     'Проверка $filename1 и $filename2.',
-    ({ filename1, filename2, expected }) => {
+    ({ filename1, filename2, expectedCases }) => {
       // Проверяем правильность форматирования для каждого типа.
-      expected.forEach(({ format, filename }) => {
+      expectedCases.forEach(({ format, filename }) => {
         // Формируем путь до файла с правильным результатом.
         const correctPath = makeCorrectPath(prefixPath, filename);
 
@@ -176,10 +176,10 @@ describe.each(values)('$name.', ({ data }) => {
         // Определяем расширение файла с правильным результатом.
         const extName = path.extname(filename);
 
-        // Вычисляем actualValue.
+        // Вычисляем реальное значение.
         const actualValue = genDiff(filename1, filename2, format);
 
-        // Вычисляем expectedValue.
+        // Вычисляем ожидаемое значение.
         const expectedValue = getData(getFormat(extName), fileContent);
 
         expect(actualValue).toEqual(expectedValue);
@@ -191,23 +191,23 @@ describe.each(values)('$name.', ({ data }) => {
     // Названия файлов.
     const filename1 = 'file1.json';
     const filename2 = 'file3.json';
-    const filename = 'correctStylish2.txt';
+    const filenameExpected = 'correctStylish2.txt';
 
     // Формируем путь до файла с правильным результатом.
-    const correctPath = makeCorrectPath(prefixPath, filename);
+    const correctPath = makeCorrectPath(prefixPath, filenameExpected);
 
     // Читаем файл с правильным результатом.
     const fileContent = readFileSync(correctPath);
 
     // Определяем расширение файла с правильным результатом.
-    const extName = path.extname(filename);
+    const extName = path.extname(filenameExpected);
 
-    // Вычисляем actual.
-    const actual = genDiff(filename1, filename2);
+    // Вычисляем реальное значение.
+    const actualValue = genDiff(filename1, filename2);
 
-    // Вычисляем expected.
-    const expected = getData(getFormat(extName), fileContent);
+    // Вычисляем ожидаемое значение.
+    const expectedValue = getData(getFormat(extName), fileContent);
 
-    expect(actual).toEqual(expected);
+    expect(actualValue).toEqual(expectedValue);
   });
 });
